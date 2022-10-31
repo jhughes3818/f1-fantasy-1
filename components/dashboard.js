@@ -9,8 +9,8 @@ const user = {
     "https://www.reuters.com/resizer/3I5tAekIlrt7cMH0rznIZU7r9z0=/1200x1200/smart/filters:quality(80)/cloudfront-us-east-2.images.arcpublishing.com/reuters/OI5MK3KZVNMERIVGRNKU4RJMFU.jpg",
 };
 const navigation = [
-  { name: "Dashboard", href: "#", current: true },
-  { name: "Team", href: "#", current: false },
+  { name: "Dashboard", href: "/home", current: true },
+  { name: "Edit Team", href: "/edit-team", current: false },
   { name: "League", href: "#", current: false },
   { name: "Stats", href: "#", current: false },
 ];
@@ -203,13 +203,13 @@ export default function Example({ children }) {
           )}
         </Disclosure>
 
-        <header className="bg-white shadow">
+        {/* <header className="bg-white shadow">
           <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900">
               Build Team
             </h1>
           </div>
-        </header>
+        </header> */}
         <main>
           <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
             {/* Replace with your content */}

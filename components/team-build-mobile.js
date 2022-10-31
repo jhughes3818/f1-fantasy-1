@@ -1,11 +1,12 @@
-import DriverSelectBox from "./driver-select-box";
+import DriverSelectBox from "./team-build/driver-select-box";
 import { Fragment, useEffect, useState } from "react";
-import { TeamBuildData } from "./team-build-data";
-import { people } from "./team-data";
+import { TeamBuildData } from "./team-build/team-build-data";
+import { people } from "./team-build/team-data";
 import { Listbox, Transition, Dialog } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
-import NewTeamGrid from "./new-team-grid";
-import MyModal from "./modal";
+import NewTeamGrid from "./team-build/new-team-grid";
+import MyModal from "./team-build/modal";
+import axios from "axios";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -23,7 +24,28 @@ export default function TeamBuildMobile() {
   const [selected, setSelected] = useState(people[0]);
 
   const [drivers, setDrivers] = useState([]);
+  const [driversNames, setDriversNames] = useState([]);
+
+  //Modal states
   let [isOpen, setIsOpen] = useState(false);
+  let [modalBody, setModalBody] = useState("");
+  let [modalHeading, setModalHeading] = useState("");
+
+  useEffect(() => {
+    axios.get("/api/users").then(function (response) {
+      setDrivers(response.data.team);
+    });
+  }, []);
+
+  useEffect(() => {
+    const newCount = drivers.length;
+    setDriversCount(newCount);
+    const list = [];
+    drivers.forEach((driver) => {
+      list.push(driver.name);
+    });
+    setDriversNames(list);
+  }, [drivers]);
 
   useEffect(() => {
     const value = selected.abbreviation;
@@ -65,7 +87,12 @@ export default function TeamBuildMobile() {
   const addDriver = (option) => {
     const newCash = cash - option.price;
     if (driversCount >= 5) {
+      setModalBody("You can choose a maximum of 5 drivers for your team.");
+      setModalHeading("Maximum number of drivers.");
+      setIsOpen(true);
     } else if (newCash < 0) {
+      setModalBody("You have a maximum budget of $30m to build your team.");
+      setModalHeading("Exceeded Budget");
       setIsOpen(true);
     } else {
       setDrivers([...drivers, option]);
@@ -102,7 +129,8 @@ export default function TeamBuildMobile() {
               bestRaceResult={option.bestRaceResult}
               bestQualifyingResult={option.bestQualifyingResult}
             />
-            {drivers.includes(option) ? (
+
+            {driversNames.includes(option.name) ? (
               <button
                 onClick={() => removeDriver(option.name)}
                 className="bg-[#65B5FF] w-8 h-8 rounded-full text-center absolute right-2 bottom-2 drop-shadow-lg text-white my-0"
@@ -209,13 +237,27 @@ export default function TeamBuildMobile() {
     );
   }
 
+  function saveTeam() {
+    axios
+      .post("/api/save-team", drivers)
+      .then(function (response) {
+        console.log(response);
+        setModalBody("Your team has been created.");
+        setModalHeading("Success!");
+        setIsOpen(true);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
   return (
     <div className="md:flex pl-4 md:px-0 gap-2">
       <MyModal
         function={closeModal}
         isOpen={isOpen}
-        heading="Budget Exceeded"
-        body="You have a maximum of budget of $30m."
+        heading={modalHeading}
+        body={modalBody}
         buttonText="Got it"
       />
       <div className="gap-2">
@@ -234,7 +276,14 @@ export default function TeamBuildMobile() {
           driverCount={driversCount}
           drivers={drivers}
           function={removeDriver}
+          showProgressBars={true}
+          showButton={true}
         />
+        {driversCount === 5 ? (
+          <button className="box-styling" onClick={saveTeam}>
+            Save
+          </button>
+        ) : null}
       </div>
     </div>
   );
