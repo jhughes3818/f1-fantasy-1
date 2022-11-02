@@ -1,4 +1,4 @@
-import DriverSelectBox from "./team-build/driver-select-box";
+import DriverSelectBox from "./team-build/DriverSelectBox.jsx";
 import { Fragment, useEffect, useState } from "react";
 import { TeamBuildData } from "./team-build/team-build-data";
 import { people } from "./team-build/team-data";
