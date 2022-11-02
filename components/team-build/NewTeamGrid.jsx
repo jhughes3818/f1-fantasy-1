@@ -1,6 +1,6 @@
 import DriverSelected from "./DriverSelected.jsx";
 import { XCircleIcon } from "@heroicons/react/24/outline";
-import ProgressBar from "./progress-bar";
+import ProgressBar from "./ProgressBar.jsx";
 
 const NewTeamGrid = (props) => {
   return (
