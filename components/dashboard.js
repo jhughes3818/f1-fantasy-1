@@ -1,40 +1,34 @@
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-
-const user = {
-  name: "Toto Wolff",
-  email: "toto@toto.com",
-  imageUrl:
-    "https://www.reuters.com/resizer/3I5tAekIlrt7cMH0rznIZU7r9z0=/1200x1200/smart/filters:quality(80)/cloudfront-us-east-2.images.arcpublishing.com/reuters/OI5MK3KZVNMERIVGRNKU4RJMFU.jpg",
-};
-const navigation = [
-  { name: "Dashboard", href: "/home", current: true },
-  { name: "Edit Team", href: "/edit-team", current: false },
-  { name: "League", href: "#", current: false },
-  { name: "Stats", href: "#", current: false },
-];
-const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
-];
+import { useSession, signIn, signOut } from "next-auth/react";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example({ children }) {
+const Example = (props) => {
+  const { data: session } = useSession();
+  console.log(session);
+
+  const user = {
+    name: session.user.name,
+    email: session.user.email,
+    imageUrl: session.user.image,
+  };
+  const navigation = [
+    { name: "Dashboard", href: "/", current: true },
+    { name: "Edit Team", href: "/edit-team", current: false },
+    { name: "League", href: "#", current: false },
+    { name: "Stats", href: "#", current: false },
+  ];
+  const userNavigation = [
+    { name: "Your Profile", href: "#" },
+    { name: "Settings", href: "#" },
+    { name: "Sign out", href: "/api/auth/signout" },
+  ];
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-100">
-        <body class="h-full">
-        ```
-      */}
       <div className="min-h-full">
         <Disclosure as="nav" className="bg-gray-800">
           {({ open }) => (
@@ -213,11 +207,13 @@ export default function Example({ children }) {
         <main>
           <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
             {/* Replace with your content */}
-            <main>{children}</main>
+            <main>{props.children}</main>
             {/* /End replace */}
           </div>
         </main>
       </div>
     </>
   );
-}
+};
+
+export default Example;
