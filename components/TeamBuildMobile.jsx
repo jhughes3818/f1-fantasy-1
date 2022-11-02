@@ -1,7 +1,7 @@
 import DriverSelectBox from "./team-build/DriverSelectBox.jsx";
 import { Fragment, useEffect, useState } from "react";
-import { TeamBuildData } from "./team-build/team-build-data";
-import { people } from "./team-build/team-data";
+import { TeamBuildData } from "./team-build/TeamBuildData.jsx";
+import { people } from "./team-build/TeamData.jsx";
 import { Listbox, Transition, Dialog } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import NewTeamGrid from "./team-build/NewTeamGrid.jsx";
