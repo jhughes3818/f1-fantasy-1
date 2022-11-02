@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { PencilSquareIcon } from "@heroicons/react/20/solid";
 import NewTeamGrid from "../components/team-build/new-team-grid";
-import Example from "../components/dashboard";
+import Example from "../components/dashboard.js";
 import Link from "next/link";
-import Loading from "../components/loading";
+import Loading from "../components/loading.js";
 import { useSession, signIn, signOut } from "next-auth/react";
 import axios from "axios";
 
