@@ -93,7 +93,7 @@ export default function JoinLeague(props) {
           ) : null}
           {props.showCreate ? (
             <div>
-              <p>or</p>
+              <p className="text-gray-400">or</p>
               <Link href="/">
                 <span className="text-gray-500 cursor-pointer">
                   Make your own league
