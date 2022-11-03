@@ -1,6 +1,10 @@
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+
+function joinLeague(user, league) {}
 
 export default function JoinLeague(props) {
+  const { data: session } = useSession();
   return (
     <div className="grid place-items-center">
       <div className="text-center">
