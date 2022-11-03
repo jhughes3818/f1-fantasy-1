@@ -7,12 +7,16 @@ import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import NewTeamGrid from "./team-build/NewTeamGrid.jsx";
 import Modal from "./team-build/Modal.jsx";
 import axios from "axios";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function TeamBuildMobile() {
+  //Session
+  const { data: session } = useSession();
+
   //States used for handling driver information
   const [options, setOptions] = useState(TeamBuildData.mer);
 
@@ -32,9 +36,11 @@ export default function TeamBuildMobile() {
   let [modalHeading, setModalHeading] = useState("");
 
   useEffect(() => {
-    axios.get("/api/users").then(function (response) {
-      setDrivers(response.data.team);
-    });
+    if (session) {
+      axios.get("/api/users").then(function (response) {
+        setDrivers(response.data.team);
+      });
+    }
   }, []);
 
   useEffect(() => {
