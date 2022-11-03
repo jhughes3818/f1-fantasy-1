@@ -7,6 +7,7 @@ const User =
     email: String,
     team: Object,
     cash: Number,
+    league: Number,
   });
 
 const League =

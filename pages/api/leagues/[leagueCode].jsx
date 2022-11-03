@@ -7,19 +7,28 @@ export default async function handler(req, res) {
 
   const { leagueCode } = req.query;
 
-  const league = await League.findOne({ code: leagueCode }).exec();
+  if (req.method === "GET") {
+    const league = await League.findOne({ code: leagueCode }).exec();
 
-  if (!league) {
-    // const newLeague = new League({
-    //   name: "Test",
-    //   code: leagueCode,
-    //   members: [],
-    // });
+    if (!league) {
+      // const newLeague = new League({
+      //   name: "Test",
+      //   code: leagueCode,
+      //   members: [],
+      // });
 
-    res.status(404);
+      res.status(404);
 
-    newLeague.save();
-  } else {
-    res.status(200).json({ league: league.code });
+      newLeague.save();
+    } else {
+      res.status(200).json({ league: league.code });
+    }
+  } else if (req.method === "PUT") {
+    const newMember = [req.body.user];
+    await League.findOneAndUpdate(
+      { code: leagueCode },
+      { members: newMember }
+    ).exec();
+    res.status(200).json({ message: "Added user to league" });
   }
 }

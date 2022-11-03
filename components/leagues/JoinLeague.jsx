@@ -6,7 +6,7 @@ import { useState } from "react";
 export default function JoinLeague(props) {
   const [codeEntered, setCodeEntered] = useState();
 
-  async function joinLeague(leagueCode) {
+  async function joinLeague(user, leagueCode) {
     //Validate that league code is valid
     await axios
       .get(`/api/leagues/${leagueCode}`, leagueCode)
@@ -19,10 +19,17 @@ export default function JoinLeague(props) {
     console.log("Moving On");
 
     //Add league code to user document
-    //await axios.put('/api/users/league', )
+    console.log(user.email);
+    await axios.put(`/api/users/${user.email}`, { league: leagueCode });
 
     //Add user to league document
-    //await axios.put('/api/leagues')
+    await axios
+      .put(`/api/leagues/${leagueCode}`, { user: user.email })
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("Added user to league");
+        }
+      });
   }
   const { data: session } = useSession();
   return (
@@ -37,7 +44,7 @@ export default function JoinLeague(props) {
           onChange={(e) => setCodeEntered(e.target.value)}
         />
         <button
-          onClick={() => joinLeague(codeEntered)}
+          onClick={() => joinLeague(session.user, codeEntered)}
           className="block box-styling bg-blue-500 text-white text-center font-bold w-56 mb-3"
         >
           Join
