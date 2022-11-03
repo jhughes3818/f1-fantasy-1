@@ -7,6 +7,9 @@ import Modal from "../team-build/Modal";
 export default function JoinLeague(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [codeEntered, setCodeEntered] = useState();
+  const [modalHeading, setModalHeading] = useState();
+  const [modalBody, setModalBody] = useState();
+  const [modalButton, setModalButton] = useState();
 
   function closeModal() {
     setIsOpen(false);
@@ -17,17 +20,29 @@ export default function JoinLeague(props) {
     await axios
       .get(`/api/leagues/${leagueCode}`, leagueCode)
       .then((response) => {
-        if ((response.league = leagueCode)) {
-          return "done";
+        if (response.status === 200) {
+          addLeagueCodeToUser(user, leagueCode);
+          addUserToLeague(user, leagueCode);
+        }
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.log("error");
+          setModalHeading("League doesn't exist");
+          setModalBody("Please double check your league code and try again.");
+          setModalButton("Try Again");
+          setIsOpen(true);
         }
       });
+  }
 
-    console.log("Moving On");
-
+  async function addLeagueCodeToUser(user, leagueCode) {
+    console.log("Control flow seems to be broken sir");
     //Add league code to user document
-    console.log(user.email);
     await axios.put(`/api/users/${user.email}`, { league: leagueCode });
+  }
 
+  async function addUserToLeague(user, leagueCode) {
     //Add user to league document
     await axios
       .put(`/api/leagues/${leagueCode}`, { user: user.email })
@@ -36,17 +51,20 @@ export default function JoinLeague(props) {
           console.log("Added user to league");
         }
       });
-
+    setModalHeading("Successfully joined league!");
+    setModalButton("Got it");
     setIsOpen(true);
   }
+
   const { data: session } = useSession();
   return (
     <div>
       <Modal
-        heading="Successfully Joined League"
-        buttonText="Got it"
+        heading={modalHeading}
+        buttonText={modalButton}
         function={closeModal}
         isOpen={isOpen}
+        bodyText={modalBody}
       />
       <div className="grid place-items-center">
         <div className="text-center">

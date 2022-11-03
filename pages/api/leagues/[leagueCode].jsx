@@ -17,9 +17,9 @@ export default async function handler(req, res) {
       //   members: [],
       // });
 
-      res.status(404);
+      res.status(404).json({ error: "Cannot find league" });
 
-      newLeague.save();
+      //newLeague.save();
     } else {
       res.status(200).json({ league: league.code });
     }
