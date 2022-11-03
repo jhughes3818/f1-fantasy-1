@@ -6,6 +6,7 @@ import Link from "next/link";
 import Loading from "../components/Loading.jsx";
 import { useSession, signIn, signOut } from "next-auth/react";
 import axios from "axios";
+import JoinLeague from "../components/leagues/JoinLeague.jsx";
 
 export default function Home(props) {
   const [isLoading, setIsLoading] = useState(true);
@@ -26,30 +27,35 @@ export default function Home(props) {
   if (session) {
     return (
       <Example>
-        <div>
-          {isLoading ? (
-            <div>
-              <Loading />
-              <h1>Loading...</h1>
-            </div>
-          ) : (
-            <div>
-              <h1>Your Team</h1>
+        <div className="grid md:grid-cols-2">
+          <div>
+            {isLoading ? (
+              <div>
+                <Loading />
+                <h1>Loading...</h1>
+              </div>
+            ) : (
+              <div>
+                <h1>Your Team</h1>
 
-              <Link href="/edit-team">
-                <span className="flex cursor-pointer w-56">
-                  <PencilSquareIcon className="block h-4 w-4" />
-                  Edit Team
-                </span>
-              </Link>
+                <Link href="/edit-team">
+                  <span className="flex cursor-pointer w-56">
+                    <PencilSquareIcon className="block h-4 w-4" />
+                    Edit Team
+                  </span>
+                </Link>
 
-              <NewTeamGrid
-                drivers={team}
-                showProgressBars={false}
-                showButton={false}
-              />
-            </div>
-          )}
+                <NewTeamGrid
+                  drivers={team}
+                  showProgressBars={false}
+                  showButton={false}
+                />
+              </div>
+            )}
+          </div>
+          <div>
+            <JoinLeague showCreate={true} />
+          </div>
         </div>
       </Example>
     );
