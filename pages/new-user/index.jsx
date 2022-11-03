@@ -7,7 +7,7 @@ export default function Welcome() {
         <h1 className="text-2xl">Hello 👋</h1>
         <h2 className="pb-4">Let's go racing.</h2>
         <p className="text-gray-600">
-          We’ll start by building a team.
+          We&apos;ll start by building a team.
           <br />
           <br />
           You have $30m to spend on drivers.
