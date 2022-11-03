@@ -35,13 +35,13 @@ export default function TeamBuildMobile() {
   let [modalBody, setModalBody] = useState("");
   let [modalHeading, setModalHeading] = useState("");
 
-  if (session) {
-    useEffect(() => {
+  useEffect(() => {
+    if (session) {
       axios.get("/api/users").then(function (response) {
         setDrivers(response.data.team);
       });
-    }, []);
-  }
+    }
+  }, []);
 
   useEffect(() => {
     const newCount = drivers.length;
