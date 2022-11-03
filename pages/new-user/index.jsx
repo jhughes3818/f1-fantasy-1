@@ -19,7 +19,7 @@ export default function Welcome() {
           <br />
           You can build your budget by selling drivers for a profit.
         </p>
-        <Link href="/">
+        <Link href="/new-user/create-team">
           <div className="box-styling bg-blue-500 text-white font-bold text-center mt-4 cursor-pointer">
             <span>Next</span>
           </div>
