@@ -14,20 +14,20 @@ export default function Home(props) {
   const { data: session } = useSession();
 
   useEffect(() => {
-    axios.get("/api/users").then(function (response) {
-      const teamJSON = JSON.stringify(response.data.team);
-      setTeam(response.data.team);
+    if (session) {
+      axios.get("/api/users").then(function (response) {
+        const teamJSON = JSON.stringify(response.data.team);
+        setTeam(response.data.team);
 
-      setIsLoading(false);
-    });
-    // setTeam(props.team);
-    // setIsLoading(false);
-  }, []);
+        setIsLoading(false);
+      });
+    }
+  }, [session]);
 
   if (session) {
     return (
       <Example>
-        <div className="grid md:grid-cols-2">
+        <div className="md:flex pl-4 md:px-0 gap-2">
           <div>
             {isLoading ? (
               <div>
@@ -36,7 +36,7 @@ export default function Home(props) {
               </div>
             ) : (
               <div>
-                <h1>Your Team</h1>
+                <h1 className="text-3xl font-bold mb-3">Your Team</h1>
 
                 <Link href="/edit-team">
                   <span className="flex cursor-pointer w-56">
@@ -53,7 +53,7 @@ export default function Home(props) {
               </div>
             )}
           </div>
-          <div>
+          <div className="px-12">
             <JoinLeague showCreate={true} />
           </div>
         </div>
@@ -74,19 +74,3 @@ export default function Home(props) {
     );
   }
 }
-
-// export const getServerSideProps = async function () {
-//   const uri =
-//     "mongodb+srv://jhughes3818:0bTCnmYr02zEbzFa@cluster0.ituixj2.mongodb.net/f1-data?retryWrites=true";
-//   mongoose.connect(uri);
-//   let team = null;
-//   const person = await User.findOne({ email: user.email }).exec();
-
-//   person ? (team = person.team) : (team = []);
-
-//   return {
-//     props: {
-//       team: team,
-//     },
-//   };
-// };
