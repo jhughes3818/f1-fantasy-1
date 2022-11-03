@@ -9,6 +9,14 @@ const User =
     cash: Number,
   });
 
+const League =
+  mongoose.models.League ||
+  mongoose.model("League", {
+    name: String,
+    code: Number,
+    members: Object,
+  });
+
 // const Prediction = mongoose.model("Prediction", {
 //   year: Number,
 //   season: Array,
@@ -19,4 +27,4 @@ const User =
 //   price: Array,
 // });
 
-export { User };
+export { User, League };
