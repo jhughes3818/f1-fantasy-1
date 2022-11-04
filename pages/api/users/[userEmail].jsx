@@ -14,4 +14,12 @@ export default async function handler(req, res) {
     ).exec();
     res.status(200).json({ message: "Successfully joined league" });
   }
+  if (req.method === "GET") {
+    const user = await User.findOne({ email: userEmail.userEmail }).exec();
+    if (user) {
+      res.status(200).json({ user: user });
+    } else {
+      res.status(404).json({ error: "User does not exist" });
+    }
+  }
 }
