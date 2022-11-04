@@ -7,7 +7,7 @@ import Loading from "../components/Loading.jsx";
 import { useSession, signIn, signOut } from "next-auth/react";
 import axios from "axios";
 import JoinLeague from "../components/leagues/JoinLeague.jsx";
-import NewUser from "../components/newUser.jsx";
+import NewUser from "../components/NewUser.jsx";
 import LeagueView from "../components/leagues/LeagueView.jsx";
 
 export default function Home(props) {
