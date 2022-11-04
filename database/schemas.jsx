@@ -15,7 +15,7 @@ const League =
   mongoose.model("League", {
     name: String,
     code: Number,
-    members: Object,
+    members: Array,
   });
 
 // const Prediction = mongoose.model("Prediction", {
