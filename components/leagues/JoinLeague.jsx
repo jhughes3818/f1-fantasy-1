@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 import { useState } from "react";
 import Modal from "../team-build/Modal";
+import { Oval } from "react-loader-spinner";
 
 export default function JoinLeague(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,6 +12,7 @@ export default function JoinLeague(props) {
   const [modalBody, setModalBody] = useState();
   const [modalButton, setModalButton] = useState();
   const [showHome, setShowHome] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   function closeModal() {
     setIsOpen(false);
@@ -18,6 +20,7 @@ export default function JoinLeague(props) {
 
   async function joinLeague(user, leagueCode) {
     //Validate that league code is valid
+    setLoading(true);
     await axios
       .get(`/api/leagues/${leagueCode}`, leagueCode)
       .then((response) => {
@@ -32,6 +35,7 @@ export default function JoinLeague(props) {
           setModalHeading("League doesn't exist");
           setModalBody("Please double check your league code and try again.");
           setModalButton("Try Again");
+          setLoading(false);
           setIsOpen(true);
         }
       });
@@ -54,6 +58,7 @@ export default function JoinLeague(props) {
       });
     setModalHeading("Successfully joined league!");
     setModalButton("Got it");
+    setLoading(false);
     setIsOpen(true);
     setShowHome(true);
   }
@@ -93,7 +98,24 @@ export default function JoinLeague(props) {
               onClick={() => joinLeague(session.user, codeEntered)}
               className="block box-styling bg-blue-500 text-white text-center font-bold w-56 mb-3"
             >
-              Join
+              {loading ? (
+                <div className="grid place-items-center">
+                  <Oval
+                    height={20}
+                    width={20}
+                    color="#ffffff"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                    visible={true}
+                    ariaLabel="oval-loading"
+                    secondaryColor="#e9e9e9"
+                    strokeWidth={2}
+                    strokeWidthSecondary={2}
+                  />
+                </div>
+              ) : (
+                <span>Join</span>
+              )}
             </button>
 
             {props.showSkip === true ? (
