@@ -11,17 +11,9 @@ export default async function handler(req, res) {
     const league = await League.findOne({ code: leagueCode }).exec();
 
     if (!league) {
-      // const newLeague = new League({
-      //   name: "Test",
-      //   code: leagueCode,
-      //   members: [],
-      // });
-
       res.status(404).json({ error: "Cannot find league" });
-
-      //newLeague.save();
     } else {
-      res.status(200).json({ league: league.code });
+      res.status(200).json({ league: league });
     }
   } else if (req.method === "PUT") {
     const newMember = [req.body.user];
