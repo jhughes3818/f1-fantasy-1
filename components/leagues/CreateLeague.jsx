@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function CreateLeague() {
   return (
     // <div>
@@ -18,9 +20,14 @@ export default function CreateLeague() {
       <h2 className="text-2xl mb-3">League Code: 12345</h2>
       <h3 className="text-xl mb-3">Share league code with friends.</h3>
       <div className="grid place-items-center">
-        <button className="button-styling">
+        <Link href="/">
+          <span className="button-styling cursor-pointer">
+            Return to Dashboard
+          </span>
+        </Link>
+        {/* <button className="button-styling">
           <span>Return to Dashboard</span>
-        </button>
+        </button> */}
       </div>
     </div>
   );
