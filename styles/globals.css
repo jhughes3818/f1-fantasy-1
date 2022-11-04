@@ -22,4 +22,8 @@ a {
   .box-styling {
     @apply rounded-md border border-gray-300 bg-white py-2 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500;
   }
+
+  .button-styling {
+    @apply block box-styling bg-blue-500 text-white text-center font-bold w-56 mb-3;
+  }
 }
