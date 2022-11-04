@@ -7,6 +7,15 @@ const User =
     email: String,
     team: Object,
     cash: Number,
+    league: Number,
+  });
+
+const League =
+  mongoose.models.League ||
+  mongoose.model("League", {
+    name: String,
+    code: Number,
+    members: Object,
   });
 
 // const Prediction = mongoose.model("Prediction", {
@@ -19,4 +28,4 @@ const User =
 //   price: Array,
 // });
 
-export { User };
+export { User, League };
