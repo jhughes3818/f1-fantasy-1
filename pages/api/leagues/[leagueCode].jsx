@@ -9,6 +9,7 @@ export default async function handler(req, res) {
 
   if (req.method === "GET") {
     const league = await League.findOne({ code: leagueCode }).exec();
+    console.log(league);
 
     if (!league) {
       res.status(404).json({ error: "Cannot find league" });
@@ -17,9 +18,13 @@ export default async function handler(req, res) {
     }
   } else if (req.method === "PUT") {
     const newMember = [req.body.user];
+    const currentLeague = await League.findOne({ code: leagueCode }).exec();
+    const currentMembers = currentLeague.members;
+    const newMembers = currentMembers.push(newMember);
+
     await League.findOneAndUpdate(
       { code: leagueCode },
-      { members: newMember }
+      { members: newMembers }
     ).exec();
     res.status(200).json({ message: "Added user to league" });
   }
