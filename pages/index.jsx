@@ -9,6 +9,7 @@ import axios from "axios";
 import JoinLeague from "../components/leagues/JoinLeague.jsx";
 import NewUser from "../components/NewUser.jsx";
 import LeagueView from "../components/leagues/LeagueView.jsx";
+import { TailSpin, Oval } from "react-loader-spinner";
 
 export default function Home(props) {
   const [isLoading, setIsLoading] = useState(true);
@@ -40,42 +41,58 @@ export default function Home(props) {
     } else
       return (
         <Example>
-          <div className="md:flex pl-4 md:px-0 gap-2">
-            <div>
-              {isLoading ? (
-                <div>
-                  <Loading />
-                  <h1>Loading...</h1>
+          {isLoading ? (
+            <div className="grid place-items-center h-screen">
+              <Oval
+                height={80}
+                width={80}
+                color="#000000"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
+                ariaLabel="oval-loading"
+                secondaryColor="#2a2b2a"
+                strokeWidth={2}
+                strokeWidthSecondary={2}
+              />
+            </div>
+          ) : (
+            <div className="md:flex pl-4 md:px-0 gap-2">
+              <div>
+                {isLoading ? (
+                  <div>
+                    <Loading />
+                  </div>
+                ) : (
+                  <div>
+                    <h1 className="text-3xl font-bold mb-3">Your Team</h1>
+
+                    <Link href="/edit-team">
+                      <span className="flex cursor-pointer w-56">
+                        <PencilSquareIcon className="block h-4 w-4" />
+                        Edit Team
+                      </span>
+                    </Link>
+
+                    <NewTeamGrid
+                      drivers={team}
+                      showProgressBars={false}
+                      showButton={false}
+                    />
+                  </div>
+                )}
+              </div>
+              {league ? (
+                <div className="px-12">
+                  <LeagueView />
                 </div>
               ) : (
-                <div>
-                  <h1 className="text-3xl font-bold mb-3">Your Team</h1>
-
-                  <Link href="/edit-team">
-                    <span className="flex cursor-pointer w-56">
-                      <PencilSquareIcon className="block h-4 w-4" />
-                      Edit Team
-                    </span>
-                  </Link>
-
-                  <NewTeamGrid
-                    drivers={team}
-                    showProgressBars={false}
-                    showButton={false}
-                  />
+                <div className="px-12">
+                  <JoinLeague showCreate={true} />
                 </div>
               )}
             </div>
-            {league ? (
-              <div className="px-12">
-                <LeagueView />
-              </div>
-            ) : (
-              <div className="px-12">
-                <JoinLeague showCreate={true} />
-              </div>
-            )}
-          </div>
+          )}
         </Example>
       );
   } else {
