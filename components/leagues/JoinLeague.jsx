@@ -22,7 +22,7 @@ export default function JoinLeague(props) {
     //Validate that league code is valid
     setLoading(true);
     await axios
-      .get(`/api/leagues/${leagueCode}`, leagueCode)
+      .get(`/api/leagues/${leagueCode}`)
       .then((response) => {
         if (response.status === 200) {
           addLeagueCodeToUser(user, leagueCode);
