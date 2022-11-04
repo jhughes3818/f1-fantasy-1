@@ -19,9 +19,9 @@ export default async function handler(req, res) {
     const newMember = req.body.user;
     const league = await League.findOne({ code: leagueCode }).exec();
     const members = league.members;
-    console.log(members);
+
     members.push(newMember);
-    console.log(members);
+
     await League.findOneAndUpdate(
       { code: leagueCode },
       { members: members }
