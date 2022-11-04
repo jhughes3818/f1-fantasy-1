@@ -1,4 +1,5 @@
 import TeamBuildMobile from "../../components/TeamBuildMobile";
+import { useState, useEffect } from "react";
 
 export default function CreateTeam() {
   return (
@@ -7,7 +8,7 @@ export default function CreateTeam() {
         <h1 className="text-3xl mb-6 text-center font-bold">
           Create Your Team
         </h1>
-        <TeamBuildMobile />
+        <TeamBuildMobile isNewUser={true} />
       </div>
     </div>
   );

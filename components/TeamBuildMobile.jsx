@@ -8,12 +8,16 @@ import NewTeamGrid from "./team-build/NewTeamGrid.jsx";
 import Modal from "./team-build/Modal.jsx";
 import axios from "axios";
 import { useSession, signIn, signOut } from "next-auth/react";
+import Link from "next/link.js";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function TeamBuildMobile() {
+export default function TeamBuildMobile(props) {
+  //Save Currency
+  const [saveCurrent, setSaveCurrent] = useState(false);
+
   //Session
   const { data: session } = useSession();
 
@@ -39,6 +43,7 @@ export default function TeamBuildMobile() {
     if (session) {
       axios.get("/api/users").then(function (response) {
         setDrivers(response.data.team);
+        setSaveCurrent(true);
       });
     }
   }, []);
@@ -92,6 +97,7 @@ export default function TeamBuildMobile() {
 
   const addDriver = (option) => {
     const newCash = cash - option.price;
+    setSaveCurrent(false);
     if (driversCount >= 5) {
       setModalBody("You can choose a maximum of 5 drivers for your team.");
       setModalHeading("Maximum number of drivers.");
@@ -244,6 +250,7 @@ export default function TeamBuildMobile() {
   }
 
   function saveTeam() {
+    console.log(session);
     axios
       .post("/api/save-team", drivers)
       .then(function (response) {
@@ -251,11 +258,14 @@ export default function TeamBuildMobile() {
         setModalBody("Your team has been created.");
         setModalHeading("Success!");
         setIsOpen(true);
+        setSaveCurrent(true);
       })
       .catch(function (error) {
         console.log(error);
       });
   }
+
+  function nextButton() {}
 
   return (
     <div className="md:flex pl-4 md:px-0 gap-2">
@@ -285,10 +295,36 @@ export default function TeamBuildMobile() {
           showProgressBars={true}
           showButton={true}
         />
-        {driversCount === 5 ? (
-          <button className="box-styling" onClick={saveTeam}>
+        {driversCount === 5 && saveCurrent === false ? (
+          <button
+            disabled={false}
+            className="box-styling bg-blue-500 text-white font-bold w-80 text-center"
+            onClick={saveTeam}
+          >
             Save
           </button>
+        ) : (
+          <button
+            disabled={true}
+            className="box-styling bg-blue-500 text-white font-bold w-80 text-center disabled:opacity-50"
+            onClick={saveTeam}
+          >
+            Save
+          </button>
+        )}
+        {props.isNewUser && saveCurrent === true ? (
+          <Link href="/new-user/join-league">
+            <span className="block box-styling text-blue-500 font-bold text-center w-80 border-blue-500 border-spacing-4 mt-3  cursor-pointer">
+              Next
+            </span>
+          </Link>
+        ) : null}
+        {props.isNewUser && saveCurrent === false ? (
+          <Link href="">
+            <span className="block box-styling text-blue-500 font-bold text-center w-80 border-blue-500 border-spacing-4 mt-3 opacity-50 cursor-not-allowed">
+              Next
+            </span>
+          </Link>
         ) : null}
       </div>
     </div>
