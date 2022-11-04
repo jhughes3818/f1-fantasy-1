@@ -17,7 +17,7 @@ export default function LeagueView(props) {
       <h1>League is: 12345</h1>
       {leagueMembers.map((member) => (
         <div key={leagueMembers.indexOf(member)}>
-          <p>{member}</p>
+          <p>{member.name}</p>
         </div>
       ))}
     </div>

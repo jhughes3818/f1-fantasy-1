@@ -50,7 +50,7 @@ export default function JoinLeague(props) {
   async function addUserToLeague(user, leagueCode) {
     //Add user to league document
     await axios
-      .put(`/api/leagues/${leagueCode}`, { user: user.email })
+      .put(`/api/leagues/${leagueCode}`, { user: user })
       .then((response) => {
         if (response.status === 200) {
           console.log("Added user to league");
