@@ -137,6 +137,7 @@ export default function TeamBuildMobile(props) {
           <div className="relative" key={option.id}>
             <DriverSelectBox
               name={option.name}
+              seasonPoints={option.seasonPoints}
               price={option.price}
               overtakes={option.overtakes}
               bestRaceResult={option.bestRaceResult}
