@@ -19,13 +19,19 @@ export default async function handler(req, res) {
     const newMember = req.body.user;
     const league = await League.findOne({ code: leagueCode }).exec();
     const members = league.members;
+    let memberNames = [];
+    members.forEach((member) => {
+      memberNames.push(member.name);
+    });
+    if (!memberNames.includes(req.body.user.name)) {
+      members.push(newMember);
 
-    members.push(newMember);
+      await League.findOneAndUpdate(
+        { code: leagueCode },
+        { members: members }
+      ).exec();
+    }
 
-    await League.findOneAndUpdate(
-      { code: leagueCode },
-      { members: members }
-    ).exec();
     res.status(200).json({ message: "Added user to league" });
   }
 }

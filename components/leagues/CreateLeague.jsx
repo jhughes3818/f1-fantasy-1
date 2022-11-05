@@ -2,18 +2,29 @@ import Link from "next/link";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
+import Modal from "../team-build/Modal";
 
 export default function CreateLeague() {
   const [leagueCreated, setLeagueCreated] = useState(false);
   const [leagueCode, setLeagueCode] = useState();
   const { data: session } = useSession();
   const [name, setName] = useState();
+  const [modalBody, setModalBody] = useState();
+  const [modalHeading, setModalHeading] = useState();
+  const [modalButton, setModalButton] = useState();
+  const [isOpen, setIsOpen] = useState(false);
 
   async function verifyNoLeague(namePassedIn, user) {
     axios.get(`/api/users/${user.email}`).then((response) => {
       //console.log(response.data.user.league);
       if (response.data.user.league) {
         setName("Already in a league, sis");
+        setModalButton("Ok");
+        setModalHeading("Already joined a league");
+        setModalBody(
+          "You have already joined a league. Leave your current league and try again."
+        );
+        setIsOpen(true);
       } else {
         createLeague(namePassedIn, user);
       }
@@ -43,17 +54,27 @@ export default function CreateLeague() {
 
   if (leagueCreated) {
     return (
-      <div className="">
-        <h1 className="text-3xl font-bold text-center mb-3">Your League</h1>
-        <h2 className="text-2xl mb-3">League Name: {name}</h2>
-        <h2 className="text-2xl mb-3">League Code: {leagueCode}</h2>
-        <h3 className="text-xl mb-3">Share league code with friends.</h3>
-        <div className="grid place-items-center">
-          <Link href="/">
-            <span className="button-styling cursor-pointer">
-              Return to Dashboard
-            </span>
-          </Link>
+      <div>
+        <Modal
+          heading={modalHeading}
+          buttonText={modalButton}
+          function={closeModal}
+          isOpen={isOpen}
+          bodyText={modalBody}
+        />
+
+        <div className="">
+          <h1 className="text-3xl font-bold text-center mb-3">Your League</h1>
+          <h2 className="text-2xl mb-3">League Name: {name}</h2>
+          <h2 className="text-2xl mb-3">League Code: {leagueCode}</h2>
+          <h3 className="text-xl mb-3">Share league code with friends.</h3>
+          <div className="grid place-items-center">
+            <Link href="/">
+              <span className="button-styling cursor-pointer">
+                Return to Dashboard
+              </span>
+            </Link>
+          </div>
         </div>
       </div>
     );
