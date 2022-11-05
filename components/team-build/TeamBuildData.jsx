@@ -3,7 +3,7 @@ export const TeamBuildData = {
     {
       id: 1,
       name: "Lewis Hamilton",
-      price: 5,
+      price: 9,
       overtakes: "5",
       bestRaceResult: "4th",
       bestQualifyingResult: "4th",
@@ -21,7 +21,7 @@ export const TeamBuildData = {
     {
       id: 3,
       name: "Max Verstappen",
-      price: 5,
+      price: 12,
       overtakes: "5",
       bestRaceResult: "4th",
       bestQualifyingResult: "4th",
@@ -29,7 +29,7 @@ export const TeamBuildData = {
     {
       id: 4,
       name: "Sergio Perez",
-      price: 5,
+      price: 6,
       overtakes: "5",
       bestRaceResult: "4th",
       bestQualifyingResult: "4th",
@@ -39,7 +39,7 @@ export const TeamBuildData = {
     {
       id: 5,
       name: "Charles Leclerc",
-      price: 5,
+      price: 6.2,
       overtakes: "5",
       bestRaceResult: "4th",
       bestQualifyingResult: "4th",
@@ -47,7 +47,7 @@ export const TeamBuildData = {
     {
       id: 6,
       name: "Carlos Sainz",
-      price: 5,
+      price: 5.4,
       overtakes: "5",
       bestRaceResult: "4th",
       bestQualifyingResult: "4th",
@@ -57,7 +57,7 @@ export const TeamBuildData = {
     {
       id: 7,
       name: "Lando Norris",
-      price: 5,
+      price: 5.9,
       overtakes: "5",
       bestRaceResult: "7th",
       bestQualifyingResult: "5th",
@@ -65,7 +65,7 @@ export const TeamBuildData = {
     {
       id: 8,
       name: "Daniel Ricciardo",
-      price: 5,
+      price: 4,
       overtakes: "77",
       bestRaceResult: "4th",
       bestQualifyingResult: "4th",
@@ -75,7 +75,7 @@ export const TeamBuildData = {
     {
       id: 9,
       name: "Sebastien Vettel",
-      price: 5,
+      price: 6,
       overtakes: "5",
       bestRaceResult: "4th",
       bestQualifyingResult: "4th",
@@ -83,7 +83,7 @@ export const TeamBuildData = {
     {
       id: 10,
       name: "Lance Stroll",
-      price: 5,
+      price: 3,
       overtakes: "5",
       bestRaceResult: "4th",
       bestQualifyingResult: "4th",
@@ -93,7 +93,7 @@ export const TeamBuildData = {
     {
       id: 11,
       name: "Fernando Alonso",
-      price: 5,
+      price: 7,
       overtakes: "5",
       bestRaceResult: "4th",
       bestQualifyingResult: "4th",
@@ -119,7 +119,7 @@ export const TeamBuildData = {
     {
       id: 14,
       name: "Pierre Gasly",
-      price: 5,
+      price: 6,
       overtakes: "5",
       bestRaceResult: "4th",
       bestQualifyingResult: "4th",
@@ -129,7 +129,7 @@ export const TeamBuildData = {
     {
       id: 15,
       name: "Valterri Bottas",
-      price: 5,
+      price: 7,
       overtakes: "5",
       bestRaceResult: "4th",
       bestQualifyingResult: "4th",
@@ -147,7 +147,7 @@ export const TeamBuildData = {
     {
       id: 17,
       name: "Alexander Albon",
-      price: 5,
+      price: 3,
       overtakes: "5",
       bestRaceResult: "4th",
       bestQualifyingResult: "4th",
@@ -155,7 +155,7 @@ export const TeamBuildData = {
     {
       id: 18,
       name: "Nicholas Latifi",
-      price: 5,
+      price: 2,
       overtakes: "5",
       bestRaceResult: "4th",
       bestQualifyingResult: "4th",
@@ -165,7 +165,7 @@ export const TeamBuildData = {
     {
       id: 19,
       name: "Mick Schmuacher",
-      price: 66,
+      price: 4,
       overtakes: "5",
       bestRaceResult: "4th",
       bestQualifyingResult: "4th",
