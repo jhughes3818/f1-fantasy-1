@@ -18,6 +18,21 @@ export default function JoinLeague(props) {
     setIsOpen(false);
   }
 
+  function verifyNoLeague(user, leagueCode) {
+    axios.get(`/api/users/${user.email}`).then((response) => {
+      if (response.data.user.league) {
+        setModalHeading("Already in a league");
+        setModalBody(
+          "You have already joined a league. Please leave your current league and then try again."
+        );
+        setModalButton("Ok");
+        setIsOpen(true);
+      } else {
+        joinLeague(user, leagueCode);
+      }
+    });
+  }
+
   async function joinLeague(user, leagueCode) {
     //Validate that league code is valid
     setLoading(true);
@@ -95,7 +110,8 @@ export default function JoinLeague(props) {
               onChange={(e) => setCodeEntered(e.target.value)}
             />
             <button
-              onClick={() => joinLeague(session.user, codeEntered)}
+              //onClick={() => joinLeague(session.user, codeEntered)}
+              onClick={() => verifyNoLeague(session.user, codeEntered)}
               className="block box-styling bg-blue-500 text-white text-center font-bold w-56 mb-3"
             >
               {loading ? (
@@ -130,7 +146,7 @@ export default function JoinLeague(props) {
             {props.showCreate === true ? (
               <div>
                 <p className="text-gray-400">or</p>
-                <Link href="/">
+                <Link href="/league/create">
                   <span className="text-gray-500 cursor-pointer">
                     Make your own league
                   </span>
