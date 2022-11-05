@@ -15,15 +15,18 @@ export default function CreateLeague() {
         name: namePassedIn,
         user: user,
       })
-      .then((response) => {});
+      .then((response) => {
+        setLeagueCode(response.data.leagueCode);
+        setLeagueCreated(true);
+      });
   }
 
   if (leagueCreated) {
     return (
       <div className="">
         <h1 className="text-3xl font-bold text-center mb-3">Your League</h1>
-        <h2 className="text-2xl mb-3">League Name: Test League</h2>
-        <h2 className="text-2xl mb-3">League Code: 12345</h2>
+        <h2 className="text-2xl mb-3">League Name: {name}</h2>
+        <h2 className="text-2xl mb-3">League Code: {leagueCode}</h2>
         <h3 className="text-xl mb-3">Share league code with friends.</h3>
         <div className="grid place-items-center">
           <Link href="/">
