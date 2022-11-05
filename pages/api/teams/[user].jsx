@@ -1,7 +1,7 @@
-import { User } from "../../database/schemas";
+import { User } from "../../../database/schemas";
 import mongoose from "mongoose";
-import { unstable_getServerSession } from "next-auth/next";
-import { authOptions } from "./auth/[...nextauth]";
+//import { unstable_getServerSession } from "next-auth/next";
+//import { authOptions } from "./auth/[...nextauth]";
 
 const uri = process.env.MONGODB_URI;
 
@@ -27,9 +27,9 @@ async function createTeam(user, team, cash) {
 }
 
 export default async function handler(req, res) {
-  const session = await unstable_getServerSession(req, res, authOptions);
+  //const session = await unstable_getServerSession(req, res, authOptions);
   console.log(req.body);
-  await createTeam(session.user, req.body.drivers, req.body.cash);
+  await createTeam(req.body.user, req.body.drivers, req.body.cash);
 
   res.status(200).json({ message: "success" });
 }

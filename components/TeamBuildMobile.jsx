@@ -43,6 +43,7 @@ export default function TeamBuildMobile(props) {
     if (session) {
       axios.get(`/api/users/${session.user.email}`).then(function (response) {
         setDrivers(response.data.user.team);
+        setCash(response.data.user.cash);
         setSaveCurrent(true);
       });
     }
@@ -252,7 +253,11 @@ export default function TeamBuildMobile(props) {
   function saveTeam() {
     console.log(session);
     axios
-      .post("/api/save-team", drivers)
+      .post(`/api/teams/${session.user.email}`, {
+        drivers: drivers,
+        cash: cash,
+        user: session.user,
+      })
       .then(function (response) {
         console.log(response);
         setModalBody("Your team has been created.");
