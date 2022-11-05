@@ -84,7 +84,7 @@ export default function Home(props) {
               </div>
               {league ? (
                 <div className="px-12">
-                  <LeagueView leagueCode="12345" />
+                  <LeagueView leagueCode={league} />
                 </div>
               ) : (
                 <div className="px-12">
