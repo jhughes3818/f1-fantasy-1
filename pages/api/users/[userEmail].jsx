@@ -7,10 +7,14 @@ export default async function handler(req, res) {
   const userEmail = req.query;
 
   const leagueCode = req.body.league;
+
   if (req.method === "PUT") {
+    console.log("request received");
+    console.log(leagueCode);
     await User.findOneAndUpdate(
       { email: userEmail.userEmail },
       { league: leagueCode }
+      //req.body
     ).exec();
     res.status(200).json({ message: "Successfully joined league" });
   }

@@ -9,7 +9,18 @@ export default function CreateLeague() {
   const { data: session } = useSession();
   const [name, setName] = useState();
 
-  function createLeague(namePassedIn, user) {
+  async function verifyNoLeague(namePassedIn, user) {
+    axios.get(`/api/users/${user.email}`).then((response) => {
+      //console.log(response.data.user.league);
+      if (response.data.user.league) {
+        setName("Already in a league, sis");
+      } else {
+        createLeague(namePassedIn, user);
+      }
+    });
+  }
+
+  async function createLeague(namePassedIn, user) {
     axios
       .post("/api/leagues/create", {
         name: namePassedIn,
@@ -17,8 +28,17 @@ export default function CreateLeague() {
       })
       .then((response) => {
         setLeagueCode(response.data.leagueCode);
-        setLeagueCreated(true);
+        addLeagueCodeToUser(user, response.data.leagueCode);
       });
+  }
+
+  async function addLeagueCodeToUser(user, leagueCode) {
+    console.log("Control flow seems to be broken sir");
+    //Add league code to user document
+    console.log(user.email);
+
+    await axios.put(`/api/users/${user.email}`, { league: leagueCode });
+    setLeagueCreated(true);
   }
 
   if (leagueCreated) {
@@ -50,7 +70,8 @@ export default function CreateLeague() {
           className="block mb-3 box-styling px-2 w-56 text-center"
         ></input>
         <button
-          onClick={() => createLeague(name, session.user)}
+          //   onClick={() => createLeague(name, session.user)}
+          onClick={() => verifyNoLeague(name, session.user)}
           className="button-styling"
         >
           <span>Create League</span>

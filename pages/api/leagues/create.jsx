@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { League } from "../../../database/schemas";
+import axios from "axios";
 
 function generateLeagueCode() {
   const min = Math.ceil(1000);
@@ -24,6 +25,7 @@ export default async function handler(req, res) {
       code: code,
       members: [req.body.user],
     });
+
     res.status(200).json({ leagueName: leagueName, leagueCode: code });
   }
 }
