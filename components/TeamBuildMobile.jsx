@@ -41,8 +41,8 @@ export default function TeamBuildMobile(props) {
 
   useEffect(() => {
     if (session) {
-      axios.get("/api/users").then(function (response) {
-        setDrivers(response.data.team);
+      axios.get(`/api/users/${session.user.email}`).then(function (response) {
+        setDrivers(response.data.user.team);
         setSaveCurrent(true);
       });
     }
