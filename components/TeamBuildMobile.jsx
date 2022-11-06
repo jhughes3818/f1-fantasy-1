@@ -1,6 +1,6 @@
 import DriverSelectBox from "./team-build/DriverSelectBox.jsx";
 import { Fragment, useEffect, useState } from "react";
-import { TeamBuildData } from "./team-build/TeamBuildData.jsx";
+//import { TeamBuildData } from "./team-build/teamBuildData[0].jsx";
 import { people } from "./team-build/TeamData.jsx";
 import { Listbox, Transition, Dialog } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
@@ -22,17 +22,18 @@ export default function TeamBuildMobile(props) {
   const { data: session } = useSession();
 
   //States used for handling driver information
-  const [options, setOptions] = useState(TeamBuildData.mer);
+  const [options, setOptions] = useState([]);
 
   //States used for progress of building team
   const [driversCount, setDriversCount] = useState(0);
   const [cash, setCash] = useState(30);
 
   //States used for team select
-  const [selected, setSelected] = useState(people[0]);
+  const [selected, setSelected] = useState({});
 
   const [drivers, setDrivers] = useState([]);
   const [driversNames, setDriversNames] = useState([]);
+  const [teamBuildData, setTeamBuildData] = useState();
 
   //Modal states
   let [isOpen, setIsOpen] = useState(false);
@@ -45,6 +46,11 @@ export default function TeamBuildMobile(props) {
         setDrivers(response.data.user.team);
         setCash(response.data.user.cash);
         setSaveCurrent(true);
+      });
+      axios.get("/api/drivers").then((response) => {
+        setTeamBuildData(response.data.teams);
+        setOptions(response.data.teams[0].drivers);
+        setSelected(people[0]);
       });
     }
   }, []);
@@ -64,34 +70,34 @@ export default function TeamBuildMobile(props) {
 
     switch (value) {
       case "rbr":
-        setOptions(TeamBuildData.rbr);
+        setOptions(teamBuildData[1].drivers);
         break;
       case "mer":
-        setOptions(TeamBuildData.mer);
+        setOptions(teamBuildData[0].drivers);
         break;
       case "fer":
-        setOptions(TeamBuildData.fer);
+        setOptions(teamBuildData[3].drivers);
         break;
       case "mcl":
-        setOptions(TeamBuildData.mcl);
+        setOptions(teamBuildData[4].drivers);
         break;
       case "amr":
-        setOptions(TeamBuildData.amr);
+        setOptions(teamBuildData[2].drivers);
         break;
       case "alp":
-        setOptions(TeamBuildData.alp);
+        setOptions(teamBuildData[9].drivers);
         break;
       case "atr":
-        setOptions(TeamBuildData.atr);
+        setOptions(teamBuildData[8].drivers);
         break;
       case "ars":
-        setOptions(TeamBuildData.ars);
+        setOptions(teamBuildData[5].drivers);
         break;
       case "wil":
-        setOptions(TeamBuildData.wil);
+        setOptions(teamBuildData[6].drivers);
         break;
       case "haa":
-        setOptions(TeamBuildData.haa);
+        setOptions(teamBuildData[7].drivers);
         break;
     }
   }, [selected]);
@@ -137,6 +143,7 @@ export default function TeamBuildMobile(props) {
           <div className="relative" key={option.id}>
             <DriverSelectBox
               name={option.name}
+              seasonPoints={option.seasonPoints}
               price={option.price}
               overtakes={option.overtakes}
               bestRaceResult={option.bestRaceResult}
