@@ -41,16 +41,16 @@ export default function TeamBuildMobile(props) {
   let [modalHeading, setModalHeading] = useState("");
 
   useEffect(() => {
-    if (session) {
+    axios.get("/api/drivers").then((response) => {
+      setTeamBuildData(response.data.teams);
+      setOptions(response.data.teams[0].drivers);
+      setSelected(people[0]);
+    });
+    if (session && !props.isNewUser) {
       axios.get(`/api/users/${session.user.email}`).then(function (response) {
         setDrivers(response.data.user.team);
         setCash(response.data.user.cash);
         setSaveCurrent(true);
-      });
-      axios.get("/api/drivers").then((response) => {
-        setTeamBuildData(response.data.teams);
-        setOptions(response.data.teams[0].drivers);
-        setSelected(people[0]);
       });
     }
   }, []);
