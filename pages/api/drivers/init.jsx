@@ -14,7 +14,7 @@ export default async function handler(req, res) {
     });
 
     console.log(newTeam);
-    newTeam.save();
+    //newTeam.save();
   });
 
   res.status(200).json({ success: "Added drivers to DB" });
