@@ -18,6 +18,13 @@ const League =
     members: Array,
   });
 
+const Team =
+  mongoose.models.Team ||
+  mongoose.model("Team", {
+    name: String,
+    drivers: Array,
+  });
+
 // const Prediction = mongoose.model("Prediction", {
 //   year: Number,
 //   season: Array,
@@ -28,4 +35,4 @@ const League =
 //   price: Array,
 // });
 
-export { User, League };
+export { User, League, Team };
