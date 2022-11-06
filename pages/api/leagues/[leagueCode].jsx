@@ -16,14 +16,20 @@ export default async function handler(req, res) {
       res.status(200).json({ league: league });
     }
   } else if (req.method === "PUT") {
-    const newMember = req.body.user;
+    const newMember = {
+      name: req.body.user.name,
+      email: req.body.user.email,
+      points: 0,
+    };
+    //const newMember = req.body.user;
     const league = await League.findOne({ code: leagueCode }).exec();
     const members = league.members;
-    let memberNames = [];
+    let memberEmails = [];
     members.forEach((member) => {
-      memberNames.push(member.name);
+      memberEmails.push(member.email);
     });
-    if (!memberNames.includes(req.body.user.name)) {
+    console.log(memberEmails);
+    if (memberEmails.includes(req.body.user.email) === false) {
       members.push(newMember);
 
       await League.findOneAndUpdate(

@@ -17,11 +17,22 @@ export default function LeagueView(props) {
   return (
     <div>
       <h1 className="text-2xl font-bold">{leagueName}</h1>
-      {leagueMembers.map((member) => (
-        <div key={leagueMembers.indexOf(member)}>
-          <p>{member.name}</p>
-        </div>
-      ))}
+      <table className="table-auto">
+        <thead>
+          <tr className="text-left">
+            <th>Name</th>
+            <th>Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          {leagueMembers.map((member) => (
+            <tr key={leagueMembers.indexOf(member)}>
+              <td className="pr-5">{member.name}</td>
+              <td>{member.points}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
