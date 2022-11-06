@@ -1,9 +1,13 @@
 import Link from "next/link";
+import ProgressBars from "../../components/misc/ProgressBars";
 
 export default function Welcome() {
   return (
     <div className="grid place-items-center h-screen">
       <div className="w-80">
+        <div className="grid place-items-center mb-4">
+          <ProgressBars bars={0} />
+        </div>
         <h1 className="text-2xl">Hello 👋</h1>
         <h2 className="pb-4">Let&apos;s go racing.</h2>
         <p className="text-gray-600">
