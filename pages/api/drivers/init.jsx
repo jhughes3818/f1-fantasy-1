@@ -13,7 +13,7 @@ export default async function handler(req, res) {
       drivers: team[0].drivers,
     });
 
-    console.log(newTeam);
+    //console.log(newTeam);
     //newTeam.save();
   });
 

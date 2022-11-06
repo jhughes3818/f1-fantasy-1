@@ -103,7 +103,7 @@ export default function TeamBuildMobile(props) {
   }, [selected]);
 
   const addDriver = (option) => {
-    const newCash = cash - option.price;
+    const newCash = Math.round((cash - option.price) * 100) / 100;
     setSaveCurrent(false);
     if (driversCount >= 5) {
       setModalBody("You can choose a maximum of 5 drivers for your team.");
