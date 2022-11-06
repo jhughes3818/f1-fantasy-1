@@ -19,7 +19,7 @@ const Example = (props) => {
   const navigation = [
     { name: "Dashboard", href: "/", current: true },
     { name: "Edit Team", href: "/edit-team", current: false },
-    { name: "League", href: "#", current: false },
+    { name: "League", href: "/league", current: false },
     { name: "Stats", href: "#", current: false },
   ];
   const userNavigation = [
