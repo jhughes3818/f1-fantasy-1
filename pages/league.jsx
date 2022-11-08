@@ -5,6 +5,7 @@ import LeagueView from "../components/leagues/LeagueView.jsx";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Oval } from "react-loader-spinner";
+import JoinLeague from "../components/leagues/JoinLeague.jsx";
 
 export default function EditTeam() {
   const { data: session } = useSession();
@@ -21,7 +22,8 @@ export default function EditTeam() {
   }, [session]);
 
   async function leaveLeague() {
-    axios.put(`/api/leagues/leave/${league}`, { user: session.user });
+    await axios.put(`/api/leagues/leave/${league}`, { user: session.user });
+    setLeague(null);
   }
 
   if (session) {
@@ -44,10 +46,16 @@ export default function EditTeam() {
           </div>
         ) : (
           <div>
-            <LeagueView leagueCode={league} />
-            <button onClick={leaveLeague} className="button-styling">
-              Leave League
-            </button>
+            {league ? (
+              <div>
+                <LeagueView leagueCode={league} />
+                <button onClick={leaveLeague} className="button-styling">
+                  Leave League
+                </button>
+              </div>
+            ) : (
+              <JoinLeague showSkip={false} showCreate={true} />
+            )}
           </div>
         )}
       </Example>

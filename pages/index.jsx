@@ -88,7 +88,7 @@ export default function Home(props) {
                 </div>
               ) : (
                 <div className="px-12">
-                  <JoinLeague showCreate={true} />
+                  <JoinLeague showCreate={true} showHome={false} />
                 </div>
               )}
             </div>
