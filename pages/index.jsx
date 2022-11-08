@@ -16,7 +16,6 @@ export default function Home(props) {
   const [team, setTeam] = useState();
   const { data: session } = useSession();
   const [isNewUser, setIsNewUser] = useState(false);
-  const [league, setLeague] = useState();
 
   useEffect(() => {
     if (session) {
