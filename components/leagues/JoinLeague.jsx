@@ -4,6 +4,7 @@ import axios from "axios";
 import { useState } from "react";
 import Modal from "../team-build/Modal";
 import { Oval } from "react-loader-spinner";
+import LeagueView from "./LeagueView";
 
 export default function JoinLeague(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,6 +14,7 @@ export default function JoinLeague(props) {
   const [modalButton, setModalButton] = useState();
   const [showHome, setShowHome] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showLeague, setShowLeague] = useState(null);
 
   function closeModal() {
     setIsOpen(false);
@@ -75,7 +77,11 @@ export default function JoinLeague(props) {
     setModalButton("Got it");
     setLoading(false);
     setIsOpen(true);
-    setShowHome(true);
+    if (props.showHome) {
+      setShowHome(true);
+    } else {
+      setShowLeague(leagueCode);
+    }
   }
 
   const { data: session } = useSession();
@@ -97,6 +103,7 @@ export default function JoinLeague(props) {
               </span>
             </Link>
           ) : null}
+          {showLeague ? <LeagueView leagueCode={showLeague} /> : null}
         </div>
       ) : (
         <div className="grid place-items-center">
