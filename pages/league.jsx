@@ -20,6 +20,10 @@ export default function EditTeam() {
     }
   }, [session]);
 
+  async function leaveLeague() {
+    axios.put(`/api/leagues/leave/${league}`, { user: session.user });
+  }
+
   if (session) {
     return (
       <Example>
@@ -39,7 +43,12 @@ export default function EditTeam() {
             />
           </div>
         ) : (
-          <LeagueView leagueCode={league} />
+          <div>
+            <LeagueView leagueCode={league} />
+            <button onClick={leaveLeague} className="button-styling">
+              Leave League
+            </button>
+          </div>
         )}
       </Example>
     );
