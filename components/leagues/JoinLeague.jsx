@@ -36,16 +36,18 @@ export default function JoinLeague(props) {
   }
 
   async function joinLeague(user, leagueCode) {
-    await axios.get(`/api/leagues/join/${leagueCode}`).then((response) => {
-      if (response.status === 200) {
-        setModalHeading("Successfully joined league!");
-        setModalButton("Got it");
-        setLoading(false);
-        setIsOpen(true);
-        setShowHome(true);
-        Router.push("/dashboard");
-      }
-    });
+    await axios
+      .put(`/api/leagues/join/${leagueCode}`, { user: user })
+      .then((response) => {
+        if (response.status === 200) {
+          setModalHeading("Successfully joined league!");
+          setModalButton("Got it");
+          setLoading(false);
+          setIsOpen(true);
+          setShowHome(true);
+          Router.push("/dashboard");
+        }
+      });
   }
 
   const { data: session } = useSession();

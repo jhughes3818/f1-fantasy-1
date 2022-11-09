@@ -41,7 +41,7 @@ export default async function handler(req, res) {
     console.log("request received");
     console.log(leagueCode);
     await User.findOneAndUpdate(
-      { email: userEmail.userEmail },
+      { email: req.body.user.email },
       { league: leagueCode }
       //req.body
     ).exec();
