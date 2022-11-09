@@ -10,7 +10,7 @@ export default function App({
   return (
     <>
       <Head>
-        <title>Fantasy Grid - Coming Soon</title>
+        <title>Fantasy Grid</title>
       </Head>
       <SessionProvider session={session}>
         <Component {...pageProps} />
