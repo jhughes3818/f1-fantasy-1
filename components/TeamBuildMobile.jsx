@@ -9,6 +9,7 @@ import Modal from "./team-build/Modal.jsx";
 import axios from "axios";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Link from "next/link.js";
+import Router from "next/router.js";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -267,10 +268,11 @@ export default function TeamBuildMobile(props) {
       })
       .then(function (response) {
         console.log(response);
-        setModalBody("Your team has been created.");
-        setModalHeading("Success!");
-        setIsOpen(true);
-        setSaveCurrent(true);
+        Router.push("/new-user/join-league");
+        // setModalBody("Your team has been created.");
+        // setModalHeading("Success!");
+        // setIsOpen(true);
+        // setSaveCurrent(true);
       })
       .catch(function (error) {
         console.log(error);
