@@ -77,11 +77,7 @@ export default function JoinLeague(props) {
     setModalButton("Got it");
     setLoading(false);
     setIsOpen(true);
-    if (props.showHome) {
-      setShowHome(true);
-    } else {
-      setShowLeague(leagueCode);
-    }
+    setShowHome(true);
   }
 
   const { data: session } = useSession();
@@ -96,14 +92,11 @@ export default function JoinLeague(props) {
       />
       {showHome ? (
         <div className="grid place-items-center">
-          {showHome ? (
-            <Link href="/">
-              <span className="block box-styling bg-blue-500 text-white text-center font-bold w-56 mb-3 mt-3 cursor-pointer">
-                Go to dashboard
-              </span>
-            </Link>
-          ) : null}
-          {showLeague ? <LeagueView leagueCode={showLeague} /> : null}
+          <Link href="/">
+            <span className="block box-styling bg-blue-500 text-white text-center font-bold w-56 mb-3 mt-3 cursor-pointer">
+              Go to dashboard
+            </span>
+          </Link>
         </div>
       ) : (
         <div className="grid place-items-center">
