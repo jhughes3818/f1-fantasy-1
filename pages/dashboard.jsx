@@ -14,7 +14,7 @@ import { TailSpin, Oval } from "react-loader-spinner";
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [team, setTeam] = useState();
-  const { session } = useSession();
+  const { data: session } = useSession();
   const [isNewUser, setIsNewUser] = useState(false);
   const [league, setLeague] = useState();
 
