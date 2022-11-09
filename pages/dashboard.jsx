@@ -11,10 +11,10 @@ import NewUser from "../components/NewUser.jsx";
 import LeagueView from "../components/leagues/LeagueView.jsx";
 import { TailSpin, Oval } from "react-loader-spinner";
 
-export default function Home(props) {
+export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [team, setTeam] = useState();
-  const { data: session } = useSession();
+  const { session } = useSession();
   const [isNewUser, setIsNewUser] = useState(false);
   const [league, setLeague] = useState();
 
