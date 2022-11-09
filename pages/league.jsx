@@ -12,6 +12,13 @@ export default function EditTeam() {
   const [league, setLeague] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
+  const navigation = [
+    { name: "Dashboard", href: "/dashboard", current: false },
+    { name: "Edit Team", href: "/edit-team", current: false },
+    { name: "League", href: "/league", current: true },
+    { name: "Stats", href: "#", current: false },
+  ];
+
   useEffect(() => {
     if (session) {
       axios.get(`/api/users/${session.user.email}`).then((response) => {
@@ -28,7 +35,7 @@ export default function EditTeam() {
 
   if (session) {
     return (
-      <Example>
+      <Example nav={navigation}>
         {isLoading ? (
           <div className="grid place-items-center h-screen">
             <Oval
