@@ -4,9 +4,16 @@ import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function EditTeam() {
   const { data: session } = useSession();
+  const navigation = [
+    { name: "Dashboard", href: "/dashboard", current: false },
+    { name: "Edit Team", href: "/edit-team", current: true },
+    { name: "League", href: "/league", current: false },
+    { name: "Stats", href: "#", current: false },
+  ];
+
   if (session) {
     return (
-      <Example>
+      <Example nav={navigation}>
         <TeamBuildMobile />
       </Example>
     );

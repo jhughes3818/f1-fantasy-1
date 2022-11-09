@@ -18,6 +18,13 @@ export default function Home(props) {
   const [isNewUser, setIsNewUser] = useState(false);
   const [league, setLeague] = useState();
 
+  const navigation = [
+    { name: "Dashboard", href: "/dashboard", current: true },
+    { name: "Edit Team", href: "/edit-team", current: false },
+    { name: "League", href: "/league", current: false },
+    { name: "Stats", href: "#", current: false },
+  ];
+
   useEffect(() => {
     if (session) {
       axios
@@ -40,7 +47,7 @@ export default function Home(props) {
       return <NewUser />;
     } else
       return (
-        <Example>
+        <Example nav={navigation}>
           {isLoading ? (
             <div className="grid place-items-center h-screen">
               <Oval

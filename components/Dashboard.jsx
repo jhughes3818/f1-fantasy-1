@@ -16,12 +16,8 @@ const Example = (props) => {
     email: session.user.email,
     imageUrl: session.user.image,
   };
-  const navigation = [
-    { name: "Dashboard", href: "/dashboard", current: true },
-    { name: "Edit Team", href: "/edit-team", current: false },
-    { name: "League", href: "/league", current: false },
-    { name: "Stats", href: "#", current: false },
-  ];
+  const navigation = props.nav;
+
   const userNavigation = [
     { name: "Your Profile", href: "#" },
     { name: "Settings", href: "#" },
