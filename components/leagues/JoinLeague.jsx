@@ -36,49 +36,16 @@ export default function JoinLeague(props) {
   }
 
   async function joinLeague(user, leagueCode) {
-    //Validate that league code is valid
-    setLoading(true);
-    await axios
-      .get(`/api/leagues/${leagueCode}`)
-      .then((response) => {
-        if (response.status === 200) {
-          addLeagueCodeToUser(user, leagueCode);
-          addUserToLeague(user, leagueCode);
-        }
-      })
-      .catch((error) => {
-        if (error.response) {
-          console.log("error");
-          setModalHeading("League doesn't exist");
-          setModalBody("Please double check your league code and try again.");
-          setModalButton("Try Again");
-          setLoading(false);
-          setIsOpen(true);
-        }
-      });
-  }
-
-  async function addLeagueCodeToUser(user, leagueCode) {
-    console.log("Control flow seems to be broken sir");
-    //Add league code to user document
-    await axios.put(`/api/users/${user.email}`, { league: leagueCode });
-  }
-
-  async function addUserToLeague(user, leagueCode) {
-    //Add user to league document
-    await axios
-      .put(`/api/leagues/${leagueCode}`, { user: user })
-      .then((response) => {
-        if (response.status === 200) {
-          console.log("Added user to league");
-        }
-      });
-    setModalHeading("Successfully joined league!");
-    setModalButton("Got it");
-    setLoading(false);
-    setIsOpen(true);
-    setShowHome(true);
-    Router.push("/dashboard");
+    await axios.get(`/api/leagues/join/${leagueCode}`).then((response) => {
+      if (response.status === 200) {
+        setModalHeading("Successfully joined league!");
+        setModalButton("Got it");
+        setLoading(false);
+        setIsOpen(true);
+        setShowHome(true);
+        Router.push("/dashboard");
+      }
+    });
   }
 
   const { data: session } = useSession();
