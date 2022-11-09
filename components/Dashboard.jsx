@@ -3,6 +3,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Link from "next/link";
+import Image from "next/image";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -33,11 +34,13 @@ const Example = (props) => {
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex h-16 items-center justify-between">
                   <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <img
-                        className="h-8 w-8"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                    <div className="flex-shrink-0 rounded-full">
+                      <Image
+                        className="rounded-full"
+                        src="/apple-touch-icon.png"
                         alt="Your Company"
+                        width="35"
+                        height="35"
                       />
                     </div>
                     <div className="hidden md:block">
@@ -135,7 +138,7 @@ const Example = (props) => {
               <Disclosure.Panel className="md:hidden">
                 <div className="space-y-1 px-2 pt-2 pb-3 sm:px-3">
                   {navigation.map((item) => (
-                    <Link
+                    <Disclosure.Button
                       key={item.name}
                       as="a"
                       href={item.href}
@@ -148,7 +151,7 @@ const Example = (props) => {
                       aria-current={item.current ? "page" : undefined}
                     >
                       {item.name}
-                    </Link>
+                    </Disclosure.Button>
                   ))}
                 </div>
                 <div className="border-t border-gray-700 pt-4 pb-3">
