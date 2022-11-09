@@ -5,6 +5,7 @@ import { useState } from "react";
 import Modal from "../team-build/Modal";
 import { Oval } from "react-loader-spinner";
 import LeagueView from "./LeagueView";
+import Router from "next/router";
 
 export default function JoinLeague(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -78,6 +79,7 @@ export default function JoinLeague(props) {
     setLoading(false);
     setIsOpen(true);
     setShowHome(true);
+    Router.push("/dashboard");
   }
 
   const { data: session } = useSession();
