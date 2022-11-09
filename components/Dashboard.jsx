@@ -17,7 +17,7 @@ const Example = (props) => {
     imageUrl: session.user.image,
   };
   const navigation = [
-    { name: "Dashboard", href: "/", current: true },
+    { name: "Dashboard", href: "/dashboard", current: true },
     { name: "Edit Team", href: "/edit-team", current: false },
     { name: "League", href: "/league", current: false },
     { name: "Stats", href: "#", current: false },
