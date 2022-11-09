@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useSession, signIn, signOut } from "next-auth/react";
+import Link from "next/link";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -16,12 +17,8 @@ const Example = (props) => {
     email: session.user.email,
     imageUrl: session.user.image,
   };
-  const navigation = [
-    { name: "Dashboard", href: "/", current: true },
-    { name: "Edit Team", href: "/edit-team", current: false },
-    { name: "League", href: "/league", current: false },
-    { name: "Stats", href: "#", current: false },
-  ];
+  const navigation = props.nav;
+
   const userNavigation = [
     { name: "Your Profile", href: "#" },
     { name: "Settings", href: "#" },
@@ -138,7 +135,7 @@ const Example = (props) => {
               <Disclosure.Panel className="md:hidden">
                 <div className="space-y-1 px-2 pt-2 pb-3 sm:px-3">
                   {navigation.map((item) => (
-                    <Disclosure.Button
+                    <Link
                       key={item.name}
                       as="a"
                       href={item.href}
@@ -151,7 +148,7 @@ const Example = (props) => {
                       aria-current={item.current ? "page" : undefined}
                     >
                       {item.name}
-                    </Disclosure.Button>
+                    </Link>
                   ))}
                 </div>
                 <div className="border-t border-gray-700 pt-4 pb-3">
