@@ -4,7 +4,6 @@ import axios from "axios";
 import { useState } from "react";
 import Modal from "../team-build/Modal";
 import { Oval } from "react-loader-spinner";
-import LeagueView from "./LeagueView";
 import Router from "next/router";
 
 export default function JoinLeague(props) {
