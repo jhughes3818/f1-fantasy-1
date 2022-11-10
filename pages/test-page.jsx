@@ -1,5 +1,5 @@
 import ProgressBars from "../components/misc/ProgressBars";
-import MultiSelect from "../components/team-build/multiselect.jsx";
+import MultiSelect from "../components/team-build/MultiSelect.jsx";
 
 export default function Test() {
   return (

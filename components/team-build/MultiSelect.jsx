@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
-import NewTeamGrid from "./NewTeamGrid";
 
 const people = [
   "Wade Cooper",
