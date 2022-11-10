@@ -71,9 +71,8 @@ export default function Home() {
                     <Loading />
                   </div>
                 ) : (
-                  <div>
+                  <div className="grid md:place-items-left place-items-center mb-8">
                     <h1 className="text-3xl font-bold mb-3">Your Team</h1>
-
                     <Link href="/edit-team">
                       <span className="flex cursor-pointer w-56">
                         <PencilSquareIcon className="block h-4 w-4" />
@@ -90,11 +89,11 @@ export default function Home() {
                 )}
               </div>
               {league ? (
-                <div className="px-12">
+                <div className="px-12 grid place-items-center">
                   <LeagueView leagueCode={league} />
                 </div>
               ) : (
-                <div className="px-12">
+                <div className="px-12 grid place-items-center">
                   <JoinLeague showCreate={true} showHome={false} />
                 </div>
               )}
