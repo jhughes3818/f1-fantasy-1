@@ -1,6 +1,7 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import axios from "axios";
 
 const currentTeam = [
   {
@@ -11,22 +12,22 @@ const currentTeam = [
   {
     id: 2,
     name: "George Russell",
-    price: 10,
+    price: 9,
   },
   {
     id: 3,
     name: "Max Verstappen",
-    price: 10,
+    price: 8,
   },
   {
     id: 4,
     name: "Sergio Perez",
-    price: 10,
+    price: 7,
   },
   {
     id: 5,
     name: "Charles Leclerc",
-    price: 10,
+    price: 6,
   },
 ];
 
@@ -134,20 +135,45 @@ const drivers = [
 ];
 export default function DriverTrade() {
   const [team, setTeam] = useState(currentTeam);
-  const [options, setOptions] = useState(drivers);
+  const [buyOptions, setBuyOptions] = useState(drivers);
+  const [sellOptions, setSellOptions] = useState([]);
   const [sellDriver, setSellDriver] = useState();
   const [buyDriver, setBuyDriver] = useState();
   const [selected1, setSelected1] = useState(currentTeam[0]);
   const [selected2, setSelected2] = useState(drivers[0]);
   const [profit, setProfit] = useState();
 
-  function change1(new1) {
-    setSelected1(new1);
-  }
+  useEffect(() => {
+    const change = selected1.price - selected2.price;
+    setProfit(change);
+  }, [selected1, selected2]);
+
+  useEffect(() => {
+    let driverList = [];
+    axios.get("/api/drivers").then((response) => {
+      response.data.teams.forEach((team) => {
+        team.drivers.forEach((driver) => {
+          driverList.push(driver);
+        });
+      });
+      setBuyOptions(driverList);
+    });
+
+    let teamList = [];
+
+    axios.get(`/api/users/jhughes3818@gmail.com`).then((response) => {
+      console.log(response.data.user.team);
+      teamList = response.data.user.team;
+      console.log(teamList);
+      setSellOptions(teamList);
+    });
+  }, []);
 
   return (
     <div className="flex">
+      <h1>{profit}</h1>
       <div className="flex">
+        <h1>Select Driver To Sell</h1>
         <Listbox value={selected1} onChange={setSelected1}>
           <div className="relative mt-1">
             <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
@@ -169,7 +195,7 @@ export default function DriverTrade() {
               leaveTo="opacity-0"
             >
               <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                {currentTeam.map((person, personIdx) => (
+                {sellOptions.map((person, personIdx) => (
                   <Listbox.Option
                     key={personIdx}
                     className={({ active }) =>
@@ -205,7 +231,8 @@ export default function DriverTrade() {
           </div>
         </Listbox>
       </div>
-      <div className="flex ">
+      <div className="flex w-1/2">
+        <h1>Select Driver to Buy</h1>
         <Listbox value={selected2} onChange={setSelected2}>
           <div className="relative mt-1">
             <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
@@ -227,7 +254,7 @@ export default function DriverTrade() {
               leaveTo="opacity-0"
             >
               <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                {drivers.map((person, personIdx) => (
+                {buyOptions.map((person, personIdx) => (
                   <Listbox.Option
                     key={personIdx}
                     className={({ active }) =>
