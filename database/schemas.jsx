@@ -25,6 +25,13 @@ const Team =
     drivers: Array,
   });
 
+const Trade =
+  mongoose.models.Trade ||
+  mongoose.model("Trade", {
+    user: String,
+    trades: Array,
+  });
+
 // const Prediction = mongoose.model("Prediction", {
 //   year: Number,
 //   season: Array,
@@ -35,4 +42,4 @@ const Team =
 //   price: Array,
 // });
 
-export { User, League, Team };
+export { Trade, User, League, Team };

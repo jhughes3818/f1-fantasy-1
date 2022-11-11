@@ -9,10 +9,57 @@ export default function DriverTrade() {
   const [selected1, setSelected1] = useState(buyOptions[0]);
   const [selected2, setSelected2] = useState(sellOptions[0]);
   const [profit, setProfit] = useState();
+  const [cash, setCash] = useState();
+
+  async function confirmTrade() {
+    console.log("hello");
+    const oldTeam = sellOptions;
+    const driverSold = selected1;
+    const driverBought = selected2;
+
+    const oldDriverNames = [];
+
+    oldTeam.forEach((driver) => {
+      oldDriverNames.push(driver.name);
+    });
+
+    const newDrivers = oldTeam.filter(
+      (driver) => driver.name !== driverSold.name
+    );
+
+    if (oldDriverNames.includes(driverBought.name)) {
+      console.log("Hell nah dawg");
+    } else {
+      // Calculate new cash balance
+      const newCash = cash + profit;
+      setCash(newCash);
+      // Make new team list
+      newDrivers.push(driverBought);
+      console.log(newDrivers);
+
+      // Create transaction record
+      const trade = {
+        driverSold: driverSold,
+        driverSoldPrice: driverSold.price,
+        driverBought: driverBought,
+        driverBoughtPrice: driverBought.price,
+        profit: profit,
+      };
+
+      //
+      await axios.put(`/api/teams/jhughes3818@gmail.com`, {
+        drivers: newDrivers,
+        cash: cash,
+        user: { email: "jhughes3818@gmail.com" },
+      });
+      await axios.put(`/api/trades/jhughes3818@gmail.com`, { trade: trade });
+    }
+  }
 
   useEffect(() => {
     let driverList = [];
     axios.get("/api/drivers").then((response) => {
+      setCash(response.data.cash);
       response.data.teams.forEach((team) => {
         team.drivers.forEach((driver) => {
           driverList.push(driver);
@@ -174,6 +221,9 @@ export default function DriverTrade() {
             </Listbox>
           </div>
         </div>
+        <button onClick={() => confirmTrade()} className="button-styling">
+          Confirm Trade
+        </button>
       </>
     );
   } else {
