@@ -11,22 +11,24 @@ export default async function handler(req, res) {
 
   const trade = req.body.trade;
 
-  const userTrades = await Trade.findOne({ user: userEmail }).exec();
+  if (req.method === "PUT") {
+    const userTrades = await Trade.findOne({ user: userEmail }).exec();
 
-  if (userTrades != null) {
-    await Trade.findOneAndUpdate(
-      {
+    if (userTrades != null) {
+      await Trade.findOneAndUpdate(
+        {
+          user: userEmail,
+        },
+        {
+          $push: { trades: trade },
+        }
+      ).exec();
+    } else {
+      const newTrade = new Trade({
         user: userEmail,
-      },
-      {
-        $push: { trades: trade },
-      }
-    ).exec();
-  } else {
-    const newTrade = new Trade({
-      user: userEmail,
-      trades: trade,
-    });
-    newTrade.save();
+        trades: trade,
+      });
+      newTrade.save();
+    }
   }
 }

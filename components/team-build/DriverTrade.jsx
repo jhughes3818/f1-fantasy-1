@@ -10,6 +10,7 @@ export default function DriverTrade() {
   const [selected2, setSelected2] = useState(sellOptions[0]);
   const [profit, setProfit] = useState();
   const [cash, setCash] = useState();
+  const [message, setMessage] = useState();
 
   async function confirmTrade() {
     console.log("hello");
@@ -44,6 +45,7 @@ export default function DriverTrade() {
         driverBought: driverBought,
         driverBoughtPrice: driverBought.price,
         profit: profit,
+        message: message,
       };
 
       //
@@ -90,12 +92,11 @@ export default function DriverTrade() {
   if (selected1 != null && selected2 != null) {
     return (
       <>
-        <h1>{profit}</h1>
-        <div className="flex gap-4">
+        <div className="gap-4">
           <div className="w-80">
             <h1>Select Driver To Sell</h1>
             <Listbox value={selected1} onChange={setSelected1}>
-              <div className="relative mt-1">
+              <div className="relative mt-1 z-40">
                 <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
                   <span className="block truncate">
                     {selected1.name}{" "}
@@ -156,10 +157,10 @@ export default function DriverTrade() {
               </div>
             </Listbox>
           </div>
-          <div className="w-1/2">
+          <div className="w-80">
             <h1>Select Driver to Buy</h1>
             <Listbox value={selected2} onChange={setSelected2}>
-              <div className="relative mt-1">
+              <div className="relative mt-1 z-30">
                 <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
                   <span className="block truncate">
                     {selected2.name}{" "}
@@ -221,9 +222,27 @@ export default function DriverTrade() {
             </Listbox>
           </div>
         </div>
-        <button onClick={() => confirmTrade()} className="button-styling">
-          Confirm Trade
-        </button>
+        <div className="grid place-items-center my-4 w-80">
+          {profit > 0 ? (
+            <h1 className="text-xl font-bold text-green-600">
+              Profit: {profit}
+            </h1>
+          ) : (
+            <h1 className="text-xl font-bold text-red-600">Profit: {profit}</h1>
+          )}
+
+          <form className="grid place-items-center gap-3">
+            <input
+              placeholder="Reason for trade"
+              type="text"
+              className="block mb-3 box-styling px-2 w-56 text-center"
+              onChange={(e) => setMessage(e.target.value)}
+            ></input>
+          </form>
+          <button onClick={() => confirmTrade()} className="button-styling">
+            Confirm Trade
+          </button>
+        </div>
       </>
     );
   } else {
