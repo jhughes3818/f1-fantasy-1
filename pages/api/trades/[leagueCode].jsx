@@ -6,29 +6,31 @@ export default async function handler(req, res) {
 
   mongoose.connect(uri);
 
-  const userEmail = req.query.userEmail;
+  const leagueCode = req.query.leagueCode;
   //console.log(userEmail);
 
   const trade = req.body.trade;
 
   if (req.method === "PUT") {
-    const userTrades = await Trade.findOne({ user: userEmail }).exec();
+    const userTrades = await Trade.findOne({ league: leagueCode }).exec();
 
     if (userTrades != null) {
       await Trade.findOneAndUpdate(
         {
-          user: userEmail,
+          league: leagueCode,
         },
         {
           $push: { trades: trade },
         }
       ).exec();
+      res.status(200).json({ message: "Added trade" });
     } else {
       const newTrade = new Trade({
-        user: userEmail,
+        league: leagueCode,
         trades: trade,
       });
       newTrade.save();
+      res.status(200).json({ message: "Added trade" });
     }
   }
 }

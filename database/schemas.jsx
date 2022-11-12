@@ -28,7 +28,7 @@ const Team =
 const Trade =
   mongoose.models.Trade ||
   mongoose.model("Trade", {
-    user: String,
+    league: Number,
     trades: Array,
   });
 

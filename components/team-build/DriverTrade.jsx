@@ -3,7 +3,7 @@ import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import axios from "axios";
 
-export default function DriverTrade() {
+export default function DriverTrade(props) {
   const [buyOptions, setBuyOptions] = useState([]);
   const [sellOptions, setSellOptions] = useState([]);
   const [selected1, setSelected1] = useState(buyOptions[0]);
@@ -11,6 +11,7 @@ export default function DriverTrade() {
   const [profit, setProfit] = useState();
   const [cash, setCash] = useState();
   const [message, setMessage] = useState();
+  const session = props.session;
 
   async function confirmTrade() {
     console.log("hello");
@@ -40,6 +41,7 @@ export default function DriverTrade() {
 
       // Create transaction record
       const trade = {
+        user: session.user,
         driverSold: driverSold,
         driverSoldPrice: driverSold.price,
         driverBought: driverBought,
@@ -49,12 +51,14 @@ export default function DriverTrade() {
       };
 
       //
-      await axios.put(`/api/teams/jhughes3818@gmail.com`, {
+      await axios.put(`/api/teams/${session.user.email}`, {
         drivers: newDrivers,
         cash: cash,
-        user: { email: "jhughes3818@gmail.com" },
+        user: session.user,
       });
-      await axios.put(`/api/trades/jhughes3818@gmail.com`, { trade: trade });
+      await axios.put(`/api/trades/9153`, {
+        trade: trade,
+      });
     }
   }
 
@@ -73,13 +77,15 @@ export default function DriverTrade() {
 
     let teamList = [];
 
-    axios.get(`/api/users/jhughes3818@gmail.com`).then((response) => {
-      console.log(response.data.user.team);
-      teamList = response.data.user.team;
-      console.log(teamList);
-      setSellOptions(teamList);
-      setSelected1(teamList[0]);
-    });
+    if (session) {
+      axios.get(`/api/users/${session.user.email}`).then((response) => {
+        console.log(response.data.user.team);
+        teamList = response.data.user.team;
+        console.log(teamList);
+        setSellOptions(teamList);
+        setSelected1(teamList[0]);
+      });
+    }
   }, []);
 
   useEffect(() => {
