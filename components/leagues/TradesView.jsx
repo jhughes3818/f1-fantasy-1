@@ -26,7 +26,7 @@ export default function TradesView() {
     return (
       <div className="box-styling h-96 overflow-auto">
         {trades.map((trade) => (
-          <div className="box-styling mx-4 my-2 p-2">
+          <div key={trade.message} className="box-styling mx-4 my-2 p-2">
             <h1 className="font-bold">{trade.user.name}</h1>
             <h1>Driver Sold: {trade.driverSold.name}</h1>
             <h1>Driver Bought: {trade.driverBought.name}</h1>
