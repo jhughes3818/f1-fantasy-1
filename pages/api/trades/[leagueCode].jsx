@@ -7,7 +7,9 @@ export default async function handler(req, res) {
   mongoose.connect(uri);
 
   const leagueCode = req.query.leagueCode;
+  const leagueCodeNumber = parseInt(leagueCode);
   //console.log(userEmail);
+  console.log(leagueCode);
 
   const trade = req.body.trade;
 
@@ -31,6 +33,17 @@ export default async function handler(req, res) {
       });
       newTrade.save();
       res.status(200).json({ message: "Added trade" });
+    }
+  } else if (req.method === "GET") {
+    if (req.body.user) {
+      console.log("User");
+      res.status(200).json({ message: "Done" });
+    } else {
+      const leagueTrades = await Trade.findOne({
+        league: leagueCode,
+      }).exec();
+      const trades = leagueTrades.trades;
+      res.status(200).json({ leagueTrades: leagueTrades });
     }
   }
 }
