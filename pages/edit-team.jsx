@@ -2,6 +2,7 @@ import TeamBuildMobile from "../components/TeamBuildMobile.jsx";
 import Example from "../components/Dashboard.jsx";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { Oval } from "react-loader-spinner";
+import DriverTrade from "../components/team-build/DriverTrade.jsx";
 
 export default function EditTeam() {
   const { data: session } = useSession();
@@ -15,7 +16,7 @@ export default function EditTeam() {
   if (session) {
     return (
       <Example nav={navigation}>
-        <TeamBuildMobile />
+        <DriverTrade session={session} />
       </Example>
     );
   } else {
