@@ -10,7 +10,7 @@ import JoinLeague from "../components/leagues/JoinLeague.jsx";
 import NewUser from "../components/NewUser.jsx";
 import LeagueView from "../components/leagues/LeagueView.jsx";
 import { TailSpin, Oval } from "react-loader-spinner";
-import TradesView from "../components/leagues/TradesView.jsx";
+import FeedComponent from "../components/feed/FeedComponent.jsx";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -89,19 +89,16 @@ export default function Home() {
                   </div>
                 )}
               </div>
-              <div>
-                <h1 className="px-12 text-3xl font-bold">Recent Trades</h1>
-                {league ? (
-                  <div className="px-12 grid place-items-center">
-                    {/* <LeagueView leagueCode={league} /> */}
-                    <TradesView />
-                  </div>
-                ) : (
-                  <div className="px-12 grid place-items-center">
-                    <JoinLeague showCreate={true} showHome={false} />
-                  </div>
-                )}
-              </div>
+              {league ? (
+                <div className="px-12 grid place-items-center">
+                  {/* <LeagueView leagueCode={league} /> */}
+                  <FeedComponent leagueCode={league} />
+                </div>
+              ) : (
+                <div className="px-12 grid place-items-center">
+                  <JoinLeague showCreate={true} showHome={false} />
+                </div>
+              )}
             </div>
           )}
         </Example>
