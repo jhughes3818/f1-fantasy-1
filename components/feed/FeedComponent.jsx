@@ -29,12 +29,11 @@ export default function TradesView() {
         <h1 className="text-3xl font-bold">Recent Trades</h1>
         <div className="box-styling border-l border-r border-gray-300 bg-gray-100 h-96 overflow-auto">
           {trades.map((trade) => (
-            <div className="my-2">
+            <div className="my-2" key={trade.message}>
               <FeedDriverPill
                 driverBought={trade.driverBought.name}
                 driverSold={trade.driverSold.name}
                 user={trade.user}
-                key={trade.message}
               />
             </div>
           ))}
