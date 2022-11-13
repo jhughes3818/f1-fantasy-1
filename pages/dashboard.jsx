@@ -65,7 +65,7 @@ export default function Home() {
               />
             </div>
           ) : (
-            <div className="md:flex pl-4 md:px-0 gap-2">
+            <div className="md:flex px-4 md:px-0 gap-2">
               <div>
                 {isLoading ? (
                   <div>
@@ -90,12 +90,12 @@ export default function Home() {
                 )}
               </div>
               {league ? (
-                <div className="px-12 grid place-items-center">
+                <div className="md:px-12 grid place-items-center">
                   {/* <LeagueView leagueCode={league} /> */}
                   <FeedComponent leagueCode={league} />
                 </div>
               ) : (
-                <div className="px-12 grid place-items-center">
+                <div className="md:px-12 grid place-items-center">
                   <JoinLeague showCreate={true} showHome={false} />
                 </div>
               )}

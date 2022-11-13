@@ -1,10 +1,11 @@
 export default function FeedDriverPill(props) {
   return (
     <div className="bg-gray-100 border-b border-t px-5 border-gray-300 w-full">
-      <h1 className="font-bold mb-2">{props.user.name}</h1>
+      <h1 className="font-bold">{props.user.name}</h1>
+      <p>{props.message}</p>
       <div className="flex gap-5">
         <div className="grid place-items-center">
-          <div className="rounded-lg border border-red-600 bg-red-200 bg-opacity-50 h-10 grid place-items-center my-2">
+          <div className="rounded-lg border border-red-600 bg-red-200 bg-opacity-50 md:h-10 sm:h-20 grid place-items-center my-2">
             <div className="px-2">
               <span className="text-center text-red-600 font-bold">
                 {props.driverSold}
@@ -31,7 +32,7 @@ export default function FeedDriverPill(props) {
           </span>
         </div>
         <div className="grid place-items-center">
-          <div className="rounded-lg border border-green-600 bg-green-200 bg-opacity-50 h-10 grid place-items-center">
+          <div className="rounded-lg border border-green-600 bg-green-200 bg-opacity-50 md:h-10 sm:h-20 grid place-items-center">
             <div className="px-2">
               <span className="text-center text-green-600 font-bold">
                 {props.driverBought}

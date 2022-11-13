@@ -34,6 +34,7 @@ export default function TradesView() {
                 driverBought={trade.driverBought.name}
                 driverSold={trade.driverSold.name}
                 user={trade.user}
+                message={trade.message}
               />
             </div>
           ))}
