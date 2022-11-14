@@ -63,12 +63,12 @@ export default function handler(req, res) {
 
           const name = driver.Driver.givenName + " " + driver.Driver.familyName;
 
-          Race.findOneAndUpdate(
-            { name: name },
-            {
-              $push: { results: results },
-            }
-          ).exec();
+          //   Race.findOneAndUpdate(
+          //     { name: name },
+          //     {
+          //       $push: { results: results },
+          //     }
+          //   ).exec();
         });
       });
   });
