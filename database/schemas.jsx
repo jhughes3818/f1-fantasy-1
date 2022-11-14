@@ -32,6 +32,13 @@ const Trade =
     trades: Array,
   });
 
+const Race =
+  mongoose.models.Race ||
+  mongoose.model("Race", {
+    name: String,
+    results: Array,
+  });
+
 // const Prediction = mongoose.model("Prediction", {
 //   year: Number,
 //   season: Array,
@@ -42,4 +49,4 @@ const Trade =
 //   price: Array,
 // });
 
-export { Trade, User, League, Team };
+export { Trade, User, League, Team, Race };
