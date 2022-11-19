@@ -6,7 +6,7 @@ const GetLatestRoundData = (props) => {
   const uri = process.env.MONGODB_URI;
   mongoose.connect(uri);
 
-  const round = 5;
+  const round = 6;
 
   axios
     .get(`http://ergast.com/api/f1/current/${round}/results.json`)

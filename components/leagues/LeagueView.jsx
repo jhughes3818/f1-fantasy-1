@@ -7,10 +7,10 @@ export default function LeagueView(props) {
 
   useEffect(() => {
     axios.get(`/api/leagues/${props.leagueCode}`).then((response) => {
-      console.log(response.data.league.members);
       setLeagueName(response.data.league.name);
-      const members = response.data.league.members;
-      setLeagueMembers(members);
+
+      const users = response.data.users;
+      setLeagueMembers(users);
     });
   }, []);
 
