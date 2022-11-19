@@ -26,4 +26,8 @@ a {
   .button-styling {
     @apply block box-styling bg-blue-500 text-white text-center font-bold w-56 mb-3;
   }
+
+  .input-styling {
+    @apply block mb-3 box-styling px-2 w-56 text-center;
+  }
 }
