@@ -8,6 +8,7 @@ const User =
     team: Object,
     cash: Number,
     league: Number,
+    points: Number,
   });
 
 const League =
