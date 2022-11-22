@@ -5,13 +5,15 @@ import axios from "axios";
 const uri = process.env.MONGODB_URI;
 mongoose.connect(uri);
 
-const GetLatestRoundData = (round) => {
-  axios
+const GetLatestRoundData = async (round) => {
+  let results = {};
+
+  await axios
     .get(`http://ergast.com/api/f1/current/${round}/results.json`)
     .then((response) => {
       const raceResults = response.data.MRData.RaceTable.Races[0].Results;
       raceResults.forEach((driver) => {
-        const results = {
+        results = {
           finishingPosition: driver.position,
           startingPosition: driver.grid,
           points: driver.points,
@@ -20,12 +22,19 @@ const GetLatestRoundData = (round) => {
 
         const name = driver.Driver.givenName + " " + driver.Driver.familyName;
 
-        Race.findOneAndUpdate(
-          { name: name },
-          {
-            $push: { results: results },
-          }
-        ).exec();
+        const driverObject = Race.findOne({ name: name }).exec();
+
+        if (driverObject) {
+          Race.findOneAndUpdate(
+            { name: name },
+            {
+              $push: { results: results },
+            }
+          ).exec();
+        } else {
+          const newDriver = new Race({ name: name, results: results });
+          newDriver.save;
+        }
       });
     });
 };
@@ -61,7 +70,7 @@ export default async function handler(req, res) {
   await GetLatestRoundData(roundToGet);
   console.log("Got round data");
 
-  await UpdateTeamPoints();
+  //await UpdateTeamPoints();
   console.log("Updated Points");
   console.log(roundToGet);
   res.status(200).json({ message: "done", round: roundToGet });
