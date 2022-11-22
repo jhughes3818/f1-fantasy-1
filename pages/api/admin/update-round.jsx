@@ -5,6 +5,8 @@ import axios from "axios";
 const uri = process.env.MONGODB_URI;
 mongoose.connect(uri);
 
+//Gets the results from the round entered & saves to races collection
+
 const GetLatestRoundData = async (round) => {
   let results = {};
 
@@ -39,11 +41,12 @@ const GetLatestRoundData = async (round) => {
     });
 };
 
+//Updates team points with the data from the latest round.
 async function UpdateTeamPoints(round) {
   const driverResults = await Race.find().exec();
   const driverObject = {};
   driverResults.forEach((driver) => {
-    driverObject[driver.name] = driver.results[1];
+    driverObject[driver.name] = driver.results.slice(-1);
   });
 
   console.log(driverObject);
@@ -56,21 +59,33 @@ async function UpdateTeamPoints(round) {
       const name = driver.name;
       const pointsScored = driverObject[name];
 
-      pointsScoredTeam = pointsScoredTeam + parseInt(pointsScored.points);
+      if (pointsScored) {
+        pointsScoredTeam = pointsScoredTeam + parseInt(pointsScored[0].points);
+      }
     });
-    User.findOneAndUpdate(
-      { email: user.email },
-      { points: pointsScoredTeam }
-    ).exec();
+
+    if (pointsScoredTeam) {
+      User.findOneAndUpdate(
+        { email: user.email },
+        { points: pointsScoredTeam }
+      ).exec();
+    } else {
+      User.findOneAndUpdate(
+        {
+          email: user.email,
+        },
+        { points: 0 }
+      );
+    }
   });
 }
 
 export default async function handler(req, res) {
   const roundToGet = req.body.round;
-  await GetLatestRoundData(roundToGet);
+  // await GetLatestRoundData(roundToGet);
   console.log("Got round data");
 
-  //await UpdateTeamPoints();
+  await UpdateTeamPoints();
   console.log("Updated Points");
   console.log(roundToGet);
   res.status(200).json({ message: "done", round: roundToGet });
