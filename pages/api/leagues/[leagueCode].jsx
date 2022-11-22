@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { League } from "../../../database/schemas";
+import { League, User } from "../../../database/schemas";
 
 export default async function handler(req, res) {
   const uri = process.env.MONGODB_URI;
@@ -9,11 +9,12 @@ export default async function handler(req, res) {
 
   if (req.method === "GET") {
     const league = await League.findOne({ code: leagueCode }).exec();
+    const usersInLeague = await User.find({ league: leagueCode }).exec();
 
     if (!league) {
       res.status(404).json({ error: "Cannot find league" });
     } else {
-      res.status(200).json({ league: league });
+      res.status(200).json({ league: league, users: usersInLeague });
     }
   } else if (req.method === "PUT") {
     const newMember = {
