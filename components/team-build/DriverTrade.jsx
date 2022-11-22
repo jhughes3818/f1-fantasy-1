@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import axios from "axios";
+import Modal from "./Modal";
 
 export default function DriverTrade(props) {
   const [buyOptions, setBuyOptions] = useState([]);
@@ -11,7 +12,16 @@ export default function DriverTrade(props) {
   const [profit, setProfit] = useState();
   const [cash, setCash] = useState();
   const [message, setMessage] = useState();
+  //Modal states
+  let [isOpen, setIsOpen] = useState(false);
+  let [modalBody, setModalBody] = useState("");
+  let [modalHeading, setModalHeading] = useState("");
+
   const session = props.session;
+
+  function closeModal() {
+    setIsOpen(false);
+  }
 
   async function confirmTrade() {
     console.log("hello");
@@ -59,6 +69,10 @@ export default function DriverTrade(props) {
       await axios.put(`/api/trades/9153`, {
         trade: trade,
       });
+
+      setModalHeading("Trade Completed");
+      setModalBody(`You traded ${driverSold.name} for ${driverBought.name}.`);
+      setIsOpen(true);
     }
   }
 
@@ -98,6 +112,14 @@ export default function DriverTrade(props) {
   if (selected1 != null && selected2 != null) {
     return (
       <div className="grid place-items-center h-screen">
+        <Modal
+          function={closeModal}
+          isOpen={isOpen}
+          heading={modalHeading}
+          body={modalBody}
+          buttonText="Got it"
+        />
+
         <div className="gap-4">
           <div className="w-80 my-4">
             <h1 className="font-bold text-lg w-full text-center">
