@@ -12,7 +12,7 @@ const steps = [
 
 export default function CreateTeam() {
   return (
-    <div className="grid place-items-center h-screen">
+    <div className="grid place-items-center h-screen overflow-y-auto">
       <div className="">
         <div className="mb-6">
           <Steps steps={steps} />
