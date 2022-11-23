@@ -9,9 +9,15 @@ mongoose.connect(uri);
 
 const GetLatestRoundData = async (round) => {
   let results = {};
+  let existingDrivers = [];
+  const driversObject = await Race.find();
+
+  driversObject.forEach((driver) => {
+    existingDrivers.push(driver.name);
+  });
 
   await axios
-    .get(`http://ergast.com/api/f1/current/${round}/results.json`)
+    .get(`http://ergast.com/api/f1/2022/${round}/results.json`)
     .then((response) => {
       const raceResults = response.data.MRData.RaceTable.Races[0].Results;
       raceResults.forEach((driver) => {
@@ -24,9 +30,9 @@ const GetLatestRoundData = async (round) => {
 
         const name = driver.Driver.givenName + " " + driver.Driver.familyName;
 
-        const driverObject = Race.findOne({ name: name }).exec();
+        //const driverObject = Race.findOne({ name: name }).exec();
 
-        if (driverObject) {
+        if (existingDrivers.includes(name)) {
           Race.findOneAndUpdate(
             { name: name },
             {
@@ -35,7 +41,7 @@ const GetLatestRoundData = async (round) => {
           ).exec();
         } else {
           const newDriver = new Race({ name: name, results: results });
-          newDriver.save;
+          newDriver.save();
         }
       });
     });
@@ -82,7 +88,7 @@ async function UpdateTeamPoints(round) {
 
 export default async function handler(req, res) {
   const roundToGet = req.body.round;
-  // await GetLatestRoundData(roundToGet);
+  await GetLatestRoundData(roundToGet);
   console.log("Got round data");
 
   await UpdateTeamPoints();

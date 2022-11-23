@@ -8,7 +8,7 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html className="bg-gray-100">
+      <Html className="h-screen bg-white">
         <Head>
           <link
             href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500&display=swap"
@@ -34,7 +34,7 @@ class MyDocument extends Document {
           <link rel="manifest" href="/site.webmanifest" />
           <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
         </Head>
-        <body>
+        <body className="h-screen overflow-hidden">
           <Main />
           <NextScript />
         </body>
