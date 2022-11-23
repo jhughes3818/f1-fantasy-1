@@ -3,8 +3,13 @@ import { useState } from "react";
 import DriverCards from "./DriverCards";
 import ProgressBar from "./ProgressBar";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import axios from "axios";
+import Router from "next/router.js";
+import Modal from "./Modal";
 
 export default function NewTeamBuildMobile(props) {
+  const { data: session } = useSession();
   //Save Currency
   const [saveCurrent, setSaveCurrent] = useState(false);
 
@@ -87,12 +92,23 @@ export default function NewTeamBuildMobile(props) {
         console.log(error);
       });
   }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
   return (
     <div className="md:flex pl-4 md:px-0 gap-2">
+      <Modal
+        function={closeModal}
+        isOpen={isOpen}
+        heading={modalHeading}
+        body={modalBody}
+        buttonText="Got it"
+      />
       <div className="gap-2">
         <div className="w-80">
           <div>
-            <div className="mt-6 flow-root overflow-y-auto h-96 border border-gray rounded-md p-3">
+            <div className="mt-6 flow-root overflow-y-auto h-96 border border-gray rounded-md p-3 mb-6">
               <ul role="list" className="-my-5 divide-y divide-gray-200">
                 {TeamBuildData.map((person) => (
                   <li key={person.id} className="py-4">
@@ -109,7 +125,7 @@ export default function NewTeamBuildMobile(props) {
                         {driversNames.includes(person.name) ? (
                           <button
                             href="#"
-                            className="inline-flex items-center rounded-full border border-gray-300 bg-white px-2.5 py-0.5 text-sm font-medium leading-5 text-gray-700 shadow-sm hover:bg-gray-50"
+                            className="inline-flex items-center rounded-full border border-gray-300 bg-red-200 px-2.5 py-0.5 text-sm font-medium leading-5 text-gray-700 shadow-sm hover:bg-red-400"
                             onClick={() => removeDriver(person)}
                           >
                             Remove
@@ -129,53 +145,41 @@ export default function NewTeamBuildMobile(props) {
                 ))}
               </ul>
             </div>
+            {driversCount === 5 && saveCurrent === false ? (
+              <button
+                disabled={false}
+                className="box-styling bg-blue-500 text-white font-bold w-80 text-center"
+                onClick={saveTeam}
+              >
+                Save
+              </button>
+            ) : (
+              <button
+                disabled={true}
+                className="box-styling bg-blue-500 text-white font-bold w-80 text-center disabled:opacity-50"
+                onClick={saveTeam}
+              >
+                Save
+              </button>
+            )}
           </div>
         </div>
       </div>
       <div className="mt-6 md:ml-10 md:p-0 py-3">
-        <div>
-          {/* <ProgressBar
-            fraction="[3rem]"
-            text={`Drivers Selected: ${props.driverCount}`}
-          /> */}
-          <ProgressBar fraction="1/2" text={`Cash Remaining: $${cash}m`} />{" "}
-        </div>
-        <h1 className="text-2xl font-bold tracking-tight text-gray-900">
-          Your Team
-        </h1>
+        <div className="mb-6">
+          <div>
+            <ProgressBar
+              fraction="[3rem]"
+              text={`Drivers Selected: ${driversNames.length} / 5`}
+            />
+            <ProgressBar fraction="1/2" text={`Cash Remaining: $${cash}m`} />{" "}
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+            Your Team
+          </h1>
 
-        <DriverCards drivers={drivers} />
-        {driversCount === 5 && saveCurrent === false ? (
-          <button
-            disabled={false}
-            className="box-styling bg-blue-500 text-white font-bold w-80 text-center"
-            onClick={saveTeam}
-          >
-            Save
-          </button>
-        ) : (
-          <button
-            disabled={true}
-            className="box-styling bg-blue-500 text-white font-bold w-80 text-center disabled:opacity-50"
-            onClick={saveTeam}
-          >
-            Save
-          </button>
-        )}
-        {props.isNewUser && saveCurrent === true ? (
-          <Link href="/new-user/join-league">
-            <span className="block box-styling text-blue-500 font-bold text-center w-80 border-blue-500 border-spacing-4 mt-3  cursor-pointer">
-              Next
-            </span>
-          </Link>
-        ) : null}
-        {props.isNewUser && saveCurrent === false ? (
-          <Link href="">
-            <span className="block box-styling text-blue-500 font-bold text-center w-80 border-blue-500 border-spacing-4 mt-3 opacity-50 cursor-not-allowed">
-              Next
-            </span>
-          </Link>
-        ) : null}
+          <DriverCards drivers={drivers} />
+        </div>
       </div>
     </div>
   );

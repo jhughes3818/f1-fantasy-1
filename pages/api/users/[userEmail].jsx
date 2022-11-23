@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     if (user) {
       res.status(200).json({ user: user });
     } else {
-      res.status(404).json({ error: "User does not exist" });
+      res.status(204).json({});
     }
   }
 }
