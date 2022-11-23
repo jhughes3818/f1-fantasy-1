@@ -12,9 +12,10 @@ export default function TradeFeedComponent(props) {
       <div>
         <div className="relative px-1">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 ring-8 ring-white">
-            <UserCircleIcon
-              className="h-5 w-5 text-gray-500"
-              aria-hidden="true"
+            <img
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-400 ring-8 ring-white"
+              src={activityItem.imageUrl}
+              alt=""
             />
           </div>
         </div>
@@ -27,14 +28,24 @@ export default function TradeFeedComponent(props) {
           >
             {activityItem.person.name}
           </a>{" "}
-          bought{" "}
+          traded{" "}
           <a
             href={activityItem.assigned.href}
             className="font-medium text-gray-900"
           >
             {activityItem.assigned.name}
           </a>{" "}
+          for{" "}
+          <a
+            href={activityItem.assigned.href}
+            className="font-medium text-gray-900"
+          >
+            {activityItem.sold.name}
+          </a>{" "}
           <span className="whitespace-nowrap">{activityItem.date}</span>
+          <div className="mt-2 text-sm text-gray-700">
+            <p>{activityItem.comment}</p>
+          </div>
         </div>
       </div>
     </>

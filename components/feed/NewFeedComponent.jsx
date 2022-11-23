@@ -78,28 +78,30 @@ export default function NewFeedComponent() {
   useEffect(() => {
     if (session) {
       axios.get(`/api/users/${session.user.email}`).then((response) => {
-        console.log(response.data.user.league);
         setLeagueCode(response.data.user.league);
         axios
           .get(`/api/trades/${response.data.user.league}`)
           .then((response) => {
             setTrades(response.data.leagueTrades.trades);
-            console.log(response.data.leagueTrades.trades);
 
             const tradesList = response.data.leagueTrades.trades;
+            console.log(tradesList);
             const activityList = [];
 
-            tradesList.forEach((trade) => {
+            tradesList.slice(-5).forEach((trade) => {
               const newEntry = {
                 id: tradesList.indexOf(trade),
                 type: "assignment",
                 person: { name: trade.user.name, href: "#" },
                 assigned: { name: trade.driverBought.name, href: "#" },
+                sold: { name: trade.driverSold.name, href: "#" },
                 date: "2d ago",
+                imageUrl: trade.user.image,
+                comment: trade.message,
               };
               activityList.push(newEntry);
             });
-            setActivity(activityList);
+            setActivity(activityList.reverse());
           });
       });
     }
