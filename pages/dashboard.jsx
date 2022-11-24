@@ -74,6 +74,19 @@ export default function Dashboard() {
       }
     }
   } else {
-    return <h1>Loading...</h1>;
+    return (
+      <Oval
+        height={80}
+        width={80}
+        color="#000000"
+        wrapperStyle={{}}
+        wrapperClass=""
+        visible={true}
+        ariaLabel="oval-loading"
+        secondaryColor="#2a2b2a"
+        strokeWidth={2}
+        strokeWidthSecondary={2}
+      />
+    );
   }
 }
