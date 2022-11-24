@@ -1,7 +1,10 @@
-import Link from "next/link";
 import JoinLeague from "../../components/leagues/JoinLeague";
-import ProgressBars from "../../components/misc/ProgressBars";
 import Steps from "../../components/misc/Steps";
+import { useSession } from "next-auth/react";
+import axios from "axios";
+import Router from "next/router";
+import { Oval } from "react-loader-spinner";
+import { useState, useEffect } from "react";
 
 const steps = [
   { id: "Step 1", name: "Welcome", href: "#", status: "complete" },
@@ -10,14 +13,48 @@ const steps = [
 ];
 
 export default function JoinLeaguePage(props) {
+  const { data: session } = useSession();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (session) {
+      axios
+        .get(`/api/users/${session.user.email}`)
+        .then((response) => {
+          if (response.status === 202) {
+            setIsLoading(false);
+          } else {
+            Router.push("/dashboard");
+          }
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    }
+  }, [session]);
   return (
     <div className="grid place-items-center h-screen">
-      <div>
-        <div className="mb-8">
-          <Steps steps={steps} />
+      {isLoading ? (
+        <Oval
+          height={80}
+          width={80}
+          color="#000000"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+          ariaLabel="oval-loading"
+          secondaryColor="#2a2b2a"
+          strokeWidth={2}
+          strokeWidthSecondary={2}
+        />
+      ) : (
+        <div>
+          <div className="mb-8">
+            <Steps steps={steps} />
+          </div>
+          <JoinLeague showSkip={true} showCreate={true} />
         </div>
-        <JoinLeague showSkip={true} showCreate={true} />
-      </div>
+      )}
     </div>
   );
 }
