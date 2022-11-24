@@ -8,9 +8,22 @@ const people = [
   // More people...
 ];
 
-import { TeamBuildData } from "../team-build/TeamBuildData";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-export default function LeagueTable() {
+export default function LeagueTable(props) {
+  const [leagueMembers, setLeagueMembers] = useState([]);
+  const [leagueName, setLeagueName] = useState();
+
+  console.log(leagueMembers);
+  useEffect(() => {
+    axios.get(`/api/leagues/${props.leagueCode}`).then((response) => {
+      setLeagueName(response.data.league.name);
+
+      const users = response.data.users;
+      setLeagueMembers(users);
+    });
+  }, []);
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
@@ -40,19 +53,19 @@ export default function LeagueTable() {
                 scope="col"
                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
               >
-                Team
+                Points
               </th>
               <th
                 scope="col"
                 className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
               >
-                Season Points
+                Team Value
               </th>
               <th
                 scope="col"
                 className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
               >
-                Price
+                Profit
               </th>
               <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
                 <span className="sr-only">Edit</span>
@@ -60,14 +73,14 @@ export default function LeagueTable() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 bg-white">
-            {TeamBuildData.slice(0, 5).map((person) => (
-              <tr key={person.id}>
+            {leagueMembers.map((person) => (
+              <tr key={person.email}>
                 <td className="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-6">
                   {person.name}
                   <dl className="font-normal lg:hidden">
                     <dt className="sr-only">Title</dt>
                     <dd className="mt-1 truncate text-gray-700">
-                      {person.team}
+                      {person.points}
                     </dd>
                     <dt className="sr-only sm:hidden">Email</dt>
                     <dd className="mt-1 truncate text-gray-500 sm:hidden">
@@ -76,7 +89,7 @@ export default function LeagueTable() {
                   </dl>
                 </td>
                 <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
-                  {person.team}
+                  {person.points}
                 </td>
                 <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
                   {person.seasonPoints}

@@ -7,8 +7,23 @@ import {
   HomeIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Dashboard() {
+  const { data: session } = useSession();
+  const [leagueCode, setLeagueCode] = useState();
+
+  useEffect(() => {
+    if (session) {
+      axios.get(`/api/users/${session.user.email}`).then((response) => {
+        setLeagueCode(response.data.user.league);
+        console.log(response.data.user.league);
+      });
+    }
+  }, [session]);
+
   const navigation = [
     { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: false },
     { name: "League", href: "/league", icon: CalendarIcon, current: true },
@@ -17,7 +32,8 @@ export default function Dashboard() {
 
   return (
     <LayoutShell nav={navigation}>
-      <LeagueTable />
+      {leagueCode ? <LeagueTable leagueCode={leagueCode} /> : <JoinLeague />}
+
       <NewFeedComponent />
     </LayoutShell>
   );
