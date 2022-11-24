@@ -1,5 +1,5 @@
 import { TeamBuildData } from "./TeamBuildData";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DriverCards from "./DriverCards";
 import ProgressBar from "./ProgressBar";
 import Link from "next/link";
@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 import Router from "next/router.js";
 import Modal from "./Modal";
+import DriverList from "./DriverList";
 
 export default function NewTeamBuildMobile(props) {
   const { data: session } = useSession();
@@ -26,11 +27,16 @@ export default function NewTeamBuildMobile(props) {
   const [drivers, setDrivers] = useState([]);
   const [driversNames, setDriversNames] = useState([]);
   const [teamBuildData, setTeamBuildData] = useState();
+  const [driverSort, setDriverSort] = useState("high");
 
   //Modal states
   let [isOpen, setIsOpen] = useState(false);
   let [modalBody, setModalBody] = useState("");
   let [modalHeading, setModalHeading] = useState("");
+
+  useEffect(() => {
+    setOptions(TeamBuildData);
+  }, []);
 
   const addDriver = (option) => {
     const newCash = Math.round((cash - option.price) * 100) / 100;
@@ -96,6 +102,28 @@ export default function NewTeamBuildMobile(props) {
   function closeModal() {
     setIsOpen(false);
   }
+
+  function sort(direction) {
+    if (direction === "low") {
+      const newOptions = [...options];
+      newOptions.sort(function (a, b) {
+        return a.price - b.price;
+      });
+
+      setOptions(newOptions);
+
+      console.log("Changed Sort Low");
+    } else {
+      const newOptions = [...options];
+      newOptions.sort(function (a, b) {
+        return b.price - a.price;
+      });
+
+      setOptions(newOptions);
+      console.log("Changed Sort High");
+    }
+  }
+
   return (
     <div className="md:flex pl-4 md:px-0 gap-2">
       <Modal
@@ -107,10 +135,19 @@ export default function NewTeamBuildMobile(props) {
       />
       <div className="gap-2">
         <div className="w-80">
+          <select
+            onChange={(e) => {
+              sort(e.target.value);
+            }}
+            className="mt-3"
+          >
+            <option value="high">High-to-Low</option>
+            <option value="low">Low-to-High</option>
+          </select>
           <div>
             <div className="mt-6 flow-root overflow-y-auto h-96 border border-gray rounded-md p-3 mb-6">
               <ul role="list" className="-my-5 divide-y divide-gray-200">
-                {TeamBuildData.map((person) => (
+                {options.map((person) => (
                   <li key={person.id} className="py-4">
                     <div className="flex items-center space-x-4">
                       <div className="min-w-0 flex-1 pl-2">
@@ -151,7 +188,7 @@ export default function NewTeamBuildMobile(props) {
                 className="box-styling bg-blue-500 text-white font-bold w-80 text-center"
                 onClick={saveTeam}
               >
-                Save
+                Continue
               </button>
             ) : (
               <button
@@ -159,7 +196,7 @@ export default function NewTeamBuildMobile(props) {
                 className="box-styling bg-blue-500 text-white font-bold w-80 text-center disabled:opacity-50"
                 onClick={saveTeam}
               >
-                Save
+                Continue
               </button>
             )}
           </div>
