@@ -11,7 +11,6 @@ function classNames(...classes) {
 
 const Example = (props) => {
   const { data: session } = useSession();
-  console.log(session);
 
   const user = {
     name: session.user.name,
