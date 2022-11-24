@@ -10,16 +10,19 @@ import {
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Oval } from "react-loader-spinner";
 
 export default function Dashboard() {
   const { data: session } = useSession();
   const [leagueCode, setLeagueCode] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (session) {
       axios.get(`/api/users/${session.user.email}`).then((response) => {
         setLeagueCode(response.data.user.league);
         console.log(response.data.user.league);
+        setIsLoading(false);
       });
     }
   }, [session]);
@@ -32,7 +35,31 @@ export default function Dashboard() {
 
   return (
     <LayoutShell nav={navigation}>
-      {leagueCode ? <LeagueTable leagueCode={leagueCode} /> : <JoinLeague />}
+      {isLoading ? (
+        <div className="grid place-items-center h-full">
+          <Oval
+            height={80}
+            width={80}
+            color="#000000"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={true}
+            ariaLabel="oval-loading"
+            secondaryColor="#2a2b2a"
+            strokeWidth={2}
+            strokeWidthSecondary={2}
+          />
+        </div>
+      ) : (
+        <>
+          {" "}
+          {leagueCode ? (
+            <LeagueTable leagueCode={leagueCode} />
+          ) : (
+            <JoinLeague />
+          )}
+        </>
+      )}
 
       <NewFeedComponent />
     </LayoutShell>

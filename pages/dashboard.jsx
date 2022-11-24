@@ -12,6 +12,7 @@ import {
 import LayoutShell from "../components/LayoutShell";
 import NewFeedComponent from "../components/feed/NewFeedComponent";
 import DriverTrade from "../components/team-build/DriverTrade";
+import { Oval } from "react-loader-spinner";
 
 export default function Dashboard() {
   const { data: session } = useSession();
@@ -47,7 +48,22 @@ export default function Dashboard() {
       return <NewUser />;
     } else {
       if (isLoading) {
-        return <h1>Loading...</h1>;
+        return (
+          <div className="grid place-items-center h-screen">
+            <Oval
+              height={80}
+              width={80}
+              color="#000000"
+              wrapperStyle={{}}
+              wrapperClass=""
+              visible={true}
+              ariaLabel="oval-loading"
+              secondaryColor="#2a2b2a"
+              strokeWidth={2}
+              strokeWidthSecondary={2}
+            />
+          </div>
+        );
       } else {
         return (
           <LayoutShell nav={navigation}>
