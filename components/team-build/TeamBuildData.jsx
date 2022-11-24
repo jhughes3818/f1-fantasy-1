@@ -2,6 +2,7 @@ const TeamBuildData = [
   {
     id: 1,
     name: "Lewis Hamilton",
+    team: "Mercedes",
     seasonPoints: 100,
     price: 9,
     overtakes: "5",
@@ -11,6 +12,7 @@ const TeamBuildData = [
   {
     id: 2,
     name: "George Russell",
+    team: "Mercedes",
     seasonPoints: 100,
     price: 5,
     overtakes: "5",
@@ -21,6 +23,7 @@ const TeamBuildData = [
   {
     id: 3,
     name: "Max Verstappen",
+    team: "Red Bull Racing",
     seasonPoints: 100,
     price: 12,
     overtakes: "5",
@@ -30,6 +33,7 @@ const TeamBuildData = [
   {
     id: 4,
     name: "Sergio Perez",
+    team: "Red Bull Racing",
     seasonPoints: 100,
     price: 6,
     overtakes: "5",
@@ -40,6 +44,7 @@ const TeamBuildData = [
   {
     id: 5,
     name: "Charles Leclerc",
+    team: "Ferrari",
     seasonPoints: 100,
     price: 6.2,
     overtakes: "5",
@@ -49,6 +54,7 @@ const TeamBuildData = [
   {
     id: 6,
     name: "Carlos Sainz",
+    team: "Ferrari",
     seasonPoints: 100,
     price: 5.4,
     overtakes: "5",
@@ -59,6 +65,7 @@ const TeamBuildData = [
   {
     id: 7,
     name: "Lando Norris",
+    team: "McLaren",
     seasonPoints: 100,
     price: 5.9,
     overtakes: "5",
@@ -68,6 +75,7 @@ const TeamBuildData = [
   {
     id: 8,
     name: "Daniel Ricciardo",
+    team: "McLaren",
     seasonPoints: 100,
     price: 4,
     overtakes: "77",
@@ -77,7 +85,8 @@ const TeamBuildData = [
 
   {
     id: 9,
-    name: "Sebastien Vettel",
+    name: "Sebastian Vettel",
+    team: "Aston Martin",
     seasonPoints: 100,
     price: 6,
     overtakes: "5",
@@ -87,6 +96,7 @@ const TeamBuildData = [
   {
     id: 10,
     name: "Lance Stroll",
+    team: "Aston Martin",
     seasonPoints: 100,
     price: 3,
     overtakes: "5",
@@ -97,6 +107,7 @@ const TeamBuildData = [
   {
     id: 11,
     name: "Fernando Alonso",
+    team: "Alpine",
     seasonPoints: 100,
     price: 7,
     overtakes: "5",
@@ -106,6 +117,7 @@ const TeamBuildData = [
   {
     id: 12,
     name: "Esteban Ocon",
+    team: "Alpine",
     seasonPoints: 100,
     price: 5,
     overtakes: "5",
@@ -116,6 +128,7 @@ const TeamBuildData = [
   {
     id: 13,
     name: "Yuki Tsunoda",
+    team: "Alpha Tauri",
     seasonPoints: 100,
     price: 5,
     overtakes: "5",
@@ -125,6 +138,7 @@ const TeamBuildData = [
   {
     id: 14,
     name: "Pierre Gasly",
+    team: "Alpha Tauri",
     seasonPoints: 100,
     price: 6,
     overtakes: "5",
@@ -135,6 +149,7 @@ const TeamBuildData = [
   {
     id: 15,
     name: "Valterri Bottas",
+    team: "Alfa Romeo",
     seasonPoints: 100,
     price: 7,
     overtakes: "5",
@@ -144,6 +159,7 @@ const TeamBuildData = [
   {
     id: 16,
     name: "Guanyu Zhou",
+    team: "Alfa Romeo",
     seasonPoints: 100,
     price: 5,
     overtakes: "5",
@@ -154,6 +170,7 @@ const TeamBuildData = [
   {
     id: 17,
     name: "Alexander Albon",
+    team: "Williams",
     seasonPoints: 100,
     price: 3,
     overtakes: "5",
@@ -163,6 +180,7 @@ const TeamBuildData = [
   {
     id: 18,
     name: "Nicholas Latifi",
+    team: "Williams",
     seasonPoints: 100,
     price: 2,
     overtakes: "5",
@@ -173,6 +191,7 @@ const TeamBuildData = [
   {
     id: 19,
     name: "Mick Schmuacher",
+    team: "Haas",
     seasonPoints: 100,
     price: 4,
     overtakes: "5",
@@ -182,6 +201,7 @@ const TeamBuildData = [
   {
     id: 20,
     name: "Kevin Magnussen",
+    team: "Haas",
     seasonPoints: 100,
     price: 5,
     overtakes: "5",

@@ -1,88 +1,24 @@
-import TeamBuildMobile from "../components/TeamBuildMobile.jsx";
-import Example from "../components/Dashboard.jsx";
-import { useSession, signIn, signOut } from "next-auth/react";
-import LeagueView from "../components/leagues/LeagueView.jsx";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { Oval } from "react-loader-spinner";
-import JoinLeague from "../components/leagues/JoinLeague.jsx";
+import NewFeedComponent from "../components/feed/NewFeedComponent";
+import LayoutShell from "../components/LayoutShell";
+import JoinLeague from "../components/leagues/JoinLeague";
+import LeagueTable from "../components/leagues/LeagueTable";
+import {
+  CalendarIcon,
+  HomeIcon,
+  UserGroupIcon,
+} from "@heroicons/react/24/outline";
 
-export default function EditTeam() {
-  const { data: session } = useSession();
-  const [league, setLeague] = useState();
-  const [isLoading, setIsLoading] = useState(true);
-
+export default function Dashboard() {
   const navigation = [
-    { name: "Dashboard", href: "/dashboard", current: false },
-    { name: "Edit Team", href: "/edit-team", current: false },
-    { name: "League", href: "/league", current: true },
-    { name: "Stats", href: "#", current: false },
+    { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: false },
+    { name: "League", href: "/league", icon: CalendarIcon, current: true },
+    { name: "Stats", href: "#", icon: UserGroupIcon, current: false },
   ];
 
-  useEffect(() => {
-    if (session) {
-      axios.get(`/api/users/${session.user.email}`).then((response) => {
-        setLeague(response.data.user.league);
-        setIsLoading(false);
-      });
-    }
-  }, [session]);
-
-  async function leaveLeague() {
-    await axios.put(`/api/leagues/leave/${league}`, { user: session.user });
-    setLeague(null);
-  }
-
-  if (session) {
-    return (
-      <Example nav={navigation}>
-        {isLoading ? (
-          <div className="grid place-items-center h-screen">
-            <Oval
-              height={80}
-              width={80}
-              color="#000000"
-              wrapperStyle={{}}
-              wrapperClass=""
-              visible={true}
-              ariaLabel="oval-loading"
-              secondaryColor="#2a2b2a"
-              strokeWidth={2}
-              strokeWidthSecondary={2}
-            />
-          </div>
-        ) : (
-          <div>
-            {league ? (
-              <div>
-                <LeagueView leagueCode={league} />
-                <button onClick={leaveLeague} className="button-styling">
-                  Leave League
-                </button>
-              </div>
-            ) : (
-              <JoinLeague showSkip={false} showCreate={true} />
-            )}
-          </div>
-        )}
-      </Example>
-    );
-  } else {
-    return (
-      <div className="grid place-items-center h-screen">
-        <Oval
-          height={80}
-          width={80}
-          color="#000000"
-          wrapperStyle={{}}
-          wrapperClass=""
-          visible={true}
-          ariaLabel="oval-loading"
-          secondaryColor="#2a2b2a"
-          strokeWidth={2}
-          strokeWidthSecondary={2}
-        />
-      </div>
-    );
-  }
+  return (
+    <LayoutShell nav={navigation}>
+      <LeagueTable />
+      <NewFeedComponent />
+    </LayoutShell>
+  );
 }
