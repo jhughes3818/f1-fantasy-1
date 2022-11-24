@@ -4,11 +4,25 @@ import { useState, useEffect } from "react";
 import NewUser from "../components/NewUser.jsx";
 import axios from "axios";
 import Router from "next/router";
+import {
+  CalendarIcon,
+  HomeIcon,
+  UserGroupIcon,
+} from "@heroicons/react/24/outline";
+import LayoutShell from "../components/LayoutShell";
+import NewFeedComponent from "../components/feed/NewFeedComponent";
+import DriverTrade from "../components/team-build/DriverTrade";
 
 export default function Dashboard() {
   const { data: session } = useSession();
   const [isNewUser, setIsNewUser] = useState();
   const [isLoading, setIsLoading] = useState(true);
+
+  const navigation = [
+    { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
+    { name: "League", href: "/league", icon: CalendarIcon, current: false },
+    { name: "Stats", href: "#", icon: UserGroupIcon, current: false },
+  ];
 
   useEffect(() => {
     if (session) {
@@ -35,7 +49,12 @@ export default function Dashboard() {
       if (isLoading) {
         return <h1>Loading...</h1>;
       } else {
-        return <Layout />;
+        return (
+          <LayoutShell nav={navigation}>
+            <NewFeedComponent />
+            <DriverTrade session={session} />
+          </LayoutShell>
+        );
       }
     }
   } else {
