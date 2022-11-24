@@ -1,8 +1,11 @@
-import TeamBuildMobile from "../../components/TeamBuildMobile";
 import { useState, useEffect } from "react";
-import ProgressBars from "../../components/misc/ProgressBars";
+
 import Steps from "../../components/misc/Steps";
 import NewTeamBuildMobile from "../../components/team-build/NewTeamBuildMobile";
+import { useSession } from "next-auth/react";
+import axios from "axios";
+import Router from "next/router";
+import { Oval } from "react-loader-spinner";
 
 const steps = [
   { id: "Step 1", name: "Welcome", href: "#", status: "complete" },
@@ -11,18 +14,54 @@ const steps = [
 ];
 
 export default function CreateTeam() {
+  const { data: session } = useSession();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (session) {
+      axios
+        .get(`/api/users/${session.user.email}`)
+        .then((response) => {
+          if (response.status === 202) {
+            setIsLoading(false);
+          } else {
+            Router.push("/dashboard");
+          }
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    }
+  }, [session]);
   return (
-    <div className="grid place-items-center h-screen">
-      <div className="">
-        <div className="mb-6">
-          <Steps steps={steps} />
-        </div>
-        <h1 className="text-3xl mb-6 text-center font-bold">
-          Create Your Team
-        </h1>
-        {/* <TeamBuildMobile isNewUser={true} /> */}
-        <NewTeamBuildMobile isNewUser={true} />
+    <>
+      <div className="grid place-items-center h-screen">
+        {isLoading ? (
+          <Oval
+            height={80}
+            width={80}
+            color="#000000"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={true}
+            ariaLabel="oval-loading"
+            secondaryColor="#2a2b2a"
+            strokeWidth={2}
+            strokeWidthSecondary={2}
+          />
+        ) : (
+          <div className="">
+            <div className="mb-6">
+              <Steps steps={steps} />
+            </div>
+            <h1 className="text-3xl mb-6 text-center font-bold">
+              Create Your Team
+            </h1>
+            {/* <TeamBuildMobile isNewUser={true} /> */}
+            <NewTeamBuildMobile isNewUser={true} />
+          </div>
+        )}
       </div>
-    </div>
+    </>
   );
 }
