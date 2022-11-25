@@ -24,7 +24,7 @@ export default function Welcome() {
           if (response.status === 204) {
             setIsLoading(false);
           } else {
-            // Router.push("/dashboard");
+            Router.push("/dashboard");
             setIsLoading(false);
           }
         })
