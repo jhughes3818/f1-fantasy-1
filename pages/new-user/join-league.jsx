@@ -21,10 +21,11 @@ export default function JoinLeaguePage(props) {
       axios
         .get(`/api/users/${session.user.email}`)
         .then((response) => {
-          if (response.status === 204) {
-            setIsLoading(false);
-          } else {
+          console.log(response.data.user.league);
+          if (response.data.user.league != null) {
             Router.push("/dashboard");
+          } else {
+            setIsLoading(false);
           }
         })
         .catch((error) => {
