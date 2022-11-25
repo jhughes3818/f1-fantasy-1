@@ -22,7 +22,7 @@ export default function CreateTeam() {
       axios
         .get(`/api/users/${session.user.email}`)
         .then((response) => {
-          if (response.status === 202) {
+          if (response.status === 204) {
             setIsLoading(false);
           } else {
             Router.push("/dashboard");
