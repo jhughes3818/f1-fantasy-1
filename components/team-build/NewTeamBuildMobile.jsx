@@ -34,8 +34,14 @@ export default function NewTeamBuildMobile(props) {
   let [modalBody, setModalBody] = useState("");
   let [modalHeading, setModalHeading] = useState("");
 
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    setOptions(TeamBuildData);
+    axios.get("/api/drivers").then((response) => {
+      console.log(response.data.teams);
+      setOptions(response.data.teams);
+      setIsLoading(false);
+    });
   }, []);
 
   const addDriver = (option) => {
@@ -125,99 +131,108 @@ export default function NewTeamBuildMobile(props) {
   }
 
   return (
-    <div className="md:flex pl-4 md:px-0 gap-2">
-      <Modal
-        function={closeModal}
-        isOpen={isOpen}
-        heading={modalHeading}
-        body={modalBody}
-        buttonText="Got it"
-      />
-      <div className="gap-2">
-        <div className="w-80">
-          <select
-            onChange={(e) => {
-              sort(e.target.value);
-            }}
-            className="mt-3"
-          >
-            <option value="high">High-to-Low</option>
-            <option value="low">Low-to-High</option>
-          </select>
-          <div>
-            <div className="mt-6 flow-root overflow-y-auto h-96 border border-gray rounded-md p-3 mb-6">
-              <ul role="list" className="-my-5 divide-y divide-gray-200">
-                {options.map((person) => (
-                  <li key={person.id} className="py-4">
-                    <div className="flex items-center space-x-4">
-                      <div className="min-w-0 flex-1 pl-2">
-                        <p className="truncate text-sm font-medium text-gray-900">
-                          {person.name}
-                        </p>
-                        <p className="truncate text-sm text-gray-500">
-                          {"$" + person.price + "m"}
-                        </p>
-                      </div>
-                      <div>
-                        {driversNames.includes(person.name) ? (
-                          <button
-                            href="#"
-                            className="inline-flex items-center rounded-full border border-gray-300 bg-red-200 px-2.5 py-0.5 text-sm font-medium leading-5 text-gray-700 shadow-sm hover:bg-red-400"
-                            onClick={() => removeDriver(person)}
-                          >
-                            Remove
-                          </button>
-                        ) : (
-                          <button
-                            href="#"
-                            className="inline-flex items-center rounded-full border border-gray-300 bg-white px-2.5 py-0.5 text-sm font-medium leading-5 text-gray-700 shadow-sm hover:bg-gray-50"
-                            onClick={() => addDriver(person)}
-                          >
-                            Select
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+    <>
+      {isLoading ? (
+        <h1>Loading...</h1>
+      ) : (
+        <div className="md:flex pl-4 md:px-0 gap-2">
+          <Modal
+            function={closeModal}
+            isOpen={isOpen}
+            heading={modalHeading}
+            body={modalBody}
+            buttonText="Got it"
+          />
+          <div className="gap-2">
+            <div className="w-80">
+              <select
+                onChange={(e) => {
+                  sort(e.target.value);
+                }}
+                className="mt-3"
+              >
+                <option value="high">High-to-Low</option>
+                <option value="low">Low-to-High</option>
+              </select>
+              <div>
+                <div className="mt-6 flow-root overflow-y-auto h-96 border border-gray rounded-md p-3 mb-6">
+                  <ul role="list" className="-my-5 divide-y divide-gray-200">
+                    {options.map((person) => (
+                      <li key={person.id} className="py-4">
+                        <div className="flex items-center space-x-4">
+                          <div className="min-w-0 flex-1 pl-2">
+                            <p className="truncate text-sm font-medium text-gray-900">
+                              {person.name}
+                            </p>
+                            <p className="truncate text-sm text-gray-500">
+                              {"$" + person.price + "m"}
+                            </p>
+                          </div>
+                          <div>
+                            {driversNames.includes(person.name) ? (
+                              <button
+                                href="#"
+                                className="inline-flex items-center rounded-full border border-gray-300 bg-red-200 px-2.5 py-0.5 text-sm font-medium leading-5 text-gray-700 shadow-sm hover:bg-red-400"
+                                onClick={() => removeDriver(person)}
+                              >
+                                Remove
+                              </button>
+                            ) : (
+                              <button
+                                href="#"
+                                className="inline-flex items-center rounded-full border border-gray-300 bg-white px-2.5 py-0.5 text-sm font-medium leading-5 text-gray-700 shadow-sm hover:bg-gray-50"
+                                onClick={() => addDriver(person)}
+                              >
+                                Select
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                {driversCount === 5 && saveCurrent === false ? (
+                  <button
+                    disabled={false}
+                    className="box-styling bg-blue-500 text-white font-bold w-80 text-center"
+                    onClick={saveTeam}
+                  >
+                    Continue
+                  </button>
+                ) : (
+                  <button
+                    disabled={true}
+                    className="box-styling bg-blue-500 text-white font-bold w-80 text-center disabled:opacity-50"
+                    onClick={saveTeam}
+                  >
+                    Continue
+                  </button>
+                )}
+              </div>
             </div>
-            {driversCount === 5 && saveCurrent === false ? (
-              <button
-                disabled={false}
-                className="box-styling bg-blue-500 text-white font-bold w-80 text-center"
-                onClick={saveTeam}
-              >
-                Continue
-              </button>
-            ) : (
-              <button
-                disabled={true}
-                className="box-styling bg-blue-500 text-white font-bold w-80 text-center disabled:opacity-50"
-                onClick={saveTeam}
-              >
-                Continue
-              </button>
-            )}
           </div>
-        </div>
-      </div>
-      <div className="mt-6 md:ml-10 md:p-0 py-3">
-        <div className="mb-6">
-          <div>
-            <ProgressBar
-              fraction="[3rem]"
-              text={`Drivers Selected: ${driversNames.length} / 5`}
-            />
-            <ProgressBar fraction="1/2" text={`Cash Remaining: $${cash}m`} />{" "}
-          </div>
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900">
-            Your Team
-          </h1>
+          <div className="mt-6 md:ml-10 md:p-0 py-3">
+            <div className="mb-6">
+              <div>
+                <ProgressBar
+                  fraction="[3rem]"
+                  text={`Drivers Selected: ${driversNames.length} / 5`}
+                />
+                <ProgressBar
+                  fraction="1/2"
+                  text={`Cash Remaining: $${cash}m`}
+                />{" "}
+              </div>
+              <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+                Your Team
+              </h1>
 
-          <DriverCards drivers={drivers} />
+              <DriverCards drivers={drivers} />
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
