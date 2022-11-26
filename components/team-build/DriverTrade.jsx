@@ -3,30 +3,48 @@ import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import axios from "axios";
 import Modal from "./Modal";
+import { useQuery } from "react-query";
 
 export default function DriverTrade(props) {
-  const [buyOptions, setBuyOptions] = useState([]);
-  const [sellOptions, setSellOptions] = useState([]);
-  const [selected1, setSelected1] = useState(buyOptions[0]);
-  const [selected2, setSelected2] = useState(sellOptions[0]);
+  const [selected1, setSelected1] = useState();
+  const [selected2, setSelected2] = useState();
   const [profit, setProfit] = useState();
-  const [cash, setCash] = useState();
-  const [league, setLeague] = useState();
   const [message, setMessage] = useState();
+
+  const drivers = useQuery("drivers", () =>
+    axios.get("/api/drivers").then((res) => {
+      return res.data;
+    })
+  );
+
+  const teams = useQuery("team", () =>
+    axios.get(`/api/users/${props.session.user.email}`).then((response) => {
+      return response.data;
+    })
+  );
+
+  useEffect(() => {
+    if (drivers.data != null) {
+      setSelected2(drivers.data.teams[0]);
+    }
+
+    if (teams.data != null) {
+      setSelected1(teams.data.user.team[0]);
+      console.log(teams.data.user.team);
+    }
+  }, [drivers.data, teams.data]);
+
   //Modal states
   let [isOpen, setIsOpen] = useState(false);
   let [modalBody, setModalBody] = useState("");
   let [modalHeading, setModalHeading] = useState("");
-
-  const session = props.session;
 
   function closeModal() {
     setIsOpen(false);
   }
 
   async function confirmTrade() {
-    console.log("hello");
-    const oldTeam = sellOptions;
+    const oldTeam = teams.data.user.team;
     const driverSold = selected1;
     const driverBought = selected2;
 
@@ -44,15 +62,14 @@ export default function DriverTrade(props) {
       console.log("Hell nah dawg");
     } else {
       // Calculate new cash balance
-      const newCash = cash + profit;
-      setCash(newCash);
+      const newCash = teams.data.user.cash + profit;
       // Make new team list
       newDrivers.push(driverBought);
       console.log(newDrivers);
 
       // Create transaction record
       const trade = {
-        user: session.user,
+        user: props.session.user,
         driverSold: driverSold,
         driverSoldPrice: driverSold.price,
         driverBought: driverBought,
@@ -62,12 +79,12 @@ export default function DriverTrade(props) {
       };
 
       //
-      await axios.put(`/api/teams/${session.user.email}`, {
+      await axios.put(`/api/teams/${props.session.user.email}`, {
         drivers: newDrivers,
-        cash: cash,
-        user: session.user,
+        cash: newCash,
+        user: props.session.user,
       });
-      await axios.put(`/api/trades/${league}`, {
+      await axios.put(`/api/trades/${teams.data.user.league}`, {
         trade: trade,
       });
 
@@ -76,28 +93,6 @@ export default function DriverTrade(props) {
       setIsOpen(true);
     }
   }
-
-  useEffect(() => {
-    let driverList = [];
-    axios.get("/api/drivers").then((response) => {
-      setCash(response.data.cash);
-      setBuyOptions(response.data.teams);
-      setSelected2(response.data.teams[0]);
-    });
-
-    let teamList = [];
-
-    if (session) {
-      axios.get(`/api/users/${session.user.email}`).then((response) => {
-        console.log(response.data.user.team);
-        teamList = response.data.user.team;
-        setLeague(response.data.user.league);
-        console.log(teamList);
-        setSellOptions(teamList);
-        setSelected1(teamList[0]);
-      });
-    }
-  }, []);
 
   useEffect(() => {
     if (selected1 != null && selected2 != null) {
@@ -151,7 +146,7 @@ export default function DriverTrade(props) {
                     leaveTo="opacity-0"
                   >
                     <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                      {sellOptions.map((person, personIdx) => (
+                      {teams.data.user.team.map((person, personIdx) => (
                         <Listbox.Option
                           key={personIdx}
                           className={({ active }) =>
@@ -219,7 +214,7 @@ export default function DriverTrade(props) {
                     leaveTo="opacity-0"
                   >
                     <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                      {buyOptions.map((person, personIdx) => (
+                      {drivers.data.teams.map((person, personIdx) => (
                         <Listbox.Option
                           key={personIdx}
                           className={({ active }) =>

@@ -1,7 +1,9 @@
 import "../styles/globals.css";
-
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
+
+const queryClient = new QueryClient();
 
 export default function App({
   Component,
@@ -12,9 +14,11 @@ export default function App({
       <Head>
         <title>Fantasy Grid</title>
       </Head>
-      <SessionProvider session={session}>
-        <Component {...pageProps} />
-      </SessionProvider>
+      <QueryClientProvider client={queryClient}>
+        <SessionProvider session={session}>
+          <Component {...pageProps} />
+        </SessionProvider>
+      </QueryClientProvider>
     </>
   );
 }
