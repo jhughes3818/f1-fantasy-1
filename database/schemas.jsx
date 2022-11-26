@@ -11,6 +11,19 @@ const User =
     points: Number,
   });
 
+const Driver =
+  mongoose.models.Driver ||
+  mongoose.model("Driver", {
+    id: Number,
+    name: String,
+    Team: String,
+    seasonPoints: Number,
+    price: Number,
+    overtakes: Number,
+    bestRaceResult: Number,
+    bestQualifyingResult: Number,
+  });
+
 const League =
   mongoose.models.League ||
   mongoose.model("League", {
@@ -50,4 +63,4 @@ const Race =
 //   price: Array,
 // });
 
-export { Trade, User, League, Team, Race };
+export { Trade, User, League, Team, Race, Driver };

@@ -11,6 +11,7 @@ export default function DriverTrade(props) {
   const [selected2, setSelected2] = useState(sellOptions[0]);
   const [profit, setProfit] = useState();
   const [cash, setCash] = useState();
+  const [league, setLeague] = useState();
   const [message, setMessage] = useState();
   //Modal states
   let [isOpen, setIsOpen] = useState(false);
@@ -66,7 +67,7 @@ export default function DriverTrade(props) {
         cash: cash,
         user: session.user,
       });
-      await axios.put(`/api/trades/9153`, {
+      await axios.put(`/api/trades/${league}`, {
         trade: trade,
       });
 
@@ -80,13 +81,8 @@ export default function DriverTrade(props) {
     let driverList = [];
     axios.get("/api/drivers").then((response) => {
       setCash(response.data.cash);
-      response.data.teams.forEach((team) => {
-        team.drivers.forEach((driver) => {
-          driverList.push(driver);
-        });
-      });
-      setBuyOptions(driverList);
-      setSelected2(driverList[0]);
+      setBuyOptions(response.data.teams);
+      setSelected2(response.data.teams[0]);
     });
 
     let teamList = [];
@@ -95,6 +91,7 @@ export default function DriverTrade(props) {
       axios.get(`/api/users/${session.user.email}`).then((response) => {
         console.log(response.data.user.team);
         teamList = response.data.user.team;
+        setLeague(response.data.user.league);
         console.log(teamList);
         setSellOptions(teamList);
         setSelected1(teamList[0]);
