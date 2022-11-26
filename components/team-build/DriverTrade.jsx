@@ -3,13 +3,15 @@ import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import axios from "axios";
 import Modal from "./Modal";
-import { useQuery } from "react-query";
+import { useQuery, useMutation } from "react-query";
 
 export default function DriverTrade(props) {
   const [selected1, setSelected1] = useState();
   const [selected2, setSelected2] = useState();
   const [profit, setProfit] = useState();
   const [message, setMessage] = useState();
+
+  // const queryClient = new QueryClient();
 
   const drivers = useQuery("drivers", () =>
     axios.get("/api/drivers").then((res) => {
@@ -91,6 +93,7 @@ export default function DriverTrade(props) {
       setModalHeading("Trade Completed");
       setModalBody(`You traded ${driverSold.name} for ${driverBought.name}.`);
       setIsOpen(true);
+      setMessage("");
     }
   }
 

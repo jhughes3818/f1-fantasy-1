@@ -3,7 +3,13 @@ import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: true,
+    },
+  },
+});
 
 export default function App({
   Component,
