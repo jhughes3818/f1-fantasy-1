@@ -96,7 +96,8 @@ export default function DriverTrade(props) {
 
   useEffect(() => {
     if (selected1 != null && selected2 != null) {
-      const change = selected1.price - selected2.price;
+      const change =
+        Math.round((selected2.price - selected1.price) * 1000) / 1000;
       setProfit(change);
     }
   }, [selected1, selected2]);
@@ -259,7 +260,10 @@ export default function DriverTrade(props) {
             <div className="grid place-items-center my-4 w-80">
               {profit > 0 ? (
                 <h1 className="text-xl font-bold text-green-600 mb-4">
-                  Profit: ${profit}m
+                  Profit: $
+                  {Math.round((selected2.price - selected1.price) * 1000) /
+                    1000}
+                  m
                 </h1>
               ) : (
                 <h1 className="text-xl font-bold text-red-600 mb-4">
