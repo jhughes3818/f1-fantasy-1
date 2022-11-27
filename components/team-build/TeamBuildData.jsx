@@ -8,6 +8,7 @@ const TeamBuildData = [
     overtakes: 5,
     bestRaceResult: 4,
     bestQualifyingResult: 4,
+    results: [],
   },
   {
     id: 2,
@@ -18,6 +19,7 @@ const TeamBuildData = [
     overtakes: 5,
     bestRaceResult: 4,
     bestQualifyingResult: 4,
+    results: [],
   },
 
   {
@@ -29,6 +31,7 @@ const TeamBuildData = [
     overtakes: 5,
     bestRaceResult: 4,
     bestQualifyingResult: 4,
+    results: [],
   },
   {
     id: 4,
@@ -39,6 +42,7 @@ const TeamBuildData = [
     overtakes: 5,
     bestRaceResult: 4,
     bestQualifyingResult: 4,
+    results: [],
   },
 
   {
@@ -50,6 +54,7 @@ const TeamBuildData = [
     overtakes: 5,
     bestRaceResult: 4,
     bestQualifyingResult: 4,
+    results: [],
   },
   {
     id: 6,
@@ -60,6 +65,7 @@ const TeamBuildData = [
     overtakes: 5,
     bestRaceResult: 4,
     bestQualifyingResult: 4,
+    results: [],
   },
 
   {
@@ -71,6 +77,7 @@ const TeamBuildData = [
     overtakes: 5,
     bestRaceResult: 4,
     bestQualifyingResult: 4,
+    results: [],
   },
   {
     id: 8,
@@ -81,6 +88,7 @@ const TeamBuildData = [
     overtakes: 5,
     bestRaceResult: 4,
     bestQualifyingResult: 4,
+    results: [],
   },
 
   {
@@ -92,6 +100,7 @@ const TeamBuildData = [
     overtakes: 5,
     bestRaceResult: 4,
     bestQualifyingResult: 4,
+    results: [],
   },
   {
     id: 10,
@@ -102,6 +111,7 @@ const TeamBuildData = [
     overtakes: 5,
     bestRaceResult: 4,
     bestQualifyingResult: 4,
+    results: [],
   },
 
   {
@@ -113,6 +123,7 @@ const TeamBuildData = [
     overtakes: 5,
     bestRaceResult: 4,
     bestQualifyingResult: 4,
+    results: [],
   },
   {
     id: 12,
@@ -123,6 +134,7 @@ const TeamBuildData = [
     overtakes: 5,
     bestRaceResult: 4,
     bestQualifyingResult: 4,
+    results: [],
   },
 
   {
@@ -134,6 +146,7 @@ const TeamBuildData = [
     overtakes: 5,
     bestRaceResult: 4,
     bestQualifyingResult: 4,
+    results: [],
   },
   {
     id: 14,
@@ -144,6 +157,7 @@ const TeamBuildData = [
     overtakes: 5,
     bestRaceResult: 4,
     bestQualifyingResult: 4,
+    results: [],
   },
 
   {
@@ -155,6 +169,7 @@ const TeamBuildData = [
     overtakes: 5,
     bestRaceResult: 4,
     bestQualifyingResult: 4,
+    results: [],
   },
   {
     id: 16,
@@ -165,6 +180,7 @@ const TeamBuildData = [
     overtakes: 5,
     bestRaceResult: 4,
     bestQualifyingResult: 4,
+    results: [],
   },
 
   {
@@ -176,6 +192,7 @@ const TeamBuildData = [
     overtakes: 5,
     bestRaceResult: 4,
     bestQualifyingResult: 4,
+    results: [],
   },
   {
     id: 18,
@@ -186,6 +203,7 @@ const TeamBuildData = [
     overtakes: 5,
     bestRaceResult: 4,
     bestQualifyingResult: 4,
+    results: [],
   },
 
   {
@@ -197,6 +215,7 @@ const TeamBuildData = [
     overtakes: 5,
     bestRaceResult: 4,
     bestQualifyingResult: 4,
+    results: [],
   },
   {
     id: 20,
@@ -207,6 +226,7 @@ const TeamBuildData = [
     overtakes: 5,
     bestRaceResult: 4,
     bestQualifyingResult: 4,
+    results: [],
   },
 ];
 

@@ -1,4 +1,4 @@
-import { Race, User } from "../../../database/schemas";
+import { Race, User, Driver } from "../../../database/schemas";
 import mongoose from "mongoose";
 import axios from "axios";
 
@@ -10,13 +10,15 @@ mongoose.connect(uri);
 const GetLatestRoundData = async (round) => {
   let results = {};
   let existingDrivers = [];
-  const driversObject = await Race.find();
+  const driversObject = await Driver.find();
 
   driversObject.forEach((driver) => {
     existingDrivers.push(driver.name);
   });
 
   await axios
+
+    //Get round data from ergast and construct object.
     .get(`http://ergast.com/api/f1/2022/${round}/results.json`)
     .then((response) => {
       const raceResults = response.data.MRData.RaceTable.Races[0].Results;
@@ -30,18 +32,48 @@ const GetLatestRoundData = async (round) => {
 
         const name = driver.Driver.givenName + " " + driver.Driver.familyName;
 
-        //const driverObject = Race.findOne({ name: name }).exec();
+        //Get driver documents and insert latest result
 
         if (existingDrivers.includes(name)) {
-          Race.findOneAndUpdate(
+          // const driverDoc = Driver.find({ name: name }).exec();
+          let pointsArray = [];
+          let seasonPoints = 0;
+          let overtakes = 0;
+          let overtakesCount = 0;
+          let finishingPosition = [];
+          let qualifyingPosition = [];
+          const resultsArray = driversObject.find(
+            (x) => x.name === name
+          ).results;
+
+          resultsArray.push(results);
+
+          resultsArray.forEach((result) => {
+            seasonPoints = seasonPoints + parseInt(results.points);
+            pointsArray.push(parseInt(result.points));
+            overtakes = overtakes + parseInt(result.positionsGained);
+            overtakesCount = overtakesCount + 1;
+            finishingPosition.push(result.finishingPosition);
+            qualifyingPosition.push(result.startingPosition);
+          });
+
+          console.log(name);
+          console.log(pointsArray);
+          console.log(seasonPoints);
+
+          Driver.findOneAndUpdate(
             { name: name },
             {
-              $push: { results: results },
+              results: resultsArray,
+              seasonPoints: seasonPoints,
+              overtakes: overtakes / overtakesCount,
+              bestRaceResult: Math.min(...finishingPosition),
+              bestQualifyingResult: Math.min(...qualifyingPosition),
             }
           ).exec();
         } else {
-          const newDriver = new Race({ name: name, results: results });
-          newDriver.save();
+          // const newDriver = new Driver({ name: name, results: resultsArray });
+          // newDriver.save();
         }
       });
     });
@@ -55,7 +87,6 @@ async function UpdateTeamPoints(round) {
     driverObject[driver.name] = driver.results.slice(-1);
   });
 
-  console.log(driverObject);
   const users = await User.find().exec();
 
   users.forEach((user) => {
@@ -89,10 +120,8 @@ async function UpdateTeamPoints(round) {
 export default async function handler(req, res) {
   const roundToGet = req.body.round;
   await GetLatestRoundData(roundToGet);
-  console.log("Got round data");
 
   await UpdateTeamPoints();
-  console.log("Updated Points");
-  console.log(roundToGet);
+
   res.status(200).json({ message: "done", round: roundToGet });
 }
