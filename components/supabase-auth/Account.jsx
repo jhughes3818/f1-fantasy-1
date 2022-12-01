@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { Oval } from "react-loader-spinner";
 
 export default function Account({ session }) {
   const supabase = useSupabaseClient();
@@ -111,22 +112,36 @@ export default function Account({ session }) {
         />
       </div>
 
-      <div className="mb-4">
+      <div className="flex gap-2">
         <button
-          className="button primary block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={() => updateProfile({ username, website, avatar_url })}
-          disabled={loading}
-        >
-          {loading ? "Loading ..." : "Update"}
-        </button>
-      </div>
-
-      <div>
-        <button
-          className="button block bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          className="inline-flex items-center rounded-md border border-transparent bg-indigo-100 px-4 py-2 text-base font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           onClick={() => supabase.auth.signOut()}
         >
           Sign Out
+        </button>
+        <button
+          className="inline-flex items-center rounded-md border border-transparent bg-indigo-600 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 px-4 py-2"
+          onClick={() => updateProfile({ username, website, avatar_url })}
+          disabled={loading}
+        >
+          <span>
+            {loading ? (
+              <Oval
+                height={20}
+                width={20}
+                color="#ffffff"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
+                ariaLabel="oval-loading"
+                secondaryColor="#2a2b2a"
+                strokeWidth={2}
+                strokeWidthSecondary={2}
+              />
+            ) : (
+              "Update"
+            )}
+          </span>
         </button>
       </div>
     </div>
