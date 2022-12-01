@@ -1,6 +1,6 @@
 import JoinLeague from "../../components/leagues/JoinLeague";
 import Steps from "../../components/misc/Steps";
-import { useSession } from "next-auth/react";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import axios from "axios";
 import Router from "next/router";
 import { Oval } from "react-loader-spinner";
@@ -13,7 +13,7 @@ const steps = [
 ];
 
 export default function JoinLeaguePage(props) {
-  const { data: session } = useSession();
+  const session = useSession();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

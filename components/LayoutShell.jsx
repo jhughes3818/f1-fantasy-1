@@ -2,7 +2,7 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
-import { useSession } from "next-auth/react";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -10,7 +10,7 @@ function classNames(...classes) {
 
 export default function LayoutShell(props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { data: session } = useSession();
+  const session = useSession();
 
   const navigation = props.nav;
 

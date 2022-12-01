@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 import DriverCards from "./DriverCards";
 import ProgressBar from "./ProgressBar";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import axios from "axios";
 import Router from "next/router.js";
 import Modal from "./Modal";
 import DriverList from "./DriverList";
 
 export default function NewTeamBuildMobile(props) {
-  const { data: session } = useSession();
+  const session = useSession();
   //Save Currency
   const [saveCurrent, setSaveCurrent] = useState(false);
 

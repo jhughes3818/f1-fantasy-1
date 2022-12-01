@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -10,7 +10,7 @@ function classNames(...classes) {
 }
 
 const Example = (props) => {
-  const { data: session } = useSession();
+  const session = useSession();
 
   const user = {
     name: session.user.name,

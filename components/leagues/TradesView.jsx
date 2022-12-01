@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useSession } from "next-auth/react";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 
 export default function TradesView() {
-  const { data: session } = useSession();
+  const session = useSession();
   const [leagueCode, setLeagueCode] = useState();
   const [trades, setTrades] = useState();
 

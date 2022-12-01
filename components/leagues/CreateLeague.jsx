@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { useState } from "react";
-import { useSession } from "next-auth/react";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import axios from "axios";
 import Modal from "../team-build/Modal";
 
 export default function CreateLeague() {
   const [leagueCreated, setLeagueCreated] = useState(false);
   const [leagueCode, setLeagueCode] = useState();
-  const { data: session } = useSession();
+  const session = useSession();
   const [name, setName] = useState();
   const [modalBody, setModalBody] = useState();
   const [modalHeading, setModalHeading] = useState();

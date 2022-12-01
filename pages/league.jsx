@@ -7,13 +7,13 @@ import {
   HomeIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
-import { useSession } from "next-auth/react";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Oval } from "react-loader-spinner";
 
 export default function Dashboard() {
-  const { data: session } = useSession();
+  const session = useSession();
   const [leagueCode, setLeagueCode] = useState();
   const [isLoading, setIsLoading] = useState(true);
 

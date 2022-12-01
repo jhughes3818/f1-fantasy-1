@@ -1,11 +1,11 @@
 import TeamBuildMobile from "../components/TeamBuildMobile.jsx";
 import Example from "../components/Dashboard.jsx";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { Oval } from "react-loader-spinner";
 import DriverTrade from "../components/team-build/DriverTrade.jsx";
 
 export default function EditTeam() {
-  const { data: session } = useSession();
+  const session = useSession();
   const navigation = [
     { name: "Dashboard", href: "/dashboard", current: false },
     { name: "Edit Team", href: "/edit-team", current: true },

@@ -1,30 +1,40 @@
-import { useEffect, useState } from "react";
-import { PencilSquareIcon } from "@heroicons/react/20/solid";
-import NewTeamGrid from "../components/team-build/NewTeamGrid.jsx";
-import Example from "../components/Dashboard.jsx";
-import Link from "next/link";
-import Loading from "../components/Loading.jsx";
-import { useSession, signIn, signOut } from "next-auth/react";
-import axios from "axios";
-import JoinLeague from "../components/leagues/JoinLeague.jsx";
-import NewUser from "../components/NewUser.jsx";
-import LeagueView from "../components/leagues/LeagueView.jsx";
-import { TailSpin, Oval } from "react-loader-spinner";
+import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
+import Account from "../components/supabase-auth/Account";
+import Dashboard from "./dashboard";
+import LayoutShell from "../components/LayoutShell";
+import {
+  CalendarIcon,
+  HomeIcon,
+  UserGroupIcon,
+} from "@heroicons/react/24/outline";
 
-export default function Home(props) {
+const Home = () => {
+  const session = useSession();
+  const supabase = useSupabaseClient();
+
+  const navigation = [
+    { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
+    { name: "League", href: "/league", icon: CalendarIcon, current: false },
+    { name: "Stats", href: "#", icon: UserGroupIcon, current: false },
+  ];
+
   return (
-    <div className="grid place-items-center h-screen">
-      <div className="box-styling h-36 text-center px-4">
-        <h1 className="text-2xl font-bold text-center">
-          Hi! Please sign in to continue.
-        </h1>
-        <button
-          className="box-styling mt-6 p-3"
-          onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-        >
-          Sign in
-        </button>
-      </div>
+    <div>
+      {!session ? (
+        <Auth
+          supabaseClient={supabase}
+          appearance={{ theme: ThemeSupa }}
+          theme="light"
+        />
+      ) : (
+        <LayoutShell nav={navigation}>
+          <h1>Hello World</h1>
+          <h1>Hello World</h1>
+        </LayoutShell>
+      )}
     </div>
   );
-}
+};
+
+export default Home;

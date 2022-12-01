@@ -24,7 +24,7 @@ import {
   UserCircleIcon,
 } from "@heroicons/react/20/solid";
 import TradeFeedComponent from "./TradeFeedComponent";
-import { useSession } from "next-auth/react";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -70,7 +70,7 @@ function classNames(...classes) {
 }
 
 export default function NewFeedComponent() {
-  const { data: session } = useSession();
+  const session = useSession();
   const [leagueCode, setLeagueCode] = useState();
   const [trades, setTrades] = useState();
   const [activity, setActivity] = useState([]);
