@@ -291,6 +291,27 @@ export default function DriverTrade(props) {
       </>
     );
   } else {
-    return <h1>Loading...</h1>;
+    return (
+      <>
+        <div className="border-b border-gray-200 pb-5 mb-5">
+          <h3 className="text-lg font-medium leading-6 text-gray-900 ">
+            Make A Trade
+          </h3>
+        </div>
+        <div className="grid place-items-center">
+          <div className="gap-4">
+            <div className="w-80 my-4">
+              <div className="font-bold text-lg w-full text-center skeleton-loader rounded-md h-10 bg-gray-200 mb-4"></div>
+              <div className="font-bold text-lg w-full text-center skeleton-loader rounded-md h-10 bg-gray-200 mb-4"></div>
+              <div className="font-bold text-lg w-full text-center skeleton-loader rounded-md h-10 bg-gray-200 mb-4"></div>
+              <div className="font-bold text-lg w-full text-center skeleton-loader rounded-md h-10 bg-gray-200 mb-4"></div>
+              <div className="font-bold text-lg w-full text-center skeleton-loader rounded-md h-10 bg-gray-200 mb-4"></div>
+              <div className="font-bold text-lg w-full text-center skeleton-loader rounded-md h-10 bg-gray-200 mb-4"></div>
+              <div className="font-bold text-lg w-full text-center skeleton-loader rounded-md h-10 bg-gray-200 mb-4"></div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
   }
 }
