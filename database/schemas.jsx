@@ -22,6 +22,7 @@ const Driver =
     overtakes: Number,
     bestRaceResult: Number,
     bestQualifyingResult: Number,
+    results: Array,
   });
 
 const League =
