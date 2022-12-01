@@ -1,5 +1,5 @@
 import Layout from "../components/Layout";
-import { useSession } from "next-auth/react";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useState, useEffect } from "react";
 import NewUser from "../components/NewUser.jsx";
 import axios from "axios";
@@ -15,7 +15,7 @@ import DriverTrade from "../components/team-build/DriverTrade";
 import { Oval } from "react-loader-spinner";
 
 export default function Dashboard() {
-  const { data: session } = useSession();
+  const session = useSession();
   const [isNewUser, setIsNewUser] = useState();
   const [isLoading, setIsLoading] = useState(true);
 

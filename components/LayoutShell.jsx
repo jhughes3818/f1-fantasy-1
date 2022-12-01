@@ -2,7 +2,7 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
-import { useSession } from "next-auth/react";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -10,7 +10,7 @@ function classNames(...classes) {
 
 export default function LayoutShell(props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  // const { data: session } = useSession();
+  const session = useSession();
 
   const navigation = props.nav;
 
@@ -180,17 +180,17 @@ export default function LayoutShell(props) {
                 <a href="#" className="group block w-full flex-shrink-0">
                   <div className="flex items-center">
                     <div>
-                      {/* {session ? (
+                      {session ? (
                         <img
                           className="inline-block h-9 w-9 rounded-full"
                           src={session.user.image}
                           alt=""
                         />
-                      ) : null} */}
+                      ) : null}
                     </div>
                     <div className="ml-3">
                       <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
-                        {/* {session ? session.user.name : "..."} */}
+                        {session ? session.user.name : "..."}
                       </p>
                       <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
                         View profile
