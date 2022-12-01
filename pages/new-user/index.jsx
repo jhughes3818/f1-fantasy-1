@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Steps from "../../components/misc/Steps";
-import { useSession } from "next-auth/react";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Router from "next/router";
@@ -13,7 +13,7 @@ const steps = [
 ];
 
 export default function Welcome() {
-  const { data: session } = useSession();
+  const session = useSession();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

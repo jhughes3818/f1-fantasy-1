@@ -7,7 +7,7 @@ import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import NewTeamGrid from "./team-build/NewTeamGrid.jsx";
 import Modal from "./team-build/Modal.jsx";
 import axios from "axios";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import Link from "next/link.js";
 import Router from "next/router.js";
 
@@ -20,7 +20,7 @@ export default function TeamBuildMobile(props) {
   const [saveCurrent, setSaveCurrent] = useState(false);
 
   //Session
-  const { data: session } = useSession();
+  const session = useSession();
 
   //States used for handling driver information
   const [options, setOptions] = useState([]);

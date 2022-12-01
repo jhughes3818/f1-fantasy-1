@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import axios from "axios";
 import { useState } from "react";
 import Modal from "../team-build/Modal";
@@ -15,6 +15,7 @@ export default function JoinLeague(props) {
   const [showHome, setShowHome] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showLeague, setShowLeague] = useState(null);
+  const session = useSession();
 
   function closeModal() {
     setIsOpen(false);
@@ -50,7 +51,6 @@ export default function JoinLeague(props) {
       });
   }
 
-  const { data: session } = useSession();
   return (
     <div>
       <Modal

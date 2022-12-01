@@ -13,7 +13,7 @@ import {
 
 import DriverTrade from "./team-build/DriverTrade";
 import NewFeedComponent from "./feed/NewFeedComponent";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import Image from "next/image";
 
 const navigation = [
@@ -28,7 +28,7 @@ function classNames(...classes) {
 
 export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { data: session } = useSession();
+  const session = useSession();
 
   return (
     <>
