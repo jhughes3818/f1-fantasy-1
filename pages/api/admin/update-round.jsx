@@ -61,6 +61,8 @@ const GetLatestRoundData = async (round) => {
           console.log(pointsArray);
           console.log(seasonPoints);
 
+          //The points seems to be adding up wrong. For example, round 2 Max Verstappen is at 50 points, despite scoring 0 and 25 points, so it seems to be double counting?
+
           Driver.findOneAndUpdate(
             { name: name },
             {
