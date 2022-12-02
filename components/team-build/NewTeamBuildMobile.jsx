@@ -8,8 +8,15 @@ import axios from "axios";
 import Router from "next/router.js";
 import Modal from "./Modal";
 import DriverList from "./DriverList";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 export default function NewTeamBuildMobile(props) {
+  const supabase = useSupabaseClient();
+
   const session = useSession();
   //Save Currency
   const [saveCurrent, setSaveCurrent] = useState(false);
@@ -28,6 +35,7 @@ export default function NewTeamBuildMobile(props) {
   const [driversNames, setDriversNames] = useState([]);
   const [teamBuildData, setTeamBuildData] = useState();
   const [driverSort, setDriverSort] = useState("high");
+  const [driversList, setDriversList] = useState([]);
 
   //Modal states
   let [isOpen, setIsOpen] = useState(false);
@@ -38,10 +46,19 @@ export default function NewTeamBuildMobile(props) {
 
   useEffect(() => {
     axios.get("/api/drivers").then((response) => {
-      console.log(response.data.teams);
+      //console.log(response.data.teams);
       setOptions(response.data.teams);
       setIsLoading(false);
     });
+  }, []);
+
+  useEffect(() => {
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    supabase
+      .from("drivers")
+      .select("*")
+      .then((response) => setDriversList(response.data));
   }, []);
 
   const addDriver = (option) => {
@@ -157,15 +174,16 @@ export default function NewTeamBuildMobile(props) {
               <div>
                 <div className="mt-6 flow-root overflow-y-auto h-96 border border-gray rounded-md p-3 mb-6">
                   <ul role="list" className="-my-5 divide-y divide-gray-200">
-                    {options.map((person) => (
+                    {driversList.map((person) => (
                       <li key={person.id} className="py-4">
                         <div className="flex items-center space-x-4">
                           <div className="min-w-0 flex-1 pl-2">
                             <p className="truncate text-sm font-medium text-gray-900">
-                              {person.name}
+                              {person.first_name} {person.last_name}
                             </p>
                             <p className="truncate text-sm text-gray-500">
-                              {"$" + person.price + "m"}
+                              {/* {"$" + person.price + "m"} */}
+                              {person.team}
                             </p>
                           </div>
                           <div>

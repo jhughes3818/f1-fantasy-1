@@ -22,13 +22,15 @@ const Home = () => {
   return (
     <div>
       {!session ? (
-        <Auth
-          supabaseClient={supabase}
-          appearance={{ theme: ThemeSupa }}
-          theme="light"
-        />
+        <div className="grid place-items-center h-screen">
+          <Auth
+            supabaseClient={supabase}
+            appearance={{ theme: ThemeSupa }}
+            theme="light"
+          />
+        </div>
       ) : (
-        <LayoutShell nav={navigation}>
+        <LayoutShell nav={navigation} session={session}>
           <h1>Hello World</h1>
           <h1>Hello World</h1>
         </LayoutShell>

@@ -34,7 +34,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <LayoutShell nav={navigation}>
+    <LayoutShell nav={navigation} session={session}>
       {isLoading ? (
         <div className="grid place-items-center h-full">
           <Oval
