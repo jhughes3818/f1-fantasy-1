@@ -11,7 +11,7 @@ function classNames(...classes) {
 export default function LayoutShell(props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   // const session = useSession();
-  navigation = props.nav;
+  const navigation = props.nav;
 
   return (
     <>
