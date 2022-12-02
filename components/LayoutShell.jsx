@@ -12,6 +12,7 @@ export default function LayoutShell(props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   // const session = useSession();
   const navigation = props.nav;
+  const session = props.session;
 
   return (
     <>
@@ -109,7 +110,7 @@ export default function LayoutShell(props) {
                       <div className="flex items-center">
                         <div className="ml-3">
                           <p className="text-base font-medium text-gray-700 group-hover:text-gray-900">
-                            {/* {session.user ? session.user.email : null} */}
+                            {session ? session.user.email : null}
                           </p>
                           <p className="text-sm font-medium text-gray-500 group-hover:text-gray-700">
                             View profile
@@ -173,7 +174,7 @@ export default function LayoutShell(props) {
                   <div className="flex items-center">
                     <div className="ml-3">
                       <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
-                        {/* {session.user ? session.user.email : "..."} */}
+                        {session ? session.user.email : "..."}
                       </p>
                       <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
                         View profile
