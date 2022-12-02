@@ -30,7 +30,7 @@ const Home = () => {
           />
         </div>
       ) : (
-        <LayoutShell nav={navigation}>
+        <LayoutShell nav={navigation} session={session}>
           <h1>Hello World</h1>
           <h1>Hello World</h1>
         </LayoutShell>
