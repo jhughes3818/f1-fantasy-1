@@ -75,7 +75,7 @@ export default function NewTeamBuildMobile(props) {
       setIsOpen(true);
     } else {
       setDrivers([...drivers, option]);
-      setDriversNames([...driversNames, option.name]);
+      setDriversNames([...driversNames, option.id]);
       const newDriversCount = driversCount + 1;
       setDriversCount(newDriversCount);
       // const newCash = cash - option.price;
@@ -84,14 +84,12 @@ export default function NewTeamBuildMobile(props) {
   };
 
   const removeDriver = (name) => {
-    const newDrivers = drivers.filter((driver) => driver.name !== name.name);
+    const newDrivers = drivers.filter((driver) => driver.id !== name.id);
 
     const driverToDelete = drivers.filter((driver) => driver.name == name.name);
     console.log(driversNames);
     console.log(name.name);
-    const newDriversNames = driversNames.filter(
-      (driver) => driver !== name.name
-    );
+    const newDriversNames = driversNames.filter((driver) => driver !== name.id);
     console.log(newDriversNames);
     setDriversNames(newDriversNames);
     setDrivers(newDrivers);
@@ -128,21 +126,21 @@ export default function NewTeamBuildMobile(props) {
 
   function sort(direction) {
     if (direction === "low") {
-      const newOptions = [...options];
+      const newOptions = [...driversList];
       newOptions.sort(function (a, b) {
         return a.price - b.price;
       });
 
-      setOptions(newOptions);
+      setDriversList(newOptions);
 
       console.log("Changed Sort Low");
     } else {
-      const newOptions = [...options];
+      const newOptions = [...driversList];
       newOptions.sort(function (a, b) {
         return b.price - a.price;
       });
 
-      setOptions(newOptions);
+      setDriversList(newOptions);
       console.log("Changed Sort High");
     }
   }
@@ -182,12 +180,11 @@ export default function NewTeamBuildMobile(props) {
                               {person.first_name} {person.last_name}
                             </p>
                             <p className="truncate text-sm text-gray-500">
-                              {/* {"$" + person.price + "m"} */}
-                              {person.team}
+                              {"$" + person.price + "m"}
                             </p>
                           </div>
                           <div>
-                            {driversNames.includes(person.name) ? (
+                            {driversNames.includes(person.id) ? (
                               <button
                                 href="#"
                                 className="inline-flex items-center rounded-full border border-gray-300 bg-red-200 px-2.5 py-0.5 text-sm font-medium leading-5 text-gray-700 shadow-sm hover:bg-red-400"

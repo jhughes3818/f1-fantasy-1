@@ -16,6 +16,7 @@ export default async function handler(req, res) {
         last_name: driver.last_name,
         team: driver.team,
         points: driver.points,
+        price: driver.price,
       },
     ]);
 
