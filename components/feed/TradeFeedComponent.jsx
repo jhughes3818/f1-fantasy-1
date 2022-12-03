@@ -25,6 +25,7 @@ export default function TradeFeedComponent(props) {
           <a
             href={activityItem.person.href}
             className="font-medium text-gray-900"
+            id={activityItem.person.name}
           >
             {activityItem.person.name}
           </a>{" "}
@@ -32,6 +33,7 @@ export default function TradeFeedComponent(props) {
           <a
             href={activityItem.assigned.href}
             className="font-medium text-gray-900"
+            id={activityItem.assigned.name}
           >
             {activityItem.assigned.name}
           </a>{" "}
