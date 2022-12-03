@@ -1,40 +1,23 @@
-import { TeamBuildData } from "./TeamBuildData";
 import { useEffect, useState } from "react";
 import DriverCards from "./DriverCards";
 import ProgressBar from "./ProgressBar";
-import Link from "next/link";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import axios from "axios";
-import Router from "next/router.js";
 import Modal from "./Modal";
-import DriverList from "./DriverList";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { createClient } from "@supabase/supabase-js";
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+import supabase from "../../database/supabaseClient";
 
 export default function NewTeamBuildMobile(props) {
-  const supabase = useSupabaseClient();
-
   const session = useSession();
   //Save Currency
   const [saveCurrent, setSaveCurrent] = useState(false);
-
-  //States used for handling driver information
-  const [options, setOptions] = useState([]);
 
   //States used for progress of building team
   const [driversCount, setDriversCount] = useState(0);
   const [cash, setCash] = useState(30);
 
-  //States used for team select
-  const [selected, setSelected] = useState({});
-
   const [drivers, setDrivers] = useState([]);
   const [driversNames, setDriversNames] = useState([]);
-  const [teamBuildData, setTeamBuildData] = useState();
-  const [driverSort, setDriverSort] = useState("high");
   const [driversList, setDriversList] = useState([]);
 
   //Modal states

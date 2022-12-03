@@ -1,11 +1,6 @@
-import { createClient } from "@supabase/supabase-js";
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+import supabase from "../../../../database/supabaseClient";
 
 export default async function handler(req, res) {
-  const supabase = createClient(supabaseUrl, supabaseKey);
-
   await supabase
     .from("teams")
     .select("driver_1, driver_2, driver_3, driver_4, driver_5")

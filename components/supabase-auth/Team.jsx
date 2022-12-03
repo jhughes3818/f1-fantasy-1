@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { Oval } from "react-loader-spinner";
+import supabase from "../../database/supabaseClient";
 
 export default function Team({ session }) {
-  const supabase = useSupabaseClient();
+  //const supabase = useSupabaseClient();
   const user = useUser();
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState(null);
