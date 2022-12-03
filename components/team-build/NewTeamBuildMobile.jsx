@@ -46,7 +46,6 @@ export default function NewTeamBuildMobile(props) {
 
   useEffect(() => {
     axios.get("/api/drivers").then((response) => {
-      //console.log(response.data.teams);
       setOptions(response.data.teams);
       setIsLoading(false);
     });
@@ -64,7 +63,7 @@ export default function NewTeamBuildMobile(props) {
   const addDriver = (option) => {
     const newCash = Math.round((cash - option.price) * 100) / 100;
     setSaveCurrent(false);
-    console.log(option);
+
     if (driversCount >= 5) {
       setModalBody("You can choose a maximum of 5 drivers for your team.");
       setModalHeading("Maximum number of drivers.");
@@ -75,7 +74,7 @@ export default function NewTeamBuildMobile(props) {
       setIsOpen(true);
     } else {
       setDrivers([...drivers, option]);
-      setDriversNames([...driversNames, option.name]);
+      setDriversNames([...driversNames, option.id]);
       const newDriversCount = driversCount + 1;
       setDriversCount(newDriversCount);
       // const newCash = cash - option.price;
@@ -84,15 +83,13 @@ export default function NewTeamBuildMobile(props) {
   };
 
   const removeDriver = (name) => {
-    const newDrivers = drivers.filter((driver) => driver.name !== name.name);
+    console.log(session.user.id);
+    const newDrivers = drivers.filter((driver) => driver.id !== name.id);
 
     const driverToDelete = drivers.filter((driver) => driver.name == name.name);
-    console.log(driversNames);
-    console.log(name.name);
-    const newDriversNames = driversNames.filter(
-      (driver) => driver !== name.name
-    );
-    console.log(newDriversNames);
+
+    const newDriversNames = driversNames.filter((driver) => driver !== name.id);
+
     setDriversNames(newDriversNames);
     setDrivers(newDrivers);
     const newDriversCount = driversCount - 1;
@@ -101,25 +98,45 @@ export default function NewTeamBuildMobile(props) {
     setCash(newCash);
   };
 
-  function saveTeam() {
-    console.log(session);
-    axios
-      .post(`/api/teams/${session.user.email}`, {
-        drivers: drivers,
+  async function saveTeam() {
+    // axios
+    //   .post(`/api/teams/${session.user.email}`, {
+    //     drivers: drivers,
+    //     cash: cash,
+    //     user: session.user,
+    //   })
+    //   .then(function (response) {
+    //     Router.push("/new-user/join-league");
+    //     // setModalBody("Your team has been created.");
+    //     // setModalHeading("Success!");
+    //     // setIsOpen(true);
+    //     // setSaveCurrent(true);
+    //   })
+    //   .catch(function (error) {});
+
+    try {
+      // setLoading(true);
+
+      const updates = {
+        driver_1: drivers[0].id,
+        driver_2: drivers[1].id,
+        driver_3: drivers[2].id,
+        driver_4: drivers[3].id,
+        driver_5: drivers[4].id,
         cash: cash,
-        user: session.user,
-      })
-      .then(function (response) {
-        console.log(response);
-        Router.push("/new-user/join-league");
-        // setModalBody("Your team has been created.");
-        // setModalHeading("Success!");
-        // setIsOpen(true);
-        // setSaveCurrent(true);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+        user_id: session.user.id,
+        updated_at: new Date().toISOString(),
+      };
+
+      let { error } = await supabase.from("teams").upsert(updates);
+      if (error) throw error;
+      alert("Profile updated!");
+    } catch (error) {
+      alert("Error updating the data!");
+      console.log(error);
+    } finally {
+      // setLoading(false);
+    }
   }
 
   function closeModal() {
@@ -128,22 +145,19 @@ export default function NewTeamBuildMobile(props) {
 
   function sort(direction) {
     if (direction === "low") {
-      const newOptions = [...options];
+      const newOptions = [...driversList];
       newOptions.sort(function (a, b) {
         return a.price - b.price;
       });
 
-      setOptions(newOptions);
-
-      console.log("Changed Sort Low");
+      setDriversList(newOptions);
     } else {
-      const newOptions = [...options];
+      const newOptions = [...driversList];
       newOptions.sort(function (a, b) {
         return b.price - a.price;
       });
 
-      setOptions(newOptions);
-      console.log("Changed Sort High");
+      setDriversList(newOptions);
     }
   }
 
@@ -182,12 +196,11 @@ export default function NewTeamBuildMobile(props) {
                               {person.first_name} {person.last_name}
                             </p>
                             <p className="truncate text-sm text-gray-500">
-                              {/* {"$" + person.price + "m"} */}
-                              {person.team}
+                              {"$" + person.price + "m"}
                             </p>
                           </div>
                           <div>
-                            {driversNames.includes(person.name) ? (
+                            {driversNames.includes(person.id) ? (
                               <button
                                 href="#"
                                 className="inline-flex items-center rounded-full border border-gray-300 bg-red-200 px-2.5 py-0.5 text-sm font-medium leading-5 text-gray-700 shadow-sm hover:bg-red-400"

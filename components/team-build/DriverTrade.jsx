@@ -18,19 +18,22 @@ export default function DriverTrade(props) {
   );
 
   const teams = useQuery("team", () =>
-    axios.get(`/api/users/${props.session.user.email}`).then((response) => {
-      return response.data;
-    })
+    axios
+      .get(`/api/teams/supabase/${props.session.user.id}`)
+      .then((response) => {
+        console.log(response.data.drivers);
+        return response.data;
+      })
   );
 
   useEffect(() => {
     if (drivers.data != null) {
-      setSelected2(drivers.data.teams[0]);
+      setSelected2(drivers.data.drivers[0]);
     }
 
     if (teams.data != null) {
-      setSelected1(teams.data.user.team[0]);
-      console.log(teams.data.user.team);
+      setSelected1(teams.data.drivers[0]);
+      console.log(teams.data.drivers[0].first_name);
     }
   }, [drivers.data, teams.data]);
 
@@ -97,7 +100,7 @@ export default function DriverTrade(props) {
   useEffect(() => {
     if (selected1 != null && selected2 != null) {
       const change =
-        Math.round((selected2.price - selected1.price) * 1000) / 1000;
+        Math.round((selected1.price - selected2.price) * 1000) / 1000;
       setProfit(change);
     }
   }, [selected1, selected2]);
@@ -128,7 +131,7 @@ export default function DriverTrade(props) {
                 <div className="relative mt-1 z-40">
                   <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm h-10">
                     <span className="block truncate">
-                      {selected1.name}{" "}
+                      {selected1.first_name} {selected1.last_name}{" "}
                       <span className="text-gray-500">
                         ({selected1.price}m)
                       </span>
@@ -147,7 +150,7 @@ export default function DriverTrade(props) {
                     leaveTo="opacity-0"
                   >
                     <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                      {teams.data.user.team.map((person, personIdx) => (
+                      {teams.data.drivers.map((person, personIdx) => (
                         <Listbox.Option
                           key={personIdx}
                           className={({ active }) =>
@@ -166,7 +169,7 @@ export default function DriverTrade(props) {
                                   selected ? "font-medium" : "font-normal"
                                 }`}
                               >
-                                {person.name}{" "}
+                                {person.first_name} {person.last_name}{" "}
                                 <span className="text-gray-500">
                                   ({person.price}m)
                                 </span>
@@ -196,7 +199,7 @@ export default function DriverTrade(props) {
                 <div className="relative mt-1 z-30">
                   <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm h-10">
                     <span className="block truncate">
-                      {selected2.name}{" "}
+                      {selected2.first_name} {selected2.last_name}{" "}
                       <span className="text-gray-500">
                         ({selected2.price}m)
                       </span>
@@ -215,7 +218,7 @@ export default function DriverTrade(props) {
                     leaveTo="opacity-0"
                   >
                     <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                      {drivers.data.teams.map((person, personIdx) => (
+                      {drivers.data.drivers.map((person, personIdx) => (
                         <Listbox.Option
                           key={personIdx}
                           className={({ active }) =>
@@ -234,7 +237,7 @@ export default function DriverTrade(props) {
                                   selected ? "font-medium" : "font-normal"
                                 }`}
                               >
-                                {person.name}{" "}
+                                {person.first_name} {person.last_name}{" "}
                                 <span className="text-gray-500">
                                   ({person.price}m)
                                 </span>
