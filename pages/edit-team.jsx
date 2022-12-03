@@ -1,4 +1,3 @@
-import TeamBuildMobile from "../components/TeamBuildMobile.jsx";
 import Example from "../components/Dashboard.jsx";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { Oval } from "react-loader-spinner";
