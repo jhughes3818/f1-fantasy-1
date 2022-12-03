@@ -1,11 +1,7 @@
-import mongoose from "mongoose";
-import { Team, Driver } from "../../../database/schemas";
+import supabase from "../../../database/supabaseClient";
 
 export default async function handler(req, res) {
-  const uri = process.env.MONGODB_URI;
-  mongoose.connect(uri);
+  let { data: drivers, error } = await supabase.from("drivers").select("*");
 
-  const teams = await Driver.find();
-
-  res.status(200).json({ teams: teams });
+  res.status(200).json({ drivers: drivers });
 }
