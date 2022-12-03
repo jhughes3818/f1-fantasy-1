@@ -24,6 +24,7 @@ const Home = () => {
       {!session ? (
         <div className="grid place-items-center h-screen">
           <Auth
+            providers={["google"]}
             supabaseClient={supabase}
             appearance={{ theme: ThemeSupa }}
             theme="light"
