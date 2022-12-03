@@ -46,7 +46,6 @@ export default function NewTeamBuildMobile(props) {
 
   useEffect(() => {
     axios.get("/api/drivers").then((response) => {
-      //console.log(response.data.teams);
       setOptions(response.data.teams);
       setIsLoading(false);
     });
@@ -64,7 +63,7 @@ export default function NewTeamBuildMobile(props) {
   const addDriver = (option) => {
     const newCash = Math.round((cash - option.price) * 100) / 100;
     setSaveCurrent(false);
-    console.log(option);
+
     if (driversCount >= 5) {
       setModalBody("You can choose a maximum of 5 drivers for your team.");
       setModalHeading("Maximum number of drivers.");
@@ -84,13 +83,13 @@ export default function NewTeamBuildMobile(props) {
   };
 
   const removeDriver = (name) => {
+    console.log(session.user.id);
     const newDrivers = drivers.filter((driver) => driver.id !== name.id);
 
     const driverToDelete = drivers.filter((driver) => driver.name == name.name);
-    console.log(driversNames);
-    console.log(name.name);
+
     const newDriversNames = driversNames.filter((driver) => driver !== name.id);
-    console.log(newDriversNames);
+
     setDriversNames(newDriversNames);
     setDrivers(newDrivers);
     const newDriversCount = driversCount - 1;
@@ -99,25 +98,45 @@ export default function NewTeamBuildMobile(props) {
     setCash(newCash);
   };
 
-  function saveTeam() {
-    console.log(session);
-    axios
-      .post(`/api/teams/${session.user.email}`, {
-        drivers: drivers,
+  async function saveTeam() {
+    // axios
+    //   .post(`/api/teams/${session.user.email}`, {
+    //     drivers: drivers,
+    //     cash: cash,
+    //     user: session.user,
+    //   })
+    //   .then(function (response) {
+    //     Router.push("/new-user/join-league");
+    //     // setModalBody("Your team has been created.");
+    //     // setModalHeading("Success!");
+    //     // setIsOpen(true);
+    //     // setSaveCurrent(true);
+    //   })
+    //   .catch(function (error) {});
+
+    try {
+      // setLoading(true);
+
+      const updates = {
+        driver_1: drivers[0].id,
+        driver_2: drivers[1].id,
+        driver_3: drivers[2].id,
+        driver_4: drivers[3].id,
+        driver_5: drivers[4].id,
         cash: cash,
-        user: session.user,
-      })
-      .then(function (response) {
-        console.log(response);
-        Router.push("/new-user/join-league");
-        // setModalBody("Your team has been created.");
-        // setModalHeading("Success!");
-        // setIsOpen(true);
-        // setSaveCurrent(true);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+        user_id: session.user.id,
+        updated_at: new Date().toISOString(),
+      };
+
+      let { error } = await supabase.from("teams").upsert(updates);
+      if (error) throw error;
+      alert("Profile updated!");
+    } catch (error) {
+      alert("Error updating the data!");
+      console.log(error);
+    } finally {
+      // setLoading(false);
+    }
   }
 
   function closeModal() {
@@ -132,8 +151,6 @@ export default function NewTeamBuildMobile(props) {
       });
 
       setDriversList(newOptions);
-
-      console.log("Changed Sort Low");
     } else {
       const newOptions = [...driversList];
       newOptions.sort(function (a, b) {
@@ -141,7 +158,6 @@ export default function NewTeamBuildMobile(props) {
       });
 
       setDriversList(newOptions);
-      console.log("Changed Sort High");
     }
   }
 
