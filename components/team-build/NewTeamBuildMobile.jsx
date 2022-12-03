@@ -169,7 +169,10 @@ export default function NewTeamBuildMobile(props) {
                 <option value="low">Low-to-High</option>
               </select>
               <div>
-                <div className="mt-6 flow-root overflow-y-auto h-96 border border-gray rounded-md p-3 mb-6">
+                <div
+                  id="driver-list"
+                  className="mt-6 flow-root overflow-y-auto h-96 border border-gray rounded-md p-3 mb-6"
+                >
                   <ul role="list" className="-my-5 divide-y divide-gray-200">
                     {driversList.map((person) => (
                       <li key={person.id} className="py-4">
