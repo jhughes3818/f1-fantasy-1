@@ -1,69 +1,9 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  const colors = require('tailwindcss/colors')
-  
-  module.exports = {
-    // ...
-    theme: {
-      extend: {
-        colors: {
-          rose: colors.rose,
-        },
-      },
-    },
-  }
-  ```
-*/
 import { Fragment } from "react";
-import {
-  ChatBubbleLeftEllipsisIcon,
-  TagIcon,
-  UserCircleIcon,
-} from "@heroicons/react/20/solid";
+import { ChatBubbleLeftEllipsisIcon, TagIcon } from "@heroicons/react/20/solid";
 import TradeFeedComponent from "./TradeFeedComponent";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-
-// const activity = [
-//   {
-//     id: 1,
-//     type: "comment",
-//     person: { name: "Toto Wolff", href: "#" },
-//     imageUrl:
-//       "https://www.sbs.ox.ac.uk/sites/default/files/M256909%20square_0.jpg",
-//     comment: "I think we should hire Mick Schumacher. Guenther is crazy. ",
-//     date: "6d ago",
-//   },
-//   {
-//     id: 2,
-//     type: "assignment",
-//     person: { name: "Toto Wolff", href: "#" },
-//     assigned: { name: "Mick Schumacher", href: "#" },
-//     date: "2d ago",
-//   },
-//   {
-//     id: 3,
-//     type: "assignment",
-//     person: { name: "Christian Horner", href: "#" },
-//     assigned: { name: "Daniel Ricciardo", href: "#" },
-//     date: "2d ago",
-//   },
-
-//   {
-//     id: 4,
-//     type: "comment",
-//     person: { name: "Guenther Steiner", href: "#" },
-//     imageUrl:
-//       "https://pyxis.nymag.com/v1/imgs/547/141/7bfbfe240a27aa292953523e61cc7d9fc5-drive-to-survive-2.2x.rsquare.w570.jpg",
-//     comment:
-//       "We need the experienced drivers. You know, for the team longevity.",
-//     date: "2h ago",
-//   },
-// ];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -71,19 +11,14 @@ function classNames(...classes) {
 
 export default function NewFeedComponent() {
   const session = useSession();
-  const [leagueCode, setLeagueCode] = useState();
-  const [trades, setTrades] = useState();
   const [activity, setActivity] = useState([]);
 
   useEffect(() => {
     if (session) {
       axios.get(`/api/users/${session.user.email}`).then((response) => {
-        setLeagueCode(response.data.user.league);
         axios
           .get(`/api/trades/${response.data.user.league}`)
           .then((response) => {
-            setTrades(response.data.leagueTrades.trades);
-
             const tradesList = response.data.leagueTrades.trades;
             console.log(tradesList);
             const activityList = [];

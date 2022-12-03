@@ -1,9 +1,3 @@
-// const steps = [
-//   { id: "Step 1", name: "Welcome", href: "#", status: "complete" },
-//   { id: "Step 2", name: "Build Team", href: "#", status: "current" },
-//   { id: "Step 3", name: "Join League", href: "#", status: "upcoming" },
-// ];
-
 export default function Steps(props) {
   const steps = props.steps;
   return (
