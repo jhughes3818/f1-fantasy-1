@@ -82,24 +82,7 @@ export default function NewTeamBuildMobile(props) {
   };
 
   async function saveTeam() {
-    // axios
-    //   .post(`/api/teams/${session.user.email}`, {
-    //     drivers: drivers,
-    //     cash: cash,
-    //     user: session.user,
-    //   })
-    //   .then(function (response) {
-    //     Router.push("/new-user/join-league");
-    //     // setModalBody("Your team has been created.");
-    //     // setModalHeading("Success!");
-    //     // setIsOpen(true);
-    //     // setSaveCurrent(true);
-    //   })
-    //   .catch(function (error) {});
-
     try {
-      // setLoading(true);
-
       const updates = {
         driver_1: drivers[0].id,
         driver_2: drivers[1].id,
@@ -118,7 +101,6 @@ export default function NewTeamBuildMobile(props) {
       alert("Error updating the data!");
       console.log(error);
     } finally {
-      // setLoading(false);
     }
   }
 

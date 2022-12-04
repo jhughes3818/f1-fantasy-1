@@ -21,7 +21,7 @@ export default function DriverTrade(props) {
     axios
       .get(`/api/teams/supabase/${props.session.user.id}`)
       .then((response) => {
-        console.log(response.data.drivers);
+        console.log(response.data);
         return response.data;
       })
   );
@@ -33,7 +33,6 @@ export default function DriverTrade(props) {
 
     if (teams.data != null) {
       setSelected1(teams.data.drivers[0]);
-      console.log(teams.data.drivers[0].first_name);
     }
   }, [drivers.data, teams.data]);
 
@@ -47,28 +46,57 @@ export default function DriverTrade(props) {
   }
 
   async function confirmTrade() {
-    const oldTeam = teams.data.user.team;
+    const oldTeam = teams.data.drivers;
     const driverSold = selected1;
     const driverBought = selected2;
 
     const oldDriverNames = [];
 
     oldTeam.forEach((driver) => {
-      oldDriverNames.push(driver.name);
+      oldDriverNames.push(driver.id);
     });
 
-    const newDrivers = oldTeam.filter(
-      (driver) => driver.name !== driverSold.name
-    );
-
-    if (oldDriverNames.includes(driverBought.name)) {
-      console.log("Hell nah dawg");
+    //Check if driver bought is already in team
+    if (oldDriverNames.includes(driverBought.id)) {
+      setModalBody("You already have this driver in your team.");
+      setModalHeading("Driver already in team");
+      setIsOpen(true);
     } else {
-      // Calculate new cash balance
-      const newCash = teams.data.user.cash + profit;
-      // Make new team list
-      newDrivers.push(driverBought);
-      console.log(newDrivers);
+      //Remove driver sold from team and add driver bought
+      const newTeam = oldTeam.filter((driver) => driver.id !== driverSold.id);
+      newTeam.push(driverBought);
+      //Calculate profit and update cash
+      const newCash = teams.data.cash + profit;
+      //Update team in database
+      const response = await axios.put(
+        `/api/teams/supabase/${props.session.user.id}`,
+        {
+          driver_1: newTeam[0],
+          driver_2: newTeam[1],
+          driver_3: newTeam[2],
+          driver_4: newTeam[3],
+          driver_5: newTeam[4],
+          cash: newCash,
+          id: props.session.user.id,
+        }
+      );
+
+      //On success, show modal
+      if (response.status == 200) {
+        setModalBody("Trade successful!");
+        setModalHeading("Trade successful");
+        setIsOpen(true);
+      }
+
+      //Invalidate team query
+      teams.refetch();
+
+      //On error, show modal
+      if (response.status != 200) {
+        setModalBody("Something went wrong. Please try again.");
+        setModalHeading("Error");
+        setIsOpen(true);
+      }
 
       // Create transaction record
       const trade = {
@@ -80,20 +108,6 @@ export default function DriverTrade(props) {
         profit: profit,
         message: message,
       };
-
-      //
-      await axios.put(`/api/teams/${props.session.user.email}`, {
-        drivers: newDrivers,
-        cash: newCash,
-        user: props.session.user,
-      });
-      await axios.put(`/api/trades/${teams.data.user.league}`, {
-        trade: trade,
-      });
-
-      setModalHeading("Trade Completed");
-      setModalBody(`You traded ${driverSold.name} for ${driverBought.name}.`);
-      setIsOpen(true);
     }
   }
 
@@ -127,6 +141,7 @@ export default function DriverTrade(props) {
               <h1 className="font-bold text-lg w-full text-center">
                 Select Driver To Sell
               </h1>
+
               <Listbox value={selected1} onChange={setSelected1}>
                 <div className="relative mt-1 z-40">
                   <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm h-10">

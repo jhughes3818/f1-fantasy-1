@@ -1,14 +1,26 @@
-import Layout from "../components/Layout";
 import NewTeamBuildMobile from "../components/team-build/NewTeamBuildMobile";
-import SupaBaseTest from "../components/test-components/supabaseTest";
-import Team from "../components/supabase-auth/Team";
 import { useSession } from "@supabase/auth-helpers-react";
 
 export default function Test() {
   const session = useSession();
-  return (
-    <div className="grid place-items-center h-screen">
-      {session ? <NewTeamBuildMobile /> : null}
+
+  //Check is session is not null and user is logged in then return NewTeamBuildMobile otherwise return loading spinner
+  return session ? (
+    <NewTeamBuildMobile />
+  ) : (
+    <div className="grid place-items-center h-full">
+      <Oval
+        height={80}
+        width={80}
+        color="#000000"
+        wrapperStyle={{}}
+        wrapperClass=""
+        visible={true}
+        ariaLabel="oval-loading"
+        secondaryColor="#2a2b2a"
+        strokeWidth={2}
+        strokeWidthSecondary={2}
+      />
     </div>
   );
 }
