@@ -4,7 +4,6 @@ import ProgressBar from "./ProgressBar";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import axios from "axios";
 import Modal from "./Modal";
-import { createClient } from "@supabase/supabase-js";
 import supabase from "../../database/supabaseClient";
 
 export default function NewTeamBuildMobile(props) {
@@ -19,6 +18,7 @@ export default function NewTeamBuildMobile(props) {
   const [drivers, setDrivers] = useState([]);
   const [driversNames, setDriversNames] = useState([]);
   const [driversList, setDriversList] = useState([]);
+  const [options, setOptions] = useState([]);
 
   //Modal states
   let [isOpen, setIsOpen] = useState(false);
@@ -35,8 +35,6 @@ export default function NewTeamBuildMobile(props) {
   }, []);
 
   useEffect(() => {
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
     supabase
       .from("drivers")
       .select("*")
