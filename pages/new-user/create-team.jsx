@@ -33,6 +33,19 @@ export default function CreateTeam() {
   //       });
   //   }
   // }, [session]);
+
+  useEffect(() => {
+    if (session) {
+      axios.get(`/api/users/${session.user.id}`).then((response) => {
+        if (response.data.user.hasTeam) {
+          Router.push("/dashboard");
+        } else {
+          setIsLoading(false);
+        }
+      });
+    }
+  }, [session]);
+
   return (
     <>
       <div className="grid place-items-center h-screen">

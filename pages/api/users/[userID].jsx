@@ -2,12 +2,24 @@ import supabase from "../../../database/supabaseClient";
 
 export default function handler(req, res) {
   if (req.method === "PUT") {
-    supabase
+    console.log(req.query.userID);
+    const updates = {
+      hasTeam: true,
+      id: req.query.userID,
+    };
+
+    supabase;
+    let { error } = supabase
       .from("profiles")
-      .update({ league: req.body?.league, hasTeam: true })
-      .eq("id", req.query)
+      .upsert(updates)
       .then((response) => {
-        res.status(200).json({ message: "Successfully joined league" });
+        if (error) {
+          console.log(error);
+          res.status(500).json({ error: error });
+        } else {
+          console.log(response);
+          res.status(200).json({ message: "User updated" });
+        }
       });
   }
 
