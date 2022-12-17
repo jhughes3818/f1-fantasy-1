@@ -17,21 +17,21 @@ export default function Welcome() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (session) {
-      axios
-        .get(`/api/users/${session.user.email}`)
-        .then((response) => {
-          if (response.status === 204) {
-            setIsLoading(false);
-          } else {
-            Router.push("/dashboard");
-            setIsLoading(false);
-          }
-        })
-        .catch((error) => {
-          console.log(error.message);
-        });
-    }
+    // if (session) {
+    //   axios
+    //     .get(`/api/users/${session.user.email}`)
+    //     .then((response) => {
+    //       if (response.status === 204) {
+    //         setIsLoading(false);
+    //       } else {
+    //         Router.push("/dashboard");
+    //         setIsLoading(false);
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log(error.message);
+    //     });
+    // }
   }, [session]);
 
   return (

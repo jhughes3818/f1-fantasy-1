@@ -17,22 +17,35 @@ export default function CreateTeam() {
   const session = useSession();
   const [isLoading, setIsLoading] = useState(true);
 
+  // useEffect(() => {
+  //   if (session) {
+  //     axios
+  //       .get(`/api/users/${session.user.email}`)
+  //       .then((response) => {
+  //         if (response.status === 204) {
+  //           setIsLoading(false);
+  //         } else {
+  //           Router.push("/dashboard");
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.log(error.message);
+  //       });
+  //   }
+  // }, [session]);
+
   useEffect(() => {
     if (session) {
-      axios
-        .get(`/api/users/${session.user.email}`)
-        .then((response) => {
-          if (response.status === 204) {
-            setIsLoading(false);
-          } else {
-            Router.push("/dashboard");
-          }
-        })
-        .catch((error) => {
-          console.log(error.message);
-        });
+      axios.get(`/api/users/${session.user.id}`).then((response) => {
+        if (response.data.user.hasTeam) {
+          Router.push("/dashboard");
+        } else {
+          setIsLoading(false);
+        }
+      });
     }
   }, [session]);
+
   return (
     <>
       <div className="grid place-items-center h-screen">

@@ -2,7 +2,12 @@ import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import Account from "../components/supabase-auth/Account";
 import Dashboard from "./dashboard";
+import NewFeedComponent from "../components/feed/NewFeedComponent";
+import DriverTrade from "../components/team-build/DriverTrade";
+import axios from "axios";
 import LayoutShell from "../components/LayoutShell";
+import NewUser from "../components/NewUser.jsx";
+import { useState, useEffect } from "react";
 import {
   CalendarIcon,
   HomeIcon,
@@ -10,8 +15,23 @@ import {
 } from "@heroicons/react/24/outline";
 
 const Home = () => {
+  const [isNewUser, setIsNewUser] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+
   const session = useSession();
   const supabase = useSupabaseClient();
+
+  useEffect(() => {
+    if (session) {
+      axios.get(`/api/users/${session.user.id}`).then((response) => {
+        if (response.status === 200) {
+          if (response.data.user.hasTeam) {
+            setIsNewUser(false);
+          } else setIsNewUser(true);
+        }
+      });
+    }
+  }, [session]);
 
   const navigation = [
     { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
@@ -31,10 +51,16 @@ const Home = () => {
           />
         </div>
       ) : (
-        <LayoutShell nav={navigation} session={session}>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-        </LayoutShell>
+        <>
+          {isNewUser ? (
+            <NewUser />
+          ) : (
+            <LayoutShell nav={navigation}>
+              <NewFeedComponent />
+              <DriverTrade session={session} />
+            </LayoutShell>
+          )}
+        </>
       )}
     </div>
   );

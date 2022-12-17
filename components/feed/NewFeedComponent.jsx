@@ -15,29 +15,26 @@ export default function NewFeedComponent() {
 
   useEffect(() => {
     if (session) {
-      axios.get(`/api/users/${session.user.email}`).then((response) => {
-        axios
-          .get(`/api/trades/${response.data.user.league}`)
-          .then((response) => {
-            const tradesList = response.data.leagueTrades.trades;
-            console.log(tradesList);
-            const activityList = [];
-
-            tradesList.slice(-5).forEach((trade) => {
-              const newEntry = {
-                id: tradesList.indexOf(trade),
-                type: "assignment",
-                person: { name: trade.user.name, href: "#" },
-                assigned: { name: trade.driverBought.name, href: "#" },
-                sold: { name: trade.driverSold.name, href: "#" },
-                date: "2d ago",
-                imageUrl: trade.user.image,
-                comment: trade.message,
-              };
-              activityList.push(newEntry);
-            });
-            setActivity(activityList.reverse());
+      axios.get(`/api/users/old/${session.user.email}`).then((response) => {
+        axios.get(`/api/trades/9153`).then((response) => {
+          const tradesList = response.data.leagueTrades.trades;
+          console.log(tradesList);
+          const activityList = [];
+          tradesList.slice(-5).forEach((trade) => {
+            const newEntry = {
+              id: tradesList.indexOf(trade),
+              type: "assignment",
+              person: { name: trade.user.name, href: "#" },
+              assigned: { name: trade.driverBought.name, href: "#" },
+              sold: { name: trade.driverSold.name, href: "#" },
+              date: "2d ago",
+              imageUrl: trade.user.image,
+              comment: trade.message,
+            };
+            activityList.push(newEntry);
           });
+          setActivity(activityList.reverse());
+        });
       });
     }
   }, [session]);

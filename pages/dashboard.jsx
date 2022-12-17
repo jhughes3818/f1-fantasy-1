@@ -26,21 +26,21 @@ export default function Dashboard() {
   ];
 
   useEffect(() => {
-    if (session) {
-      axios
-        .get(`/api/users/${session.user.email}`)
-        .then((response) => {
-          if (response.status === 204) {
-            setIsNewUser(true);
-            Router.push("/new-user");
-          } else {
-            setIsLoading(false);
-          }
-        })
-        .catch((error) => {
-          console.log(error.message);
-        });
-    }
+    // if (session) {
+    //   axios
+    //     .get(`/api/users/${session.user.email}`)
+    //     .then((response) => {
+    //       if (response.status === 204) {
+    //         setIsNewUser(true);
+    //         Router.push("/new-user");
+    //       } else {
+    //         setIsLoading(false);
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log(error.message);
+    //     });
+    // }
   }, [session]);
 
   if (session) {

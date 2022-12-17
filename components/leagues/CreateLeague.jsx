@@ -15,20 +15,20 @@ export default function CreateLeague() {
   const [isOpen, setIsOpen] = useState(false);
 
   async function verifyNoLeague(namePassedIn, user) {
-    axios.get(`/api/users/${user.email}`).then((response) => {
-      //console.log(response.data.user.league);
-      if (response.data.user.league) {
-        setName("Already in a league, sis");
-        setModalButton("Ok");
-        setModalHeading("Already joined a league");
-        setModalBody(
-          "You have already joined a league. Leave your current league and try again."
-        );
-        setIsOpen(true);
-      } else {
-        createLeague(namePassedIn, user);
-      }
-    });
+    // axios.get(`/api/users/${user.email}`).then((response) => {
+    //   //console.log(response.data.user.league);
+    //   if (response.data.user.league) {
+    //     setName("Already in a league, sis");
+    //     setModalButton("Ok");
+    //     setModalHeading("Already joined a league");
+    //     setModalBody(
+    //       "You have already joined a league. Leave your current league and try again."
+    //     );
+    //     setIsOpen(true);
+    //   } else {
+    //     createLeague(namePassedIn, user);
+    //   }
+    // });
   }
 
   async function createLeague(namePassedIn, user) {
@@ -43,14 +43,14 @@ export default function CreateLeague() {
       });
   }
 
-  async function addLeagueCodeToUser(user, leagueCode) {
-    console.log("Control flow seems to be broken sir");
-    //Add league code to user document
-    console.log(user.email);
+  // async function addLeagueCodeToUser(user, leagueCode) {
+  //   console.log("Control flow seems to be broken sir");
+  //   //Add league code to user document
+  //   console.log(user.email);
 
-    await axios.put(`/api/users/${user.email}`, { league: leagueCode });
-    setLeagueCreated(true);
-  }
+  //   await axios.put(`/api/users/${user.email}`, { league: leagueCode });
+  //   setLeagueCreated(true);
+  // }
 
   if (leagueCreated) {
     return (

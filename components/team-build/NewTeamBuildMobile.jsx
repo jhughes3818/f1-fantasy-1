@@ -4,7 +4,6 @@ import ProgressBar from "./ProgressBar";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import axios from "axios";
 import Modal from "./Modal";
-import { createClient } from "@supabase/supabase-js";
 import supabase from "../../database/supabaseClient";
 
 export default function NewTeamBuildMobile(props) {
@@ -19,6 +18,7 @@ export default function NewTeamBuildMobile(props) {
   const [drivers, setDrivers] = useState([]);
   const [driversNames, setDriversNames] = useState([]);
   const [driversList, setDriversList] = useState([]);
+  const [options, setOptions] = useState([]);
 
   //Modal states
   let [isOpen, setIsOpen] = useState(false);
@@ -35,8 +35,6 @@ export default function NewTeamBuildMobile(props) {
   }, []);
 
   useEffect(() => {
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
     supabase
       .from("drivers")
       .select("*")
@@ -97,29 +95,19 @@ export default function NewTeamBuildMobile(props) {
     //   })
     //   .catch(function (error) {});
 
-    try {
-      // setLoading(true);
+    const updates = {
+      driver_1: drivers[0].id,
+      driver_2: drivers[1].id,
+      driver_3: drivers[2].id,
+      driver_4: drivers[3].id,
+      driver_5: drivers[4].id,
+      cash: cash,
+      user_id: session.user.id,
+      updated_at: new Date().toISOString(),
+    };
 
-      const updates = {
-        driver_1: drivers[0].id,
-        driver_2: drivers[1].id,
-        driver_3: drivers[2].id,
-        driver_4: drivers[3].id,
-        driver_5: drivers[4].id,
-        cash: cash,
-        user_id: session.user.id,
-        updated_at: new Date().toISOString(),
-      };
-
-      let { error } = await supabase.from("teams").upsert(updates);
-      if (error) throw error;
-      alert("Profile updated!");
-    } catch (error) {
-      alert("Error updating the data!");
-      console.log(error);
-    } finally {
-      // setLoading(false);
-    }
+    await axios.put(`/api/teams/supabase/${session.user.id}`, updates);
+    await axios.put(`/api/users/${session.user.id}`, true);
   }
 
   function closeModal() {
