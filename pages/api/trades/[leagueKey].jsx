@@ -1,0 +1,92 @@
+import supabase from "../../../database/supabaseClient";
+
+export default async function handler(req, res) {
+  // On get request, retrieve trades from database
+  console.log(req.query);
+
+  if (req.method === "GET") {
+    const trades = [];
+    console.log(req.query.leagueKey);
+
+    const tradesItem = await getTrades(req.query.leagueKey);
+    console.log(tradesItem);
+
+    // tradesItem.forEach((trade) => {
+    //   const driverNames = getDriverNames(trade);
+    //   console.log(driverNames);
+    // });
+
+    for (const trade of tradesItem) {
+      const driverNames = await getDriverNames(trade);
+      const userName = await getUserName(trade.user);
+      //console.log(driverNames);
+      const tradeItem = {
+        id: trade.id,
+        user: userName,
+        league: trade.league,
+        driver_bought: driverNames[0],
+        driver_sold: driverNames[1],
+      };
+      trades.push(tradeItem);
+    }
+
+    console.log(trades);
+    res.status(200).json(trades);
+  }
+}
+
+async function getTrades(leagueKey) {
+  const trades = [];
+
+  //from supabse, get all trades for the league where league = leagueKey
+  await supabase
+    .from("trades")
+    .select("*")
+    .eq("league", leagueKey)
+    .then((response) => {
+      //console.log(response.data);
+      response.data.forEach((trade) => {
+        trades.push(trade);
+      });
+    });
+
+  //console.log(trades);
+
+  return trades;
+}
+
+async function getDriverNames(trade) {
+  const driverIds = [trade.driver_bought, trade.driver_sold];
+  const driversNames = [];
+
+  await supabase
+    .from("drivers")
+    .select("first_name, last_name, price")
+    .in("id", driverIds)
+    .then((response) => {
+      //console.log(response.data);
+      response.data.forEach((driver) => {
+        driversNames.push(driver);
+      });
+    });
+
+  //console.log(driversNames);
+
+  return driversNames;
+}
+
+async function getUserName(userKey) {
+  console.log(userKey);
+  const user = await supabase
+    .from("profiles")
+    .select("username")
+    .eq("id", userKey)
+    .then((response) => {
+      //console.log(response.data);
+      return response.data[0].username;
+    });
+
+  //console.log(user);
+
+  return user;
+}

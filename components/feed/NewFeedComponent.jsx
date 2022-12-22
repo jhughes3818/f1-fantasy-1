@@ -15,21 +15,39 @@ export default function NewFeedComponent() {
 
   useEffect(() => {
     if (session) {
-      axios.get(`/api/users/old/${session.user.email}`).then((response) => {
-        axios.get(`/api/trades/9153`).then((response) => {
-          const tradesList = response.data.leagueTrades.trades;
-          console.log(tradesList);
+      // Get the user league code
+      axios.get(`/api/users/${session.user.id}`).then((response) => {
+        console.log(response);
+        // Get the trades from the relevant league
+        axios.get(`/api/trades/${1}`).then((response) => {
+          console.log(response.data);
+          const tradesList = response.data;
+
+          // console.log(tradesList);
           const activityList = [];
           tradesList.slice(-5).forEach((trade) => {
+            console.log(trade);
             const newEntry = {
-              id: tradesList.indexOf(trade),
+              id: tradesList.id,
               type: "assignment",
-              person: { name: trade.user.name, href: "#" },
-              assigned: { name: trade.driverBought.name, href: "#" },
-              sold: { name: trade.driverSold.name, href: "#" },
+              person: { name: trade.user, href: "#" },
+              assigned: {
+                name:
+                  trade.driver_bought.first_name +
+                  " " +
+                  trade.driver_bought.last_name,
+                href: "#",
+              },
+              sold: {
+                name:
+                  trade.driver_sold.first_name +
+                  " " +
+                  trade.driver_sold.last_name,
+                href: "#",
+              },
               date: "2d ago",
-              imageUrl: trade.user.image,
-              comment: trade.message,
+              // imageUrl: trade.user.image,
+              // comment: trade.message,
             };
             activityList.push(newEntry);
           });
@@ -37,7 +55,7 @@ export default function NewFeedComponent() {
         });
       });
     }
-  }, [session]);
+  }, [session.user.id]);
 
   return (
     <>
