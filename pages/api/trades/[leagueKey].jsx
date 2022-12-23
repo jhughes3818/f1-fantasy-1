@@ -33,6 +33,32 @@ export default async function handler(req, res) {
     console.log(trades);
     res.status(200).json(trades);
   }
+
+  if (req.method === "POST") {
+    console.log(req.body);
+
+    //Get user league code from database in profiles table
+    const userLeague = await supabase
+      .from("profiles")
+      .select("league")
+      .eq("id", req.body.trade.user.id)
+      .then((response) => {
+        console.log(response.data);
+        return response.data[0].league;
+      });
+
+    const { data, error } = await supabase.from("trades").insert([
+      {
+        user: req.body.trade.user.id,
+        league: userLeague,
+        driver_bought: req.body.trade.driverBought.id,
+        driver_sold: req.body.trade.driverSold.id,
+      },
+    ]);
+
+    console.log(data, error);
+    res.status(200).json(data);
+  }
 }
 
 async function getTrades(leagueKey) {

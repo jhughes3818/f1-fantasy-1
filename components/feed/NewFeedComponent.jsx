@@ -17,16 +17,16 @@ export default function NewFeedComponent() {
     if (session) {
       // Get the user league code
       axios.get(`/api/users/${session.user.id}`).then((response) => {
-        console.log(response);
+        // console.log(response);
         // Get the trades from the relevant league
         axios.get(`/api/trades/${1}`).then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
           const tradesList = response.data;
 
-          // console.log(tradesList);
+          console.log(tradesList);
           const activityList = [];
           tradesList.slice(-5).forEach((trade) => {
-            console.log(trade);
+            // console.log(trade);
             const newEntry = {
               id: tradesList.id,
               type: "assignment",
