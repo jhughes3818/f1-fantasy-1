@@ -86,6 +86,19 @@ export default function DriverTrade(props) {
       driver_4: newTeam[3].id,
       driver_5: newTeam[4].id,
     });
+
+    setModalHeading("Trade Successful");
+    setModalBody(
+      "Traded " +
+        driverSold.first_name +
+        " " +
+        driverSold.last_name +
+        " for " +
+        driverBought.first_name +
+        " " +
+        driverBought.last_name
+    );
+    setIsOpen(true);
   }
 
   useEffect(() => {
