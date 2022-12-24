@@ -57,7 +57,7 @@ export default function NewFeedComponent() {
         });
       });
     }
-  }, [session.user.id]);
+  }, [session]);
 
   return (
     <>
