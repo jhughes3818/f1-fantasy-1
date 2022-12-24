@@ -17,7 +17,6 @@ export default function handler(req, res) {
           console.log(error);
           res.status(500).json({ error: error });
         } else {
-          console.log(response);
           res.status(200).json({ message: "User updated" });
         }
       });
@@ -25,12 +24,13 @@ export default function handler(req, res) {
 
   if (req.method === "GET") {
     console.log(req.query.userID);
+
     supabase
       .from("profiles")
       .select("*")
       .eq("id", req.query.userID)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         if (response.data.length > 0) {
           res.status(200).json({ user: response.data[0] });
         } else {

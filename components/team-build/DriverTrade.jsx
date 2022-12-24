@@ -33,7 +33,7 @@ export default function DriverTrade(props) {
 
     if (teams.data != null) {
       setSelected1(teams.data.drivers[0]);
-      console.log(teams.data.drivers[0].first_name);
+      console.log(teams.data.drivers[0]);
     }
   }, [drivers.data, teams.data]);
 
@@ -47,54 +47,58 @@ export default function DriverTrade(props) {
   }
 
   async function confirmTrade() {
-    const oldTeam = teams.data.user.team;
     const driverSold = selected1;
     const driverBought = selected2;
 
-    const oldDriverNames = [];
+    const oldTeam = teams.data.drivers;
+    console.log(oldTeam);
 
-    oldTeam.forEach((driver) => {
-      oldDriverNames.push(driver.name);
+    const newTeam = oldTeam.filter((driver) => {
+      return driver.id != driverSold.id;
+    });
+    console.log(newTeam);
+
+    //Add driver bought into newTeam
+    newTeam.push(driverBought);
+    console.log(newTeam);
+
+    // Create transaction record
+    const trade = {
+      user: props.session.user,
+      driverSold: driverSold,
+      driverSoldPrice: driverSold.price,
+      driverBought: driverBought,
+      driverBoughtPrice: driverBought.price,
+      profit: profit,
+      message: message,
+    };
+
+    console.log(trade);
+
+    await axios.post(`/api/trades/${props.session.user.id}`, {
+      trade: trade,
     });
 
-    const newDrivers = oldTeam.filter(
-      (driver) => driver.name !== driverSold.name
+    await axios.post(`/api/teams/supabase/trade/${props.session.user.id}`, {
+      driver_1: newTeam[0].id,
+      driver_2: newTeam[1].id,
+      driver_3: newTeam[2].id,
+      driver_4: newTeam[3].id,
+      driver_5: newTeam[4].id,
+    });
+
+    setModalHeading("Trade Successful");
+    setModalBody(
+      "Traded " +
+        driverSold.first_name +
+        " " +
+        driverSold.last_name +
+        " for " +
+        driverBought.first_name +
+        " " +
+        driverBought.last_name
     );
-
-    if (oldDriverNames.includes(driverBought.name)) {
-      console.log("Hell nah dawg");
-    } else {
-      // Calculate new cash balance
-      const newCash = teams.data.user.cash + profit;
-      // Make new team list
-      newDrivers.push(driverBought);
-      console.log(newDrivers);
-
-      // Create transaction record
-      const trade = {
-        user: props.session.user,
-        driverSold: driverSold,
-        driverSoldPrice: driverSold.price,
-        driverBought: driverBought,
-        driverBoughtPrice: driverBought.price,
-        profit: profit,
-        message: message,
-      };
-
-      //
-      await axios.put(`/api/teams/${props.session.user.email}`, {
-        drivers: newDrivers,
-        cash: newCash,
-        user: props.session.user,
-      });
-      await axios.put(`/api/trades/${teams.data.user.league}`, {
-        trade: trade,
-      });
-
-      setModalHeading("Trade Completed");
-      setModalBody(`You traded ${driverSold.name} for ${driverBought.name}.`);
-      setIsOpen(true);
-    }
+    setIsOpen(true);
   }
 
   useEffect(() => {

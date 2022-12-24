@@ -19,14 +19,14 @@ export default async function handler(req, res) {
         // Query the "drivers" table to get the first_name, last_name, and price of the drivers
         supabase
           .from("drivers")
-          .select("first_name, last_name, price")
+          .select("first_name, last_name, price, id")
           .in("id", driverIds)
           .then((response) => res.status(200).json({ drivers: response.data }));
       });
   }
 
   if (req.method === "PUT") {
-    console.log(req.body);
+    //console.log(req.body);
     await supabase.from("teams").upsert(req.body);
     res.status(200).json({ message: "Team updated" });
     console.log("Team Updated Successfully");
