@@ -17,7 +17,7 @@ export default function NewFeedComponent() {
   useEffect(() => {
     if (session) {
       // Get the user league code
-      axios.get(`/api/users/${session.user.id}`).then((response) => {
+      axios.get(`/api/users/${session?.user.id}`).then((response) => {
         // console.log(response);
         // Get the trades from the relevant league
         axios.get(`/api/trades/${1}`).then((response) => {
