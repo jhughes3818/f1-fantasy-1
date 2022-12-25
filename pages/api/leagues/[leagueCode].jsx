@@ -1,44 +1,39 @@
-import mongoose from "mongoose";
-import { League, User } from "../../../database/schemas";
+import supabase from "../../../database/supabaseClient";
 
 export default async function handler(req, res) {
-  const uri = process.env.MONGODB_URI;
-  mongoose.connect(uri);
-
-  const { leagueCode } = req.query;
+  const leagueCode = req.query.leagueCode;
 
   if (req.method === "GET") {
-    const league = await League.findOne({ code: leagueCode }).exec();
-    const usersInLeague = await User.find({ league: leagueCode }).exec();
+    const users = await supabase
+      .from("profiles")
+      .select("id, username")
+      .eq("league", leagueCode)
+      .then((response) => {
+        console.log(response.data);
+        return response.data;
+      });
 
-    if (!league) {
-      res.status(404).json({ error: "Cannot find league" });
-    } else {
-      res.status(200).json({ league: league, users: usersInLeague });
-    }
-  } else if (req.method === "PUT") {
-    const newMember = {
-      name: req.body.user.name,
-      email: req.body.user.email,
-      points: 0,
-    };
-    //const newMember = req.body.user;
-    const league = await League.findOne({ code: leagueCode }).exec();
-    const members = league.members;
-    let memberEmails = [];
-    members.forEach((member) => {
-      memberEmails.push(member.email);
+    // get list of user ids
+    const userIds = users.map((user) => user.id);
+    console.log(userIds);
+
+    // get list of user teams
+    const teams = await supabase
+      .from("teams")
+      .select("user_id, cash, points")
+      .in("user_id", userIds)
+      .then((response) => {
+        console.log(response.data);
+        return response.data;
+      });
+
+    // Insert username into teams
+    teams.forEach((team) => {
+      const user = users.find((user) => user.id === team.user_id);
+      team.username = user.username;
     });
-    console.log(memberEmails);
-    if (memberEmails.includes(req.body.user.email) === false) {
-      members.push(newMember);
 
-      await League.findOneAndUpdate(
-        { code: leagueCode },
-        { members: members }
-      ).exec();
-    }
-
-    res.status(200).json({ message: "Added user to league" });
+    console.log(teams);
+    res.status(200).json(teams);
   }
 }

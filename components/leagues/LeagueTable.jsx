@@ -1,34 +1,65 @@
 const people = [
   {
-    name: "Lewis Hamilton",
+    name: "jason",
     title: "Mercedes",
-    email: "267",
-    role: "$9m",
+    points: "267",
+    value: "$9m",
   },
   // More people...
 ];
 
 import { useEffect, useState } from "react";
 import axios from "axios";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from "react-query";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 
 export default function LeagueTable(props) {
   const [leagueMembers, setLeagueMembers] = useState([]);
   const [leagueName, setLeagueName] = useState();
+  const session = useSession();
 
   console.log(leagueMembers);
-  useEffect(() => {
-    axios.get(`/api/leagues/${props.leagueCode}`).then((response) => {
-      setLeagueName(response.data.league.name);
+  // useEffect(() => {
+  //   axios.get(`/api/leagues/${props.leagueCode}`).then((response) => {
+  //     setLeagueName(response.data.league.name);
 
-      const users = response.data.users;
-      setLeagueMembers(users);
-    });
-  }, []);
+  //     const users = response.data.users;
+  //     setLeagueMembers(users);
+  //   });
+  // }, []);
+
+  const QueryClient = useQueryClient();
+  // Use react query to get user data
+
+  useEffect(() => {
+    if (session) {
+      axios.get(`/api/users/${session.user.id}`).then((response) => {
+        console.log(response.data.user.league);
+        const leagueCode = response.data.user.league;
+        axios.get(`/api/leagues/${leagueCode}`).then((response) => {
+          // setLeagueName(response.data.team);
+
+          const users = response.data;
+          setLeagueMembers(users);
+          console.log(users);
+        });
+      });
+    }
+  }, [session]);
+
+  //const query = useQuery('league', () => axios.get(`/api/leagues/${props.leagueCode}`))
+
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-xl font-semibold text-gray-900">Your Team</h1>
+          <h1 className="text-xl font-semibold text-gray-900">Your League</h1>
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
           <button
@@ -51,21 +82,15 @@ export default function LeagueTable(props) {
               </th>
               <th
                 scope="col"
-                className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
+                className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
               >
                 Points
               </th>
               <th
                 scope="col"
-                className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
-              >
-                Team Value
-              </th>
-              <th
-                scope="col"
                 className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
               >
-                Profit
+                Value
               </th>
               <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
                 <span className="sr-only">Edit</span>
@@ -74,9 +99,9 @@ export default function LeagueTable(props) {
           </thead>
           <tbody className="divide-y divide-gray-200 bg-white">
             {leagueMembers.map((person) => (
-              <tr key={person.email}>
+              <tr key={person.user_id}>
                 <td className="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-6">
-                  {person.name}
+                  {person.username}
                   <dl className="font-normal lg:hidden">
                     <dt className="sr-only">Title</dt>
                     <dd className="mt-1 truncate text-gray-700">
@@ -92,10 +117,7 @@ export default function LeagueTable(props) {
                   {person.points}
                 </td>
                 <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                  {person.seasonPoints}
-                </td>
-                <td className="px-3 py-4 text-sm text-gray-500">
-                  ${person.price}m
+                  {person.cash}
                 </td>
               </tr>
             ))}

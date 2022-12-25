@@ -2,14 +2,14 @@ import supabase from "../../../database/supabaseClient";
 
 export default async function handler(req, res) {
   // On get request, retrieve trades from database
-  console.log(req.query);
+  //console.log(req.query);
 
   if (req.method === "GET") {
     const trades = [];
-    console.log(req.query.leagueKey);
+    //console.log(req.query.leagueKey);
 
     const tradesItem = await getTrades(req.query.leagueKey);
-    console.log(tradesItem);
+    //console.log(tradesItem);
 
     // tradesItem.forEach((trade) => {
     //   const driverNames = getDriverNames(trade);
@@ -30,12 +30,12 @@ export default async function handler(req, res) {
       trades.push(tradeItem);
     }
 
-    console.log(trades);
+    // console.log(trades);
     res.status(200).json(trades);
   }
 
   if (req.method === "POST") {
-    console.log(req.body);
+    // console.log(req.body);
 
     //Get user league code from database in profiles table
     const userLeague = await supabase
@@ -102,7 +102,7 @@ async function getDriverNames(trade) {
 }
 
 async function getUserName(userKey) {
-  console.log(userKey);
+  //console.log(userKey);
   const user = await supabase
     .from("profiles")
     .select("username")
