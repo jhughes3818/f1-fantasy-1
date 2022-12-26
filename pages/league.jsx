@@ -15,7 +15,7 @@ import { Oval } from "react-loader-spinner";
 export default function Dashboard() {
   const session = useSession();
   const [leagueCode, setLeagueCode] = useState();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   // useEffect(() => {
   //   if (session) {
@@ -52,12 +52,7 @@ export default function Dashboard() {
         </div>
       ) : (
         <>
-          {" "}
-          {leagueCode ? (
-            <LeagueTable leagueCode={leagueCode} />
-          ) : (
-            <JoinLeague />
-          )}
+          <LeagueTable leagueCode={leagueCode} session={session} />
         </>
       )}
 
