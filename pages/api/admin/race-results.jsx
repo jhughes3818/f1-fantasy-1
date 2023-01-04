@@ -4,10 +4,8 @@ import supabase from "../../../database/supabaseClient";
 
 export default async function handler(req, res) {
   const drivers = await supabase.from("drivers").select("*");
-  console.log(drivers.data);
 
   getLatestRound().then((data) => {
-    console.log(data);
     const current_round = data[0].round_number;
     const year = data[0].year;
     const url = `https://ergast.com/api/f1/${year}/${current_round}/results.json`;
@@ -18,29 +16,28 @@ export default async function handler(req, res) {
       drivers.data.forEach((driver) => {
         driverIDs.push(driver.ergast_id);
       });
-      console.log(results);
-
-      //check if value is in array
-      //https://stackoverflow.com/questions/237104/how-do-i-check-if-an-array-includes-an-object-in-javascript
 
       results.forEach((driver) => {
         const driver_id = driver.Driver.driverId; //ergast_id
         if (driverIDs.includes(driver_id)) {
           console.log("driver exists");
-          //write results to database
+
+          driverExists(driver, driver_id, current_round, year);
+
+          console.log("Added result row");
         } else {
           console.log("driver doesn't exist");
           //add driver to database
-          insertDriver({
-            ergast_id: driver.Driver.driverId,
-            first_name: driver.Driver.givenName,
-            last_name: driver.Driver.familyName,
-            team: driver.Constructor.name,
-          });
+          driverDoesNotExist(driver, driver_id, current_round, year);
 
-          // console.log(data);
-          // console.log(error);
-          //write results to database
+          console.log(
+            "driver added: " +
+              driver.Driver.givenName +
+              " " +
+              driver.Driver.familyName
+          );
+
+          console.log("Added result row");
         }
       });
       //console.log(results);
@@ -51,15 +48,53 @@ export default async function handler(req, res) {
   res.status(200).json({ message: "success" });
 }
 
-async function insertDriver(driverObject) {
-  const { data, error } = await supabase.from("drivers").insert([driverObject]);
+async function driverExists(driver, driver_id, current_round, year) {
+  const { data, error } = await supabase
+    .from("drivers")
+    .select("*")
+    .eq("ergast_id", driver_id);
 
-  if (error) {
-    return error;
-  }
-  return data;
+  const driverKey = data;
+
+  const resultObject = {
+    ergast_id: driver.Driver.driverId,
+    round: current_round,
+    year: year,
+    driver_id: driverKey[0].id,
+    qualifying_position: driver.grid,
+    finishing_position: driver.position,
+    overtakes: driver.grid - driver.position,
+  };
+
+  const { data2, error2 } = await supabase
+    .from("driver_results")
+    .insert([resultObject]);
 }
 
+async function driverDoesNotExist(driver, driver_id, current_round, year) {
+  const { data, error } = await supabase.from("drivers").insert([driverObject]);
+
+  const { data3, error3 } = await supabase
+    .from("drivers")
+    .select("*")
+    .eq("ergast_id", driver_id);
+
+  const driverKey = data3;
+
+  const resultObject = {
+    ergast_id: driver.Driver.driverId,
+    round: current_round,
+    year: year,
+    driver_id: driverKey[0].id,
+    qualifying_position: driver.grid,
+    finishing_position: driver.position,
+    overtakes: driver.grid - driver.position,
+  };
+
+  const { data2, error2 } = await supabase
+    .from("driver_results")
+    .insert([resultObject]);
+}
 //Steps for saving race results
 //Get current list of drivers
 //For each driver in results, check if they exist in current list of drivers
