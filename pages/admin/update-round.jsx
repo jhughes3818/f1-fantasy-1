@@ -7,13 +7,11 @@ export default function UpdateRound() {
   const [roundDone, setRoundDone] = useState();
 
   async function handleClick(nextRound) {
-    axios.put("/api/admin/update-round", { round: round }).then((response) => {
-      if (response.status === 200) {
-        setDone(true);
-        setRoundDone(response.data.round);
-        console.log(response.data.round);
-      }
-    });
+    await axios.put("/api/admin/race-results");
+
+    await axios.put("/api/admin/update-round");
+
+    setDone(true);
   }
 
   return (
@@ -28,7 +26,7 @@ export default function UpdateRound() {
           onChange={(e) => setRound(e.target.value)}
         ></input>
         <button onClick={() => handleClick(round)} className="button-styling">
-          Get Latest Data
+          Update Round
         </button>
         <button onClick={() => handleClick(round)} className="button-styling">
           Update League Points
