@@ -3,9 +3,9 @@ import supabase from "../../../../database/supabaseClient";
 export default async function handler(req, res) {
   const drivers = await supabase.from("drivers").select("*");
 
-  const overtakesPoints = 1;
-  const qualifyingPoints = 2;
-  const finishingPoints = 3;
+  const overtakesPointsAwarded = 1;
+  const qualifyingPointsAwarded = 2;
+  const finishingPointsAwarded = 3;
 
   // For each driver, get the average qualifying position, average finishing position and average overtakes. Then calculate the points for each of these and save to an array with the driver_id as the key.
 
@@ -15,9 +15,10 @@ export default async function handler(req, res) {
     const averageFinishingPosition = driver.average_finishing_position;
     const averageOvertakes = driver.average_overtakes;
 
-    const qualifyingPoints = averageQualifyingPosition * 2;
-    const finishingPoints = averageFinishingPosition * 3;
-    const overtakesPoints = averageOvertakes * 1;
+    const qualifyingPoints =
+      averageQualifyingPosition * qualifyingPointsAwarded;
+    const finishingPoints = averageFinishingPosition * finishingPointsAwarded;
+    const overtakesPoints = averageOvertakes * overtakesPointsAwarded;
 
     driverPoints.push({
       driver: driver.ergast_id,
