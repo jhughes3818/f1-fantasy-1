@@ -20,6 +20,7 @@ export default async function handler(req, res) {
       (result) => result.finishing_position
     );
     const overtakes = results.data.map((result) => result.overtakes);
+    console.log(overtakes);
     const averageQualifyingPosition =
       qualifyingPositions.reduce((a, b) => a + b) / qualifyingPositions.length;
     const averageFinishingPosition =
@@ -47,5 +48,5 @@ export default async function handler(req, res) {
       .eq("ergast_id", driverAverages[i].driver);
   }
 
-  req.status(200).json({ message: "success" });
+  res.status(200).json({ message: "success" });
 }
