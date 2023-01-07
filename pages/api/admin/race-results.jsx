@@ -37,6 +37,13 @@ export default async function handler(req, res) {
               driver.Driver.familyName
           );
 
+          //Add a 2 second delay to allow the database to update
+          setTimeout(function () {
+            driverExists(driver, driver_id, current_round, year);
+          }, 2000);
+
+          //driverExists(driver, driver_id, current_round, year);
+
           console.log("Added result row");
         }
       });
@@ -71,28 +78,37 @@ async function driverExists(driver, driver_id, current_round, year) {
 }
 
 async function driverDoesNotExist(driver, driver_id, current_round, year) {
+  const driverObject = {
+    ergast_id: driver.Driver.driverId,
+    first_name: driver.Driver.givenName,
+    last_name: driver.Driver.familyName,
+    team: driver.Constructor.name,
+  };
+
   const { data, error } = await supabase.from("drivers").insert([driverObject]);
+  console.log(data);
 
   const { data3, error3 } = await supabase
     .from("drivers")
     .select("*")
-    .eq("ergast_id", driver_id);
+    .eq("ergast_id", driver.Driver.driverId);
 
-  const driverKey = data3;
+  // const driverKey = data3;
+  // console.log(driverKey);
 
-  const resultObject = {
-    ergast_id: driver.Driver.driverId,
-    round: current_round,
-    year: year,
-    driver_id: driverKey[0].id,
-    qualifying_position: driver.grid,
-    finishing_position: driver.position,
-    overtakes: driver.grid - driver.position,
-  };
+  // const resultObject = {
+  //   ergast_id: driver.Driver.driverId,
+  //   round: current_round,
+  //   year: year,
+  //   driver_id: driverKey[0].id,
+  //   qualifying_position: driver.grid,
+  //   finishing_position: driver.position,
+  //   overtakes: driver.grid - driver.position,
+  // };
 
-  const { data2, error2 } = await supabase
-    .from("driver_results")
-    .insert([resultObject]);
+  // const { data2, error2 } = await supabase
+  //   .from("driver_results")
+  //   .insert([resultObject]);
 }
 //Steps for saving race results
 //Get current list of drivers
