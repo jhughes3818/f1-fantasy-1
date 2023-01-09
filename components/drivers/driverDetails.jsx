@@ -82,15 +82,19 @@ export default function DriverDetails(props) {
             </div>
             <div className="sm:col-span-1">
               <dt className="text-sm font-medium text-gray-500">
-                Current Price
+                Average Qualifying Position
               </dt>
-              <dd className="mt-1 text-sm text-gray-900">${driver.price}m</dd>
+              <dd className="mt-1 text-sm text-gray-900">
+                {driver.average_qualifying_position}
+              </dd>
             </div>
             <div className="sm:col-span-1">
               <dt className="text-sm font-medium text-gray-500">
-                Total Price Change
+                Average Finishing Position
               </dt>
-              <dd className="mt-1 text-sm text-gray-900">$3.4m</dd>
+              <dd className="mt-1 text-sm text-gray-900">
+                {driver.average_finishing_position}
+              </dd>
             </div>
             {/* <div className="sm:col-span-2">
             <dt className="text-sm font-medium text-gray-500">About</dt>
