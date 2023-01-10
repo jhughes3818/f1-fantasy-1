@@ -83,7 +83,6 @@ export default async function handler(req, res) {
     };
 
     console.log(update);
-    // const { data, error } = supabase.from("team_results").insert([update]);
     updateTeamResults(update);
 
     console.log("Inserted row into team_results table");
