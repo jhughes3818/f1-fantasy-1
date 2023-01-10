@@ -24,8 +24,12 @@ export default function UpdateRound() {
             axios.put("/api/admin/pricing/updateLatestPrice").then(() => {
               setCurrentStatus("Updated Latest Price");
 
-              axios.put("/api/admin/update-round").then(() => {
-                setCurrentStatus("Updated Round");
+              axios.put("/api/admin/pricing/updateLatestPoints").then(() => {
+                setCurrentStatus("Updated Latest Points");
+
+                axios.put("/api/admin/update-round").then(() => {
+                  setCurrentStatus("Updated Round");
+                });
               });
             });
           });

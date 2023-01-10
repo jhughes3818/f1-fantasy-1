@@ -47,30 +47,44 @@ export default async function handler(req, res) {
     );
 
     const driver1Points = driver1Results.map((result) => result.points);
-    console.log(driver1Points);
+    console.log(driver1Results.map((result) => result.ergast_id));
+    console.log("Driver 1 Points:" + driver1Points);
     const driver2Points = driver2Results.map((result) => result.points);
+    console.log(driver2Results.map((result) => result.ergast_id));
+    console.log("Driver 2 Points:" + driver2Points);
     const driver3Points = driver3Results.map((result) => result.points);
+    console.log(driver3Results.map((result) => result.ergast_id));
+    console.log("Driver 3 Points:" + driver3Points);
     const driver4Points = driver4Results.map((result) => result.points);
+    console.log(driver4Results.map((result) => result.ergast_id));
+    console.log("Driver 4 Points:" + driver4Points);
     const driver5Points = driver5Results.map((result) => result.points);
+    console.log(driver5Results.map((result) => result.ergast_id));
+    console.log("Driver 5 Points:" + driver5Points);
 
+    // Calculate total points
     const totalPoints =
-      driver1Points +
-      driver2Points +
-      driver3Points +
-      driver4Points +
-      driver5Points;
+      parseInt(driver1Points[0]) +
+      parseInt(driver2Points[0]) +
+      parseInt(driver3Points[0]) +
+      parseInt(driver4Points[0]) +
+      parseInt(driver5Points[0]);
 
     console.log("Total points: " + totalPoints);
 
     // Add row to teams_result table
     console.log(team.id);
-    const { data, error } = supabase.from("team_results").insert([
-      {
-        team: team.id,
-        round: roundId,
-        points: totalPoints,
-      },
-    ]);
+    console.log(roundId);
+
+    const update = {
+      team: team.id,
+      round: parseInt(roundId),
+      points: totalPoints,
+    };
+
+    console.log(update);
+    // const { data, error } = supabase.from("team_results").insert([update]);
+    updateTeamResults(update);
 
     console.log("Inserted row into team_results table");
 
@@ -91,4 +105,10 @@ export default async function handler(req, res) {
   }
 
   res.status(200).json({ message: "success" });
+}
+
+async function updateTeamResults(update) {
+  const { data, error } = await supabase.from("team_results").insert([update]);
+  console.log("Inserted row into team_results table");
+  return "Finished";
 }
