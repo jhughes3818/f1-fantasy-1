@@ -24,8 +24,12 @@ export default function UpdateRound() {
             axios.put("/api/admin/pricing/updateLatestPrice").then(() => {
               setCurrentStatus("Updated Latest Price");
 
-              axios.put("/api/admin/update-round").then(() => {
-                setCurrentStatus("Updated Round");
+              axios.put("/api/admin/pricing/updateLatestPoints").then(() => {
+                setCurrentStatus("Updated Latest Points");
+
+                axios.put("/api/admin/update-round").then(() => {
+                  setCurrentStatus("Updated Round");
+                });
               });
             });
           });
@@ -34,6 +38,12 @@ export default function UpdateRound() {
     });
 
     setDone(true);
+  }
+
+  async function updateTeamPoints() {
+    await axios.put("/api/admin/teams/update-team-points").then(() => {
+      setRoundDone(true);
+    });
   }
 
   return (
@@ -48,11 +58,11 @@ export default function UpdateRound() {
           placeholder="Latest Round"
           onChange={(e) => setRound(e.target.value)}
         ></input>
-        <button onClick={() => handleClick(round)} className="button-styling">
+        <button onClick={() => handleClick()} className="button-styling">
           Update Round
         </button>
-        <button onClick={() => handleClick(round)} className="button-styling">
-          Update League Points
+        <button onClick={() => updateTeamPoints()} className="button-styling">
+          Update Team Points
         </button>
       </div>
     </>
