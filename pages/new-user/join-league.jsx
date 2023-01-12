@@ -14,7 +14,7 @@ const steps = [
 
 export default function JoinLeaguePage(props) {
   const session = useSession();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (session) {
