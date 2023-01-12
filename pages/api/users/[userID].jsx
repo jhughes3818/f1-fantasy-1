@@ -19,6 +19,7 @@ export default function handler(req, res) {
         } else {
           res.status(200).json({ message: "User updated" });
         }
+        res.status(200).json({ message: "User updated" });
       });
   }
 
