@@ -22,11 +22,10 @@ export default function JoinLeaguePage(props) {
         .get(`/api/users/${session.user.id}`)
         .then((response) => {
           console.log(response.data.user.league);
-          console.log(reponse.data.user.league);
-          if (response.data.user.league != null) {
-            Router.push("/dashboard");
-          } else {
+          if (response.data.user.league === null) {
             setIsLoading(false);
+          } else {
+            Router.push("/dashboard");
           }
         })
         .catch((error) => {
