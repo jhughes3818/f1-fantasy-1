@@ -16,23 +16,28 @@ export default function JoinLeaguePage(props) {
   const session = useSession();
   const [isLoading, setIsLoading] = useState(true);
 
-  // useEffect(() => {
-  //   if (session) {
-  //     axios
-  //       .get(`/api/users/${session.user.email}`)
-  //       .then((response) => {
-  //         console.log(response.data.user.league);
-  //         if (response.data.user.league != null) {
-  //           Router.push("/dashboard");
-  //         } else {
-  //           setIsLoading(false);
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         console.log(error.message);
-  //       });
-  //   }
-  // }, [session]);
+  useEffect(() => {
+    if (session) {
+      axios
+        .get(`/api/users/${session.user.id}`)
+        .then((response) => {
+          console.log(response.data.user.league);
+          console.log(reponse.data.user.league);
+          if (response.data.user.league != null) {
+            Router.push("/dashboard");
+          } else {
+            setIsLoading(false);
+          }
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    }
+
+    // if (session) {
+    //   console.log(session);
+    // }
+  }, [session]);
   return (
     <div className="grid place-items-center h-screen">
       {isLoading ? (
