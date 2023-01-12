@@ -1,4 +1,4 @@
-import { supabase } from "../../../../utils/supabaseClient";
+import { supabase } from "../../../../database/supabaseClient";
 
 export default async function handler(req, res) {
   // Update user's league
