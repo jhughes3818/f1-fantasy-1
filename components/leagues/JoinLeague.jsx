@@ -22,7 +22,7 @@ export default function JoinLeague(props) {
   }
 
   function verifyNoLeague(user, leagueCode) {
-    axios.get(`/api/users/${user.email}`).then((response) => {
+    axios.get(`/api/users/${user.id}`).then((response) => {
       if (response.data.user.league) {
         setModalHeading("Already in a league");
         setModalBody(
