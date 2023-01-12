@@ -1,3 +1,5 @@
+import { supabase } from "../../../../utils/supabaseClient";
+
 export default async function handler(req, res) {
   // Update user's league
   if (req.method === "PUT") {
