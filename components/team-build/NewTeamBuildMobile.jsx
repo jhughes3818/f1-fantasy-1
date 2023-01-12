@@ -108,6 +108,9 @@ export default function NewTeamBuildMobile(props) {
 
     await axios.put(`/api/teams/supabase/${session.user.id}`, updates);
     await axios.put(`/api/users/${session.user.id}`, true);
+
+    // Redirect user to join league page
+    window.location.href = "/new-user/join-league";
   }
 
   function closeModal() {
