@@ -12,7 +12,7 @@ export default async function handler(req, res) {
 
     const { error } = await supabase
       .from("profiles")
-      .upsert(updates, { returning: "minimal" })
+      .upsert(updates)
       .eq("id", userID);
 
     if (error) {
