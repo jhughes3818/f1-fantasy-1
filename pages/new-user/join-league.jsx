@@ -14,7 +14,7 @@ const steps = [
 
 export default function JoinLeaguePage(props) {
   const session = useSession();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (session) {
@@ -22,7 +22,6 @@ export default function JoinLeaguePage(props) {
         .get(`/api/users/${session.user.id}`)
         .then((response) => {
           console.log(response.data.user.league);
-          console.log(reponse.data.user.league);
           if (response.data.user.league != null) {
             Router.push("/dashboard");
           } else {
