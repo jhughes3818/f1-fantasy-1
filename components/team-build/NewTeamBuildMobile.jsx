@@ -110,7 +110,7 @@ export default function NewTeamBuildMobile(props) {
     await axios.put(`/api/users/${session.user.id}`, true);
 
     // Redirect user to join league page
-    window.location.href = "/new-user/join-league";
+    Router.push("/new-user/join-league");
   }
 
   function closeModal() {
