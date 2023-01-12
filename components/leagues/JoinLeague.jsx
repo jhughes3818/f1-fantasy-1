@@ -21,20 +21,20 @@ export default function JoinLeague(props) {
     setIsOpen(false);
   }
 
-  // function verifyNoLeague(user, leagueCode) {
-  //   axios.get(`/api/users/${user.email}`).then((response) => {
-  //     if (response.data.user.league) {
-  //       setModalHeading("Already in a league");
-  //       setModalBody(
-  //         "You have already joined a league. Please leave your current league and then try again."
-  //       );
-  //       setModalButton("Ok");
-  //       setIsOpen(true);
-  //     } else {
-  //       joinLeague(user, leagueCode);
-  //     }
-  //   });
-  // }
+  function verifyNoLeague(user, leagueCode) {
+    axios.get(`/api/users/${user.email}`).then((response) => {
+      if (response.data.user.league) {
+        setModalHeading("Already in a league");
+        setModalBody(
+          "You have already joined a league. Please leave your current league and then try again."
+        );
+        setModalButton("Ok");
+        setIsOpen(true);
+      } else {
+        joinLeague(user, leagueCode);
+      }
+    });
+  }
 
   async function joinLeague(user, leagueCode) {
     await axios
