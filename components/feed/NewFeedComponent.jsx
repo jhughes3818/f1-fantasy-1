@@ -19,8 +19,8 @@ export default function NewFeedComponent() {
       axios.get(`/api/users/${session?.user.id}`).then((response) => {
         console.log(response.data);
 
-        // const leagueCode = response.data.league;
-        const leagueCode = null;
+        const leagueCode = response.data.league;
+        // const leagueCode = null;
         // Get the trades from the relevant league
 
         if (leagueCode === null) {
