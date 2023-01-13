@@ -37,18 +37,44 @@ export default function JoinLeague(props) {
   }
 
   async function joinLeague(user, leagueCode) {
-    await axios
-      .put(`/api/leagues/join/${leagueCode}`, { user: user })
-      .then((response) => {
-        if (response.status === 200) {
-          setModalHeading("Successfully joined league!");
-          setModalButton("Got it");
-          setLoading(false);
-          setIsOpen(true);
-          setShowHome(true);
-          Router.push("/dashboard");
-        }
-      });
+    // await axios
+    //   .put(`/api/leagues/join/${leagueCode}`, { user: user })
+    //   .then((response) => {
+    //     if (response.status === 200) {
+    //       setModalHeading("Successfully joined league!");
+    //       setModalButton("Got it");
+    //       setLoading(false);
+    //       setIsOpen(true);
+    //       setShowHome(true);
+    //       Router.push("/dashboard");
+    //     }
+    //   });
+
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("profiles")
+      .update
+      // { league: leagueCode }
+      ({ league
+      : leagueCode })
+      .eq("id", user.id);
+
+    if (error) {
+      console.log(error);
+      setModalHeading("Error");
+      setModalBody("Something went wrong. Please try again.");
+      setModalButton("Ok");
+      setIsOpen(true);
+    }
+
+    if (data) {
+      setModalHeading("Successfully joined league!");
+      setModalButton("Got it");
+      setLoading(false);
+      setIsOpen(true);
+      setShowHome(true);
+      //Router.push("/dashboard");
+    }
   }
 
   return (
