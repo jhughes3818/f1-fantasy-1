@@ -5,53 +5,65 @@ import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import FeedEntries from "./FeedEntries";
+import JoinLeague from "../leagues/JoinLeague";
 
 export default function NewFeedComponent() {
   const session = useSession();
   const [activity, setActivity] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [noLeague, setNoLeague] = useState(false);
 
   useEffect(() => {
     if (session) {
       // Get the user league code
       axios.get(`/api/users/${session?.user.id}`).then((response) => {
-        // console.log(response);
-        // Get the trades from the relevant league
-        axios.get(`/api/trades/${1}`).then((response) => {
-          // console.log(response.data);
-          const tradesList = response.data;
+        console.log(response.data);
 
-          console.log(tradesList);
-          const activityList = [];
-          tradesList.slice(-5).forEach((trade) => {
-            // console.log(trade);
-            const newEntry = {
-              id: tradesList.id,
-              type: "assignment",
-              person: { name: trade.user, href: "#" },
-              assigned: {
-                name:
-                  trade.driver_bought.first_name +
-                  " " +
-                  trade.driver_bought.last_name,
-                href: "#",
-              },
-              sold: {
-                name:
-                  trade.driver_sold.first_name +
-                  " " +
-                  trade.driver_sold.last_name,
-                href: "#",
-              },
-              date: "2d ago",
-              // imageUrl: trade.user.image,
-              // comment: trade.message,
-            };
-            activityList.push(newEntry);
-          });
-          setActivity(activityList.reverse());
+        // const leagueCode = response.data.league;
+        const leagueCode = null;
+        // Get the trades from the relevant league
+
+        if (leagueCode === null) {
           setIsLoading(false);
-        });
+          setNoLeague(true);
+          return;
+        } else {
+          axios.get(`/api/trades/${leagueCode}`).then((response) => {
+            // console.log(response.data);
+            const tradesList = response.data;
+
+            console.log(tradesList);
+            const activityList = [];
+            tradesList.slice(-5).forEach((trade) => {
+              // console.log(trade);
+              const newEntry = {
+                id: tradesList.id,
+                type: "assignment",
+                person: { name: trade.user, href: "#" },
+                assigned: {
+                  name:
+                    trade.driver_bought.first_name +
+                    " " +
+                    trade.driver_bought.last_name,
+                  href: "#",
+                },
+                sold: {
+                  name:
+                    trade.driver_sold.first_name +
+                    " " +
+                    trade.driver_sold.last_name,
+                  href: "#",
+                },
+                date: "2d ago",
+                // imageUrl: trade.user.image,
+                // comment: trade.message,
+              };
+              activityList.push(newEntry);
+            });
+            setActivity(activityList.reverse());
+            setIsLoading(false);
+          });
+        }
       });
     }
   }, [session]);
@@ -66,48 +78,76 @@ export default function NewFeedComponent() {
       {isLoading ? (
         <div
           role="status"
-          class="p-4 space-y-4 max-w-md rounded border border-gray-200 divide-y divide-gray-200 shadow animate-pulse dark:divide-gray-700 md:p-6 dark:border-gray-700"
+          className="p-4 space-y-4 max-w-md rounded border border-gray-200 divide-y divide-gray-200 shadow animate-pulse dark:divide-gray-700 md:p-6 dark:border-gray-700"
         >
-          <div class="flex justify-between items-center">
+          <div className="flex justify-between items-center">
             <div>
-              <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-              <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+              <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+              <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
             </div>
-            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+            <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
           </div>
-          <div class="flex justify-between items-center pt-4">
+          <div className="flex justify-between items-center pt-4">
             <div>
-              <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-              <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+              <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+              <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
             </div>
-            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+            <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
           </div>
-          <div class="flex justify-between items-center pt-4">
+          <div className="flex justify-between items-center pt-4">
             <div>
-              <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-              <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+              <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+              <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
             </div>
-            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+            <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
           </div>
-          <div class="flex justify-between items-center pt-4">
+          <div className="flex justify-between items-center pt-4">
             <div>
-              <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-              <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+              <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+              <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
             </div>
-            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+            <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
           </div>
-          <div class="flex justify-between items-center pt-4">
+          <div className="flex justify-between items-center pt-4">
             <div>
-              <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-              <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+              <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+              <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
             </div>
-            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+            <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
           </div>
-          <span class="sr-only">Loading...</span>
+          <span className="sr-only">Loading...</span>
         </div>
       ) : (
         <>
-          {session ? <FeedEntries activity={activity} /> : <h1>Loading...</h1>}
+          {session ? (
+            <>
+              {noLeague ? (
+                <div>
+                  <h1 className="mx-auto text-xl text-gray-500">
+                    You don't have a league yet! Join one to get started.
+                  </h1>
+                  <div className="mt-5">
+                    <JoinLeague />
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {activity.length > 0 ? (
+                    <FeedEntries activity={activity} />
+                  ) : (
+                    <div className="">
+                      <h1 className="mx-auto text-xl text-gray-500">
+                        Doesn't look like anything has happened yet! Make a
+                        trade to get started.
+                      </h1>
+                    </div>
+                  )}
+                </>
+              )}
+            </>
+          ) : (
+            <h1>Loading...</h1>
+          )}
         </>
       )}
     </>
