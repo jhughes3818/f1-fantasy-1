@@ -5,6 +5,7 @@ import { useState } from "react";
 import Modal from "../team-build/Modal";
 import { Oval } from "react-loader-spinner";
 import Router from "next/router";
+import supabase from "../../database/supabaseClient";
 
 export default function JoinLeague(props) {
   const [isOpen, setIsOpen] = useState(false);
