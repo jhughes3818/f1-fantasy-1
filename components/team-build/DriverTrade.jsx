@@ -32,6 +32,7 @@ export default function DriverTrade(props) {
     }
 
     if (teams.data != null) {
+      console.log(teams.data);
       setSelected1(teams.data.drivers[0]);
       console.log(teams.data.drivers[0]);
     }

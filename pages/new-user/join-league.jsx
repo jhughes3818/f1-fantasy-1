@@ -57,7 +57,12 @@ export default function JoinLeaguePage(props) {
           <div className="mb-8">
             <Steps steps={steps} />
           </div>
-          <JoinLeague showSkip={true} showCreate={true} />
+          <div className="gris place-items-center">
+            <div className="text-center">
+              <h1 className="text-3xl font-bold mb-3">Join A League</h1>
+            </div>
+            <JoinLeague showSkip={true} showCreate={true} />
+          </div>
         </div>
       )}
     </div>

@@ -25,7 +25,7 @@ const Home = () => {
     if (session) {
       axios.get(`/api/users/${session.user.id}`).then((response) => {
         if (response.status === 200) {
-          if (response.data.user.hasTeam) {
+          if (response.data.hasTeam) {
             setIsNewUser(false);
           } else setIsNewUser(true);
         }
