@@ -17,15 +17,17 @@ export default function Dashboard() {
   const [leagueCode, setLeagueCode] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
-  // useEffect(() => {
-  //   if (session) {
-  //     axios.get(`/api/users/${session.user.email}`).then((response) => {
-  //       setLeagueCode(response.data.user.league);
-  //       console.log(response.data.user.league);
-  //       setIsLoading(false);
-  //     });
-  //   }
-  // }, [session]);
+  useEffect(() => {
+    if (session) {
+      axios.get(`/api/users/${session.user.id}`).then((response) => {
+        console.log("League response data");
+        console.log(response.data);
+        setLeagueCode(response.data.league);
+
+        setIsLoading(false);
+      });
+    }
+  }, [session]);
 
   const navigation = [
     { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: false },

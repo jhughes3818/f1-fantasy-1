@@ -2,6 +2,7 @@ import supabase from "../../../database/supabaseClient";
 
 export default async function handler(req, res) {
   const leagueCode = req.query.leagueCode;
+  console.log("League code: " + leagueCode);
 
   if (req.method === "GET") {
     const users = await supabase
@@ -9,9 +10,11 @@ export default async function handler(req, res) {
       .select("id, username")
       .eq("league", leagueCode)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         return response.data;
       });
+
+    console.log(users);
 
     // get list of user ids
     const userIds = users.map((user) => user.id);
@@ -23,7 +26,7 @@ export default async function handler(req, res) {
       .select("user_id, cash, points")
       .in("user_id", userIds)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         return response.data;
       });
 
