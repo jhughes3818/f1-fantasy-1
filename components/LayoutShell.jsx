@@ -211,8 +211,10 @@ export default function LayoutShell(props) {
           <div className="relative z-0 flex flex-1 overflow-hidden">
             <main className="relative z-0 flex-1 overflow-y-auto focus:outline-none">
               {/* Start main area*/}
-              <div className="absolute inset-0 py-6 px-4 sm:px-6 lg:px-8">
-                {props.children[0]}
+              <div>
+                <div className="absolute inset-0 py-6 px-4 sm:px-6 lg:px-8">
+                  {props.children[0]}
+                </div>
               </div>
               {/* End main area */}
             </main>
