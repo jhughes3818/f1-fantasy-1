@@ -4,6 +4,8 @@ import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import axios from "axios";
 import Modal from "./Modal";
 import { useQuery } from "react-query";
+import { NumericFormat } from "react-number-format";
+import numeral from "numeral";
 
 export default function DriverTrade(props) {
   const [selected1, setSelected1] = useState();
@@ -104,8 +106,7 @@ export default function DriverTrade(props) {
 
   useEffect(() => {
     if (selected1 != null && selected2 != null) {
-      const change =
-        Math.round((selected1.price - selected2.price) * 1000) / 1000;
+      const change = selected1.price - selected2.price;
       setProfit(change);
     }
   }, [selected1, selected2]);
@@ -138,7 +139,8 @@ export default function DriverTrade(props) {
                     <span className="block truncate">
                       {selected1.first_name} {selected1.last_name}{" "}
                       <span className="text-gray-500">
-                        ({selected1.price}m)
+                        {/* ({selected1.price}m) */}
+                        {numeral(selected1.price).format("($ 0.00 a)")}
                       </span>
                     </span>
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
@@ -176,7 +178,13 @@ export default function DriverTrade(props) {
                               >
                                 {person.first_name} {person.last_name}{" "}
                                 <span className="text-gray-500">
-                                  ({person.price}m)
+                                  {/* ({person.price}m) */}
+                                  {/* <NumericFormat
+                                    value={person.price}
+                                    prefix={"$"}
+                                    thousandsGroupStyle={"thousand"}
+                                  /> */}
+                                  {numeral(person.price).format("($ 0.00 a)")}
                                 </span>
                               </span>
                               {selected ? (
@@ -206,7 +214,8 @@ export default function DriverTrade(props) {
                     <span className="block truncate">
                       {selected2.first_name} {selected2.last_name}{" "}
                       <span className="text-gray-500">
-                        ({selected2.price}m)
+                        {/* ({selected2.price}m) */}
+                        {numeral(selected2.price).format("($ 0.00 a)")}
                       </span>
                     </span>
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
@@ -244,7 +253,13 @@ export default function DriverTrade(props) {
                               >
                                 {person.first_name} {person.last_name}{" "}
                                 <span className="text-gray-500">
-                                  ({person.price}m)
+                                  {/* ({person.price}m) */}
+                                  {/* <NumericFormat
+                                    value={person.price}
+                                    prefix={"$"}
+                                    thousandsGroupStyle={"thousand"}
+                                  /> */}
+                                  {numeral(profit).format("$ 0.00 a")}
                                 </span>
                               </span>
                               {selected ? (
@@ -268,14 +283,14 @@ export default function DriverTrade(props) {
             <div className="grid place-items-center my-4 w-80">
               {profit > 0 ? (
                 <h1 className="text-xl font-bold text-green-600 mb-4">
-                  Profit: $
-                  {Math.round((selected2.price - selected1.price) * 1000) /
-                    1000}
-                  m
+                  Profit:
+                  {/* {Math.round((selected2.price - selected1.price) * 1000) /
+                    1000} */}
+                  {numeral(profit).format("$ 0.00 a")}
                 </h1>
               ) : (
                 <h1 className="text-xl font-bold text-red-600 mb-4">
-                  Profit: ${profit}m
+                  Profit: {numeral(profit).format("$ 0.00 a")}
                 </h1>
               )}
 

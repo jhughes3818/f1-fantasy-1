@@ -1,16 +1,11 @@
 import NewFeedComponent from "../components/feed/NewFeedComponent";
 import LayoutShell from "../components/LayoutShell";
-import JoinLeague from "../components/leagues/JoinLeague";
 import LeagueTable from "../components/leagues/LeagueTable";
-import {
-  CalendarIcon,
-  HomeIcon,
-  UserGroupIcon,
-} from "@heroicons/react/24/outline";
-import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSession } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Oval } from "react-loader-spinner";
+import { navigationLeague } from "../components/navigation/Navigation";
 
 export default function Dashboard() {
   const session = useSession();
@@ -29,11 +24,13 @@ export default function Dashboard() {
     }
   }, [session]);
 
-  const navigation = [
-    { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: false },
-    { name: "League", href: "/league", icon: CalendarIcon, current: true },
-    { name: "Stats", href: "#", icon: UserGroupIcon, current: false },
-  ];
+  // const navigation = [
+  //   { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: false },
+  //   { name: "League", href: "/league", icon: CalendarIcon, current: true },
+  //   { name: "Stats", href: "#", icon: UserGroupIcon, current: false },
+  // ];
+
+  const navigation = navigationLeague;
 
   return (
     <LayoutShell nav={navigation} session={session}>
