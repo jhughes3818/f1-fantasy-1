@@ -122,7 +122,10 @@ export default function LeagueTable(props) {
                   {numeral(person.cash).format("($ 0.00 a)")}
                 </td>
                 <td className="hidden px-3 py-4 text-right text-sm text-gray-500 sm:table-cell">
-                  <a className="text-indigo-600 hover:text-indigo-700 cursor-pointer font-bold">
+                  <a
+                    className="text-indigo-600 hover:text-indigo-700 cursor-pointer font-bold"
+                    href={`/team/${person.user_id}`}
+                  >
                     View Team
                   </a>
                 </td>

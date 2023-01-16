@@ -9,16 +9,6 @@ export default async function handler(req, res) {
       .then((response) => {
         const drivers = response.data[0];
         console.log(response.data[0]);
-        // Get the list of driver IDs from the response data
-        // const driverIds = response.data.map((team) => [
-        //   team.driver_1,
-        //   team.driver_2,
-        //   team.driver_3,
-        //   team.driver_4,
-        //   team.driver_5,
-        // ]);
-
-        // console.log(response.data[0]);
 
         const driverIds = [
           drivers.driver_1,
@@ -33,7 +23,7 @@ export default async function handler(req, res) {
         // Query the "drivers" table to get the first_name, last_name, and price of the drivers
         supabase
           .from("drivers")
-          .select("first_name, last_name, price, id")
+          .select("first_name, last_name, price, id, points")
           .in("id", driverIds)
           .then((response) => res.status(200).json({ drivers: response.data }));
       });
