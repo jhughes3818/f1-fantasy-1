@@ -13,6 +13,8 @@ import {
   HomeIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
+import SignIn from "../components/auth/SignIn";
+import { navigationHome } from "../components/navigation/Navigation";
 
 const Home = () => {
   const [isNewUser, setIsNewUser] = useState();
@@ -33,28 +35,18 @@ const Home = () => {
     }
   }, [session]);
 
-  const navigation = [
-    { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
-    { name: "League", href: "/league", icon: CalendarIcon, current: false },
-    { name: "Stats", href: "#", icon: UserGroupIcon, current: false },
-  ];
+  // const navigation = [
+  //   { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
+  //   { name: "League", href: "/league", icon: CalendarIcon, current: false },
+  //   { name: "Stats", href: "#", icon: UserGroupIcon, current: false },
+  // ];
+
+  const navigation = navigationHome;
 
   return (
     <div>
       {!session ? (
-        <div className="grid place-items-center h-screen">
-          <div className="w-96 mx-auto">
-            <div className="text-center">
-              <h1 className="text-3xl font-bold">Sign In To Continue</h1>
-            </div>
-            <Auth
-              providers={["google"]}
-              supabaseClient={supabase}
-              appearance={{ theme: ThemeSupa }}
-              theme="light"
-            />
-          </div>
-        </div>
+        <SignIn />
       ) : (
         <>
           {isNewUser ? (

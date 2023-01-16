@@ -9,6 +9,7 @@ import {
   HomeIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
+import { navigationTeam } from "../../components/navigation/Navigation";
 
 export default function TeamPage() {
   //Team id comes from router
@@ -31,12 +32,14 @@ export default function TeamPage() {
     return <div>Error fetching data</div>;
   }
 
-  const navigation = [
-    { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: false },
-    { name: "League", href: "/league", icon: CalendarIcon, current: false },
-    { name: "Stats", href: "#", icon: UserGroupIcon, current: false },
-    { name: "Team", href: "#", icon: UserGroupIcon, current: true },
-  ];
+  //   const navigation = [
+  //     { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: false },
+  //     { name: "League", href: "/league", icon: CalendarIcon, current: false },
+  //     { name: "Stats", href: "#", icon: UserGroupIcon, current: false },
+  //     { name: "Team", href: "#", icon: UserGroupIcon, current: true },
+  //   ];
+
+  const navigation = navigationTeam;
 
   if (session) {
     return (
