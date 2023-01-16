@@ -259,7 +259,7 @@ export default function DriverTrade(props) {
                                     prefix={"$"}
                                     thousandsGroupStyle={"thousand"}
                                   /> */}
-                                  {numeral(profit).format("$ 0.00 a")}
+                                  {numeral(person.price).format("$ 0.00 a")}
                                 </span>
                               </span>
                               {selected ? (

@@ -68,6 +68,8 @@ export default function NewFeedComponent() {
     }
   }, [session]);
 
+  // Button aligned to bottom right of div
+
   return (
     <>
       <div className="border-b border-gray-200 pb-5 mb-5">
@@ -144,6 +146,13 @@ export default function NewFeedComponent() {
                   )}
                 </>
               )}
+
+              <button
+                type="button"
+                className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mt-6"
+              >
+                Trade
+              </button>
             </>
           ) : (
             <h1>Loading...</h1>
