@@ -43,12 +43,17 @@ const Home = () => {
     <div>
       {!session ? (
         <div className="grid place-items-center h-screen">
-          <Auth
-            providers={["google"]}
-            supabaseClient={supabase}
-            appearance={{ theme: ThemeSupa }}
-            theme="light"
-          />
+          <div className="w-96 mx-auto">
+            <div className="text-center">
+              <h1 className="text-3xl font-bold">Sign In To Continue</h1>
+            </div>
+            <Auth
+              providers={["google"]}
+              supabaseClient={supabase}
+              appearance={{ theme: ThemeSupa }}
+              theme="light"
+            />
+          </div>
         </div>
       ) : (
         <>
