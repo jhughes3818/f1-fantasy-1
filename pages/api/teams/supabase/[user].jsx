@@ -7,14 +7,28 @@ export default async function handler(req, res) {
       .select("driver_1, driver_2, driver_3, driver_4, driver_5")
       .eq("user_id", req.query.user)
       .then((response) => {
+        const drivers = response.data[0];
+        console.log(response.data[0]);
         // Get the list of driver IDs from the response data
-        const driverIds = response.data.map((team) => [
-          team.driver_1,
-          team.driver_2,
-          team.driver_3,
-          team.driver_4,
-          team.driver_5,
-        ]);
+        // const driverIds = response.data.map((team) => [
+        //   team.driver_1,
+        //   team.driver_2,
+        //   team.driver_3,
+        //   team.driver_4,
+        //   team.driver_5,
+        // ]);
+
+        // console.log(response.data[0]);
+
+        const driverIds = [
+          drivers.driver_1,
+          drivers.driver_2,
+          drivers.driver_3,
+          drivers.driver_4,
+          drivers.driver_5,
+        ];
+
+        console.log(driverIds);
 
         // Query the "drivers" table to get the first_name, last_name, and price of the drivers
         supabase
