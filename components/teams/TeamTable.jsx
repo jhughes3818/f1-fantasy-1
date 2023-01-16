@@ -1,8 +1,4 @@
-import { useRouter } from "next/router";
-import { useQuery } from "react-query";
-import axios from "axios";
-import LayoutShell from "../../components/LayoutShell";
-import { useSession } from "@supabase/auth-helpers-react";
+import numeral from "numeral";
 
 export default function TeamTable(props) {
   //Team id comes from router
@@ -62,23 +58,23 @@ export default function TeamTable(props) {
                     <dl className="font-normal lg:hidden">
                       <dt className="sr-only">Title</dt>
                       <dd className="mt-1 truncate text-gray-700">
-                        {person.price}
+                        {numeral(person.price).format("($ 0.00 a)")}
                       </dd>
                       <dt className="sr-only sm:hidden">Email</dt>
-                      <dd className="mt-1 truncate text-gray-500 sm:hidden">
-                        {/* {person.seasonPoints} points */}
-                      </dd>
                     </dl>
                   </td>
                   <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
-                    {person.points}
+                    {numeral(person.points).format("0,0")}
                   </td>
                   <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                    ${person.cash}m
+                    {numeral(person.price).format("($ 0.00 a)")}
                   </td>
                   <td className="hidden px-3 py-4 text-right text-sm text-gray-500 sm:table-cell">
-                    <a className="text-indigo-600 hover:text-indigo-700 cursor-pointer font-bold">
-                      View Team
+                    <a
+                      className="text-indigo-600 hover:text-indigo-700 cursor-pointer font-bold"
+                      href={`/drivers/${person.id}`}
+                    >
+                      View Driver
                     </a>
                   </td>
                 </tr>
