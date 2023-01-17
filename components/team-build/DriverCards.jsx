@@ -1,3 +1,4 @@
+import numeral from "numeral";
 export default function Example(props) {
   const people = props.drivers;
   return (
@@ -25,8 +26,8 @@ export default function Example(props) {
                       {person.first_name} {person.last_name}
                     </h3>
                   </div>
-                  <p className="mt-1 truncate text-sm text-gray-500">
-                    ${person.price}m
+                  <p className="mt-1 truncate text-sm text-gray-500 text-left">
+                    {numeral(person.price).format("($ 0.00 a)")}
                   </p>
                 </div>
               </div>
