@@ -192,7 +192,7 @@ export default function LayoutShell(props) {
               <div>
                 <img
                   className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                  src="/apple-touch-icon.png"
                   alt="Your Company"
                 />
               </div>
