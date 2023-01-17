@@ -5,6 +5,7 @@ import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import axios from "axios";
 import Modal from "./Modal";
 import supabase from "../../database/supabaseClient";
+import numeral from "numeral";
 
 export default function NewTeamBuildMobile(props) {
   const session = useSession();
@@ -172,7 +173,8 @@ export default function NewTeamBuildMobile(props) {
                               {person.first_name} {person.last_name}
                             </p>
                             <p className="truncate text-sm text-gray-500">
-                              {"$" + person.price + "m"}
+                              {/* {"$" + person.price + "m"} */}
+                              {numeral(person.price).format("($ 0.00 a)")}
                             </p>
                           </div>
                           <div>
