@@ -37,7 +37,7 @@ export default function CreateTeam() {
   useEffect(() => {
     if (session) {
       axios.get(`/api/users/${session.user.id}`).then((response) => {
-        if (response.data.user.hasTeam) {
+        if (response.data.hasTeam) {
           Router.push("/dashboard");
         } else {
           setIsLoading(false);
