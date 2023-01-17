@@ -14,7 +14,7 @@ export default function NewTeamBuildMobile(props) {
 
   //States used for progress of building team
   const [driversCount, setDriversCount] = useState(0);
-  const [cash, setCash] = useState(30000000);
+  const [cash, setCash] = useState(50000);
 
   const [drivers, setDrivers] = useState([]);
   const [driversNames, setDriversNames] = useState([]);
@@ -51,7 +51,7 @@ export default function NewTeamBuildMobile(props) {
       setModalHeading("Maximum number of drivers.");
       setIsOpen(true);
     } else if (newCash < 0) {
-      setModalBody("You have a maximum budget of $30m to build your team.");
+      setModalBody("You have a maximum budget of $50k to build your team.");
       setModalHeading("Exceeded Budget");
       setIsOpen(true);
     } else {
@@ -174,6 +174,10 @@ export default function NewTeamBuildMobile(props) {
                             </p>
                             <p className="truncate text-sm text-gray-500">
                               {/* {"$" + person.price + "m"} */}
+                              {person.team}
+                            </p>
+                            <p className="truncate text-sm text-gray-500">
+                              {/* {"$" + person.price + "m"} */}
                               {numeral(person.price).format("($ 0.00 a)")}
                             </p>
                           </div>
@@ -230,7 +234,8 @@ export default function NewTeamBuildMobile(props) {
                 />
                 <ProgressBar
                   fraction="1/2"
-                  text={`Cash Remaining: $${cash}m`}
+                  // text={`Cash Remaining: $${cash}m`}
+                  text={`Cash Remaining: ${numeral(cash).format("($ 0.00 a)")}`}
                 />{" "}
               </div>
               <h1 className="text-2xl font-bold tracking-tight text-gray-900">
