@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-
+import RoundStatus from "./round-management/RoundStatus";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 
 function classNames(...classes) {
@@ -105,7 +105,8 @@ export default function LayoutShell(props) {
                       </div>
                     </nav>
                   </div>
-                  <div className="flex flex-shrink-0 border-t border-gray-200 p-4">
+                  <div className="flex flex-col flex-shrink-0 border-t border-gray-200 p-4">
+                    <RoundStatus />
                     <a href="/profile" className="group block flex-shrink-0">
                       <div className="flex items-center">
                         <div className="ml-3">
@@ -169,7 +170,8 @@ export default function LayoutShell(props) {
                   </div>
                 </nav>
               </div>
-              <div className="flex flex-shrink-0 border-t border-gray-200 p-4">
+              <div className="flex flex-col flex-shrink-0 border-t border-gray-200 p-4">
+                <RoundStatus />
                 <a href="/profile" className="group block w-full flex-shrink-0">
                   <div className="flex items-center">
                     <div className="ml-3">
