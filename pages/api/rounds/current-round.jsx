@@ -1,7 +1,9 @@
 import supabase from "../../../database/supabaseClient";
 
 export default async function handler(req, res) {
+  console.log("Getting latest round");
   const current_round = await getLatestRound();
+  console.log("Got latest round");
   console.log(current_round);
 
   res.status(200).json({ current_round: current_round });
