@@ -37,10 +37,10 @@ export default function RoundStatus() {
                   />
                 </div>
                 <div className="ml-3">
-                  <h3 className="text-sm font-medium text-yellow-800">
+                  <h3 className="text-sm font-medium text-green-800">
                     Team Editing Open
                   </h3>
-                  <div className="mt-2 text-sm text-yellow-700">
+                  <div className="mt-2 text-sm text-green-700">
                     <p>You can edit your team until the start of qualifying.</p>
                   </div>
                 </div>
@@ -56,11 +56,11 @@ export default function RoundStatus() {
                   />
                 </div>
                 <div className="ml-3">
-                  <h3 className="text-sm font-medium text-yellow-800">
+                  <h3 className="text-sm font-medium text-red-800">
                     Team Editing Open
                   </h3>
-                  <div className="mt-2 text-sm text-yellow-700">
-                    <p>Team editing closes as the start of qualifying.</p>
+                  <div className="mt-2 text-sm text-red-700">
+                    <p>Team editing closes at the start of qualifying.</p>
                   </div>
                 </div>
               </div>

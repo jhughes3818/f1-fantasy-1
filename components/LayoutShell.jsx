@@ -105,11 +105,11 @@ export default function LayoutShell(props) {
                       </div>
                     </nav>
                   </div>
-                  <div className="flex flex-shrink-0 border-t border-gray-200 p-4">
+                  <div className="flex flex-col flex-shrink-0 border-t border-gray-200 p-4">
+                    <RoundStatus />
                     <a href="/profile" className="group block flex-shrink-0">
                       <div className="flex items-center">
                         <div className="ml-3">
-                          <RoundStatus />
                           <p className="text-base font-medium text-gray-700 group-hover:text-gray-900">
                             {session ? session.user.email : null}
                           </p>
@@ -170,7 +170,8 @@ export default function LayoutShell(props) {
                   </div>
                 </nav>
               </div>
-              <div className="flex flex-shrink-0 border-t border-gray-200 p-4">
+              <div className="flex flex-col flex-shrink-0 border-t border-gray-200 p-4">
+                <RoundStatus />
                 <a href="/profile" className="group block w-full flex-shrink-0">
                   <div className="flex items-center">
                     <div className="ml-3">
