@@ -7,6 +7,8 @@ import axios from "axios";
 import FeedEntries from "./FeedEntries";
 import JoinLeague from "../leagues/JoinLeague";
 import DriverTrade from "../team-build/DriverTrade";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 
 export default function NewFeedComponent() {
   const session = useSession();
@@ -20,6 +22,11 @@ export default function NewFeedComponent() {
       // Get the user league code
       axios.get(`/api/users/${session?.user.id}`).then((response) => {
         console.log(response.data);
+        dayjs.extend(relativeTime);
+
+        // Get the current time
+        const currentTime = new Date();
+        console.log("Current time: " + currentTime);
 
         const leagueCode = response.data.league;
         // const leagueCode = null;
@@ -56,7 +63,7 @@ export default function NewFeedComponent() {
                     trade.driver_sold.last_name,
                   href: "#",
                 },
-                date: "2d ago",
+                date: `${dayjs(trade.date).fromNow(true)}` + " ago",
                 // imageUrl: trade.user.image,
                 // comment: trade.message,
               };
