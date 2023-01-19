@@ -2,6 +2,7 @@ import {
   ChatBubbleLeftEllipsisIcon,
   TagIcon,
   UserCircleIcon,
+  ArrowsRightLeftIcon,
 } from "@heroicons/react/20/solid";
 
 export default function TradeFeedComponent(props) {
@@ -11,12 +12,13 @@ export default function TradeFeedComponent(props) {
     <>
       <div>
         <div className="relative px-1">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 ring-8 ring-white">
-            <img
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 ring-8 ring-white">
+            {/* <img
               className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-400 ring-8 ring-white"
               src={activityItem.imageUrl}
               alt=""
-            />
+            /> */}
+            <ArrowsRightLeftIcon className="h-5 w-5 text-green-500" />
           </div>
         </div>
       </div>
