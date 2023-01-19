@@ -171,7 +171,6 @@ export default function LayoutShell(props) {
                 </nav>
               </div>
               <div className="flex flex-col flex-shrink-0 border-t border-gray-200 p-4">
-                <RoundStatus />
                 <a href="/profile" className="group block w-full flex-shrink-0">
                   <div className="flex items-center">
                     <div className="ml-3">
