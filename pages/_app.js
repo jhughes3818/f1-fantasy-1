@@ -6,6 +6,7 @@ import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import { useState } from "react";
 const queryClient = new QueryClient();
+import { Analytics } from "@vercel/analytics/react";
 
 export default function App({
   Component,
@@ -23,6 +24,7 @@ export default function App({
           initialSession={pageProps.initialSession}
         >
           <Component {...pageProps} />
+          <Analytics />
         </SessionContextProvider>
       </QueryClientProvider>
     </>
