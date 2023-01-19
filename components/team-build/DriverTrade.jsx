@@ -12,6 +12,7 @@ export default function DriverTrade(props) {
   const [selected2, setSelected2] = useState();
   const [profit, setProfit] = useState();
   const [message, setMessage] = useState();
+  const [driversToSell, setDriversToSell] = useState([]);
 
   const drivers = useQuery("drivers", () =>
     axios.get("/api/drivers").then((res) => {
@@ -30,6 +31,8 @@ export default function DriverTrade(props) {
 
   useEffect(() => {
     if (drivers.data != null) {
+      console.log("Drivers.data");
+      console.log(drivers.data);
       setSelected2(drivers.data.drivers[0]);
     }
 
@@ -37,6 +40,16 @@ export default function DriverTrade(props) {
       console.log(teams.data);
       setSelected1(teams.data.drivers[0]);
       console.log(teams.data.drivers[0]);
+      const teamIDs = teams.data.drivers.map((driver) => {
+        return driver.id;
+      });
+
+      // Check if any drivers are not in the team
+      const list = drivers.data.drivers.filter((driver) => {
+        return !teamIDs.includes(driver.id);
+      });
+
+      setDriversToSell(list);
     }
   }, [drivers.data, teams.data]);
 
@@ -232,7 +245,7 @@ export default function DriverTrade(props) {
                     leaveTo="opacity-0"
                   >
                     <Listbox.Options className="absolute mt-1 max-h-48 xl:max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                      {drivers.data.drivers.map((person, personIdx) => (
+                      {driversToSell.map((person, personIdx) => (
                         <Listbox.Option
                           key={personIdx}
                           className={({ active }) =>
