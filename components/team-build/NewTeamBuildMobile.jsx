@@ -14,7 +14,7 @@ export default function NewTeamBuildMobile(props) {
 
   //States used for progress of building team
   const [driversCount, setDriversCount] = useState(0);
-  const [cash, setCash] = useState(50000);
+  const [cash, setCash] = useState(100000);
 
   const [drivers, setDrivers] = useState([]);
   const [driversNames, setDriversNames] = useState([]);
