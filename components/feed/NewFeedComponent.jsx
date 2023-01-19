@@ -9,6 +9,8 @@ import JoinLeague from "../leagues/JoinLeague";
 import DriverTrade from "../team-build/DriverTrade";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { useQuery } from "react-query";
+import RoundStatus from "../round-management/RoundStatus";
 
 export default function NewFeedComponent() {
   const session = useSession();
@@ -16,6 +18,26 @@ export default function NewFeedComponent() {
   const [isLoading, setIsLoading] = useState(true);
   const [noLeague, setNoLeague] = useState(false);
   const [open, setOpen] = useState(false);
+  const [tradeOpen, setTradeOpen] = useState(false);
+
+  // Use query to get the latest round status
+  const {
+    isLoading: roundStatusLoading,
+    error,
+    data,
+  } = useQuery("roundStatus", () => axios.get("/api/rounds/current-round"));
+
+  // if (data.data.current_round[0].editing_allowed) {
+  //   setTradeOpen(true);
+  // }
+
+  useEffect(() => {
+    if (data) {
+      if (data.data.current_round[0].editing_allowed) {
+        setTradeOpen(true);
+      }
+    }
+  }, [data]);
 
   useEffect(() => {
     if (session) {
@@ -156,13 +178,20 @@ export default function NewFeedComponent() {
                 </>
               )}
 
-              <button
-                type="button"
-                className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mt-6 xl:hidden"
-                onClick={() => setOpen(true)}
-              >
-                Trade
-              </button>
+              {tradeOpen ? (
+                <button
+                  type="button"
+                  className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mt-6 xl:hidden"
+                  onClick={() => setOpen(true)}
+                >
+                  Trade
+                </button>
+              ) : (
+                <div className="xl:hidden">
+                  <RoundStatus />
+                </div>
+              )}
+
               <Transition.Root show={open} as={Fragment}>
                 <Dialog as="div" className="relative z-10" onClose={setOpen}>
                   <Transition.Child

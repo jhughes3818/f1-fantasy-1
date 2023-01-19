@@ -57,7 +57,7 @@ export default function RoundStatus() {
                 </div>
                 <div className="ml-3">
                   <h3 className="text-sm font-medium text-red-800">
-                    Team Editing Open
+                    Team Editing Closed
                   </h3>
                   <div className="mt-2 text-sm text-red-700">
                     <p>Team editing closes at the start of qualifying.</p>
