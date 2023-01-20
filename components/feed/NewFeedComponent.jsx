@@ -70,20 +70,20 @@ export default function NewFeedComponent() {
               const newEntry = {
                 id: tradesList.id,
                 type: "assignment",
-                person: { name: trade.user, href: "#" },
+                person: { name: trade.user, href: `/team/${trade.user.id}` },
                 assigned: {
                   name:
                     trade.driver_bought.first_name +
                     " " +
                     trade.driver_bought.last_name,
-                  href: "#",
+                  href: `/drivers/${trade.driver_sold_id}`,
                 },
                 sold: {
                   name:
                     trade.driver_sold.first_name +
                     " " +
                     trade.driver_sold.last_name,
-                  href: "#",
+                  href: `/drivers/${trade.driver_bought_id}`,
                 },
                 date: `${dayjs(trade.date).fromNow(true)}` + " ago",
                 // imageUrl: trade.user.image,

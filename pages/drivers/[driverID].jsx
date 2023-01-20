@@ -8,13 +8,16 @@ import {
 import axios from "axios";
 import { Query, useQuery } from "react-query";
 import { useRouter } from "next/router";
+import { navigationTeam } from "../../components/navigation/Navigation.jsx";
 
 export default function Driver({ driver }) {
-  const navigation = [
-    { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: false },
-    { name: "League", href: "/league", icon: CalendarIcon, current: false },
-    { name: "Stats", href: "#", icon: UserGroupIcon, current: true },
-  ];
+  // const navigation = [
+  //   { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: false },
+  //   { name: "League", href: "/league", icon: CalendarIcon, current: false },
+  //   { name: "Stats", href: "#", icon: UserGroupIcon, current: true },
+  // ];
+
+  const navigation = navigationTeam;
 
   const router = useRouter();
   const { driverID } = router.query;

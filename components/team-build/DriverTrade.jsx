@@ -50,7 +50,6 @@ export default function DriverTrade(props) {
     if (drivers.data != null) {
       console.log("Drivers.data");
       console.log(drivers.data);
-      setSelected2(drivers.data.drivers[0]);
     }
 
     if (teams.data != null) {
@@ -67,6 +66,7 @@ export default function DriverTrade(props) {
       });
 
       setDriversToSell(list);
+      setSelected2(list[0]);
     }
   }, [drivers.data, teams.data]);
 
