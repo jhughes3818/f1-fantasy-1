@@ -45,7 +45,6 @@ export default function JoinLeague(props) {
       .eq("id", user.id)
       .then((response) => {
         if (response.error) {
-          console.log(response.error);
           setModalHeading("Error");
           setModalBody("Something went wrong. Please try again.");
           setModalButton("Ok");

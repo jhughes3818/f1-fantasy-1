@@ -15,7 +15,7 @@ async function createTeam(user, team, cash) {
     team: team,
     cash: cash,
   });
-  //console.log(existingUser);
+
   if (existingUser) {
     User.findOneAndUpdate(
       { email: user.email },
@@ -28,7 +28,7 @@ async function createTeam(user, team, cash) {
 
 export default async function handler(req, res) {
   const session = await unstable_getServerSession(req, res, authOptions);
-  console.log(req.body);
+
   await createTeam(session.user, req.body.drivers, req.body.cash);
 
   res.status(200).json({ message: "success" });

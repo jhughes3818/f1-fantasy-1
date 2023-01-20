@@ -6,8 +6,6 @@ export default async function handler(req, res) {
   //Select current round from database
   const current_round = await getLatestRound();
 
-  console.log(current_round[0].id);
-
   // Get the price of each driver
   const drivers = await supabase.from("drivers").select("*");
 

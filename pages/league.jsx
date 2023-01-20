@@ -15,8 +15,6 @@ export default function Dashboard() {
   useEffect(() => {
     if (session) {
       axios.get(`/api/users/${session.user.id}`).then((response) => {
-        console.log("League response data");
-        console.log(response.data);
         setLeagueCode(response.data.league);
 
         setIsLoading(false);

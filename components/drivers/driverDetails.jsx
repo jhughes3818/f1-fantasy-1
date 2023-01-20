@@ -5,30 +5,6 @@ import numeral from "numeral";
 
 export default function DriverDetails(props) {
   const driver = props.driver[0];
-  const [results, setResults] = useState([""]);
-
-  useEffect(() => {
-    console.log(results);
-  }, [results]);
-
-  async function searchFunction(input) {
-    //Search supabase drivers table for driver first name
-    //If found, return driver details
-    //If not found, return error message
-    console.log(input);
-    const results = await supabase
-      .from("drivers")
-      .select("*")
-      .eq("first_name", input)
-      .then((response) => {
-        setResults(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-        return error;
-      });
-    return results;
-  }
 
   return (
     <>

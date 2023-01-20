@@ -25,7 +25,6 @@ export default function LeagueTable(props) {
   const [leagueName, setLeagueName] = useState();
   const session = useSession();
 
-  console.log(leagueMembers);
   // useEffect(() => {
   //   axios.get(`/api/leagues/${props.leagueCode}`).then((response) => {
   //     setLeagueName(response.data.league.name);
@@ -47,7 +46,6 @@ export default function LeagueTable(props) {
 
           const users = response.data;
           setLeagueMembers(users);
-          console.log(users);
         });
       });
     }

@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     const current_round = data[0].round_number;
     const year = data[0].year;
     const url = `https://ergast.com/api/f1/${year}/${current_round}/results.json`;
-    console.log(url);
+
     axios.get(url).then((response) => {
       const results = response.data.MRData.RaceTable.Races[0].Results;
       let driverIDs = [];
@@ -20,22 +20,10 @@ export default async function handler(req, res) {
       results.forEach((driver) => {
         const driver_id = driver.Driver.driverId; //ergast_id
         if (driverIDs.includes(driver_id)) {
-          console.log("driver exists");
-
           driverExists(driver, driver_id, current_round, year);
-
-          console.log("Added result row");
         } else {
-          console.log("driver doesn't exist");
           //add driver to database
           driverDoesNotExist(driver, driver_id, current_round, year);
-
-          console.log(
-            "driver added: " +
-              driver.Driver.givenName +
-              " " +
-              driver.Driver.familyName
-          );
 
           //Add a 2 second delay to allow the database to update
           setTimeout(function () {
@@ -43,11 +31,9 @@ export default async function handler(req, res) {
           }, 2000);
 
           //driverExists(driver, driver_id, current_round, year);
-
-          console.log("Added result row");
         }
       });
-      //console.log(results);
+
       //
       res.status(200).json({ message: "success" });
     });
@@ -86,7 +72,6 @@ async function driverDoesNotExist(driver, driver_id, current_round, year) {
   };
 
   const { data, error } = await supabase.from("drivers").insert([driverObject]);
-  console.log(data);
 
   const { data3, error3 } = await supabase
     .from("drivers")
@@ -94,7 +79,6 @@ async function driverDoesNotExist(driver, driver_id, current_round, year) {
     .eq("ergast_id", driver.Driver.driverId);
 
   // const driverKey = data3;
-  // console.log(driverKey);
 
   // const resultObject = {
   //   ergast_id: driver.Driver.driverId,

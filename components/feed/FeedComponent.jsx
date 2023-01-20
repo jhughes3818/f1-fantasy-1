@@ -8,21 +8,6 @@ export default function TradesView() {
   const [leagueCode, setLeagueCode] = useState();
   const [trades, setTrades] = useState();
 
-  useEffect(() => {
-    // if (session) {
-    //   axios.get(`/api/users/${session.user.email}`).then((response) => {
-    //     console.log(response.data.user.league);
-    //     setLeagueCode(response.data.user.league);
-    //     axios
-    //       .get(`/api/trades/${response.data.user.league}`)
-    //       .then((response) => {
-    //         setTrades(response.data.leagueTrades.trades);
-    //         console.log(response.data.leagueTrades);
-    //       });
-    //   });
-    // }
-  }, []);
-
   if (trades) {
     return (
       <div>

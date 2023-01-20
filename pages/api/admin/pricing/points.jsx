@@ -79,13 +79,11 @@ export default async function handler(req, res) {
 
   const driverPoints = [];
   results.data.forEach((driver) => {
-    console.log(driver.ergast_id);
     const averageQualifyingPosition = driver.qualifying_position;
-    console.log("Average qualifying position: " + averageQualifyingPosition);
+
     const averageFinishingPosition = driver.finishing_position;
-    console.log("Average finishing position: " + averageFinishingPosition);
+
     const averageOvertakes = driver.overtakes;
-    console.log("Average overtakes: " + averageOvertakes);
 
     const qualifyingPoints = qualifyingPointsAwarded(averageQualifyingPosition);
     const finishingPoints = finishingPointsAwarded(averageFinishingPosition);
@@ -98,8 +96,6 @@ export default async function handler(req, res) {
       overtakes: overtakesPoints,
     });
   });
-
-  console.log(driverPoints);
 
   // Update points column in driver table with the points for each driver.
   for (let i = 0; i < driverPoints.length; i++) {

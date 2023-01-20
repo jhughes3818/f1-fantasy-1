@@ -41,21 +41,17 @@ export default function DriverTrade(props) {
     axios
       .get(`/api/teams/supabase/${props.session.user.id}`)
       .then((response) => {
-        console.log(response.data.drivers);
         return response.data;
       })
   );
 
   useEffect(() => {
     if (drivers.data != null) {
-      console.log("Drivers.data");
-      console.log(drivers.data);
     }
 
     if (teams.data != null) {
-      console.log(teams.data);
       setSelected1(teams.data.drivers[0]);
-      console.log(teams.data.drivers[0]);
+
       const teamIDs = teams.data.drivers.map((driver) => {
         return driver.id;
       });
@@ -84,16 +80,13 @@ export default function DriverTrade(props) {
     const driverBought = selected2;
 
     const oldTeam = teams.data.drivers;
-    console.log(oldTeam);
 
     const newTeam = oldTeam.filter((driver) => {
       return driver.id != driverSold.id;
     });
-    console.log(newTeam);
 
     //Add driver bought into newTeam
     newTeam.push(driverBought);
-    console.log(newTeam);
 
     // Create transaction record
     const trade = {
@@ -105,8 +98,6 @@ export default function DriverTrade(props) {
       profit: profit,
       message: message,
     };
-
-    console.log(trade);
 
     await axios.post(`/api/trades/${props.session.user.id}`, {
       trade: trade,

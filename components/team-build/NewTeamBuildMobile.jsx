@@ -67,7 +67,6 @@ export default function NewTeamBuildMobile(props) {
   };
 
   const removeDriver = (name) => {
-    console.log(session.user.id);
     const newDrivers = drivers.filter((driver) => driver.id !== name.id);
 
     const driverToDelete = drivers.filter((driver) => driver.name == name.name);
