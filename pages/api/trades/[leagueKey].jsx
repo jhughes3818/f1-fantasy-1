@@ -25,7 +25,9 @@ export default async function handler(req, res) {
         user: userName,
         league: trade.league,
         driver_bought: driverNames[0],
+        driver_bought_id: trade.driver_bought,
         driver_sold: driverNames[1],
+        driver_sold_id: trade.driver_sold,
         date: trade.created_at,
       };
       trades.push(tradeItem);
