@@ -18,6 +18,8 @@ export default async function handler(req, res) {
 
     for (const trade of tradesItem) {
       const driverNames = await getDriverNames(trade);
+      console.log("User")
+      console.log(trade.user);
       const userName = await getUserName(trade.user);
       //console.log(driverNames);
       const tradeItem = {

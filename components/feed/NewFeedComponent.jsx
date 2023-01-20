@@ -43,12 +43,10 @@ export default function NewFeedComponent() {
     if (session) {
       // Get the user league code
       axios.get(`/api/users/${session?.user.id}`).then((response) => {
-        console.log(response.data);
         dayjs.extend(relativeTime);
 
         // Get the current time
         const currentTime = new Date();
-        console.log("Current time: " + currentTime);
 
         const leagueCode = response.data.league;
         // const leagueCode = null;
@@ -60,17 +58,14 @@ export default function NewFeedComponent() {
           return;
         } else {
           axios.get(`/api/trades/${leagueCode}`).then((response) => {
-            // console.log(response.data);
             const tradesList = response.data;
 
-            console.log(tradesList);
             const activityList = [];
             tradesList.slice(-5).forEach((trade) => {
-              // console.log(trade);
               const newEntry = {
                 id: tradesList.id,
                 type: "assignment",
-                person: { name: trade.user, href: `/team/${trade.user.id}` },
+                person: { name: trade.user, href: `/team/${trade.user}` },
                 assigned: {
                   name:
                     trade.driver_bought.first_name +
@@ -87,7 +82,7 @@ export default function NewFeedComponent() {
                 },
                 date: `${dayjs(trade.date).fromNow(true)}` + " ago",
                 // imageUrl: trade.user.image,
-                // comment: trade.message,
+                comment: trade.message,
               };
               activityList.push(newEntry);
             });

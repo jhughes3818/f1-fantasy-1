@@ -11,7 +11,6 @@ async function UpdateTeamPoints(props) {
     driverObject[driver.name] = driver.results[1];
   });
 
-  console.log(driverObject);
   const users = await User.find().exec();
 
   users.forEach((user) => {

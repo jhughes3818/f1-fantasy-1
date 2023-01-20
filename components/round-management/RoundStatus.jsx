@@ -22,7 +22,6 @@ export default function RoundStatus() {
   if (error) return "An error has occurred: " + error.message;
 
   if (data) {
-    console.log(data.data.current_round[0].editing_allowed);
     return (
       <>
         {/* <h1>Test</h1> */}

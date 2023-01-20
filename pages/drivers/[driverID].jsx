@@ -8,7 +8,10 @@ import {
 import axios from "axios";
 import { Query, useQuery } from "react-query";
 import { useRouter } from "next/router";
-import { navigationTeam } from "../../components/navigation/Navigation.jsx";
+import {
+  navigationTeam,
+  navigationDrivers,
+} from "../../components/navigation/Navigation.jsx";
 
 export default function Driver({ driver }) {
   // const navigation = [
@@ -17,7 +20,7 @@ export default function Driver({ driver }) {
   //   { name: "Stats", href: "#", icon: UserGroupIcon, current: true },
   // ];
 
-  const navigation = navigationTeam;
+  const navigation = navigationDrivers;
 
   const router = useRouter();
   const { driverID } = router.query;

@@ -24,9 +24,6 @@ export default async function handler(req, res) {
           });
         }
       });
-      console.log(driver.name);
-      console.log(overtakes / overtakesCount);
-      console.log(points / pointsCount);
     });
   });
 
