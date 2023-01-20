@@ -6,11 +6,13 @@ import axios from "axios";
 import Modal from "./Modal";
 import supabase from "../../database/supabaseClient";
 import numeral from "numeral";
+import Router from "next/router";
 
 export default function NewTeamBuildMobile(props) {
   const session = useSession();
   //Save Currency
   const [saveCurrent, setSaveCurrent] = useState(false);
+  const [buttonLoading, setButtonLoading] = useState(false);
 
   //States used for progress of building team
   const [driversCount, setDriversCount] = useState(0);
@@ -81,20 +83,7 @@ export default function NewTeamBuildMobile(props) {
   };
 
   async function saveTeam() {
-    // axios
-    //   .post(`/api/teams/${session.user.email}`, {
-    //     drivers: drivers,
-    //     cash: cash,
-    //     user: session.user,
-    //   })
-    //   .then(function (response) {
-    //     Router.push("/new-user/join-league");
-    //     // setModalBody("Your team has been created.");
-    //     // setModalHeading("Success!");
-    //     // setIsOpen(true);
-    //     // setSaveCurrent(true);
-    //   })
-    //   .catch(function (error) {});
+    setButtonLoading(true);
 
     const updates = {
       driver_1: drivers[0].id,
@@ -104,7 +93,7 @@ export default function NewTeamBuildMobile(props) {
       driver_5: drivers[4].id,
       cash: cash,
       user_id: session.user.id,
-      updated_at: new Date().toISOString(),
+      // updated_at: new Date().toISOString(),
     };
 
     await axios.put(`/api/teams/supabase/${session.user.id}`, updates);
@@ -211,7 +200,11 @@ export default function NewTeamBuildMobile(props) {
                     className="box-styling bg-blue-500 text-white font-bold w-80 text-center"
                     onClick={saveTeam}
                   >
-                    Continue
+                    {buttonLoading ? (
+                      <span>Saving...</span>
+                    ) : (
+                      <span>Continue</span>
+                    )}
                   </button>
                 ) : (
                   <button

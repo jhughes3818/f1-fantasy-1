@@ -24,7 +24,7 @@ export default function JoinLeague(props) {
 
   function verifyNoLeague(user, leagueCode) {
     axios.get(`/api/users/${user.id}`).then((response) => {
-      if (response.data.user.league) {
+      if (response.data.league) {
         setModalHeading("Already in a league");
         setModalBody(
           "You have already joined a league. Please leave your current league and then try again."
@@ -41,28 +41,24 @@ export default function JoinLeague(props) {
     setLoading(true);
     const { data, error } = await supabase
       .from("profiles")
-      .update(
-        // { league: leagueCode }
-        { league: leagueCode }
-      )
-      .eq("id", user.id);
-
-    if (error) {
-      console.log(error);
-      setModalHeading("Error");
-      setModalBody("Something went wrong. Please try again.");
-      setModalButton("Ok");
-      setIsOpen(true);
-    }
-
-    if (data) {
-      setModalHeading("Successfully joined league!");
-      setModalButton("Got it");
-      setLoading(false);
-      setIsOpen(true);
-      setShowHome(true);
-      Router.push("/dashboard");
-    }
+      .update({ league: leagueCode })
+      .eq("id", user.id)
+      .then((response) => {
+        if (response.error) {
+          console.log(response.error);
+          setModalHeading("Error");
+          setModalBody("Something went wrong. Please try again.");
+          setModalButton("Ok");
+          setIsOpen(true);
+        } else {
+          setModalHeading("Successfully joined league!");
+          setModalButton("Got it");
+          setLoading(false);
+          setIsOpen(true);
+          setShowHome(true);
+          Router.push("/");
+        }
+      });
   }
 
   return (
