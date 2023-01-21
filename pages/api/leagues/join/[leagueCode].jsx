@@ -1,4 +1,4 @@
-import { supabase } from "../../../../database/supabaseClient";
+import supabase from "../../../../database/supabaseClient";
 
 export default async function handler(req, res) {
   // Update user's league
@@ -12,7 +12,7 @@ export default async function handler(req, res) {
 
     const { error } = await supabase
       .from("profiles")
-      .upsert(updates)
+      .update(updates)
       .eq("id", userID);
 
     if (error) {
