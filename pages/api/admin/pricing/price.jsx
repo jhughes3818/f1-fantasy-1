@@ -3,8 +3,8 @@ import supabase from "../../../../database/supabaseClient";
 export default async function handler(req, res) {
   const drivers = await supabase.from("drivers").select("*");
 
-  const dollarsPerPoint = 1000;
-  const baseDollars = 10000;
+  const dollarsPerPoint = 10000;
+  const baseDollars = 1000000;
 
   // For each driver, calculate the price based on the points
   const driverPrices = [];
