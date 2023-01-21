@@ -13,6 +13,7 @@ export default function LayoutShell(props) {
   // const session = useSession();
   const navigation = props.nav;
   const session = props.session;
+  const supabaseClient = useSupabaseClient();
 
   return (
     <>
@@ -106,19 +107,29 @@ export default function LayoutShell(props) {
                     </nav>
                   </div>
                   <div className="flex flex-col flex-shrink-0 border-t border-gray-200 p-4">
-                    {/* <RoundStatus /> */}
-                    <a href="/profile" className="group block flex-shrink-0">
+                    <a
+                      href="/profile"
+                      className="group block w-full flex-shrink-0"
+                    >
                       <div className="flex items-center">
                         <div className="ml-3">
-                          <p className="text-base font-medium text-gray-700 group-hover:text-gray-900">
-                            {session ? session.user.email : null}
+                          <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
+                            {session ? session.user.email : "..."}
                           </p>
-                          <p className="text-sm font-medium text-gray-500 group-hover:text-gray-700">
+                          <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
                             View profile
                           </p>
                         </div>
                       </div>
                     </a>
+                    <div className="group block w-full flex-shrink-0 ml-3">
+                      <button
+                        className="text-sm font-medium text-gray-500 hover:text-gray-700"
+                        onClick={() => supabaseClient.auth.signOut()}
+                      >
+                        Sign Out
+                      </button>
+                    </div>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
@@ -183,6 +194,14 @@ export default function LayoutShell(props) {
                     </div>
                   </div>
                 </a>
+                <div className="group block w-full flex-shrink-0 ml-3">
+                  <button
+                    className="text-sm font-medium text-gray-500 hover:text-gray-700"
+                    onClick={() => supabaseClient.auth.signOut()}
+                  >
+                    Sign Out
+                  </button>
+                </div>
               </div>
             </div>
           </div>
