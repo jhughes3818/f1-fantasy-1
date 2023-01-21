@@ -26,10 +26,6 @@ export default function UpdateRound() {
 
               axios.put("/api/admin/pricing/updateLatestPoints").then(() => {
                 setCurrentStatus("Updated Latest Points");
-
-                axios.put("/api/admin/update-round").then(() => {
-                  setCurrentStatus("Updated Round");
-                });
               });
             });
           });
@@ -42,7 +38,9 @@ export default function UpdateRound() {
 
   async function updateTeamPoints() {
     await axios.put("/api/admin/teams/update-team-points").then(() => {
-      setRoundDone(true);
+      axios.put("/api/admin/update-round").then(() => {
+        setCurrentStatus("Updated Round");
+      });
     });
   }
 
