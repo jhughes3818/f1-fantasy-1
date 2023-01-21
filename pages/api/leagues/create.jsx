@@ -1,31 +1,18 @@
-import mongoose from "mongoose";
-import { League } from "../../../database/schemas";
-import axios from "axios";
-
-function generateLeagueCode() {
-  const min = Math.ceil(1000);
-  const max = Math.floor(10000);
-  const code = Math.floor(Math.random() * (max - min + 1) + min); // The maximum is inclusive and the minimum is inclusive
-
-  return code;
-}
+import supabase from "../../../database/supabaseClient";
 
 export default async function handler(req, res) {
-  const uri = process.env.MONGODB_URI;
-  mongoose.connect(uri);
-  if (req.method === "GET") {
-    const code = generateLeagueCode();
-    console.log(code);
-    res.status(200).json({ code: code });
-  } else if (req.method === "POST") {
-    const code = generateLeagueCode();
-    const leagueName = req.body.name;
-    await League.create({
-      name: leagueName,
-      code: code,
-      members: [req.body.user],
-    });
-
-    res.status(200).json({ leagueName: leagueName, leagueCode: code });
+  if (req.method === "POST") {
+    const { name, user } = req.body;
+    const { data, error } = await supabase
+      .from("leagues")
+      .insert([{ name: name }])
+      .select();
+    if (error) {
+      console.log(error);
+      res.status(500).json({ error: error.message });
+    } else if (data) {
+      console.log(data);
+      res.status(200).json({ leagueCode: data[0].id });
+    }
   }
 }
