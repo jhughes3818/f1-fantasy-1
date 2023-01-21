@@ -11,6 +11,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useQuery } from "react-query";
 import RoundStatus from "../round-management/RoundStatus";
+import NextRound from "../round-management/NextRound";
 
 export default function NewFeedComponent() {
   const session = useSession();
@@ -103,6 +104,7 @@ export default function NewFeedComponent() {
           Recent Activity
         </h3>
       </div>
+      <NextRound />
       {isLoading ? (
         <div
           role="status"
