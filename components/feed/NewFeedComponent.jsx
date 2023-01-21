@@ -243,7 +243,7 @@ export default function NewFeedComponent() {
                                 </p>
                               </div>
                             </div> */}
-                            <DriverTrade />
+                            <DriverTrade session={session} />
                           </div>
                         </Dialog.Panel>
                       </Transition.Child>
