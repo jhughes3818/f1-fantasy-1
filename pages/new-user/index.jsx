@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Router from "next/router";
 import { Oval } from "react-loader-spinner";
+import supabase from "../../database/supabaseClient";
 
 const steps = [
   { id: "Step 1", name: "Welcome", href: "#", status: "current" },
@@ -14,25 +15,32 @@ const steps = [
 
 export default function Welcome() {
   const session = useSession();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [username, setUsername] = useState();
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    // if (session) {
-    //   axios
-    //     .get(`/api/users/${session.user.email}`)
-    //     .then((response) => {
-    //       if (response.status === 204) {
-    //         setIsLoading(false);
-    //       } else {
-    //         Router.push("/dashboard");
-    //         setIsLoading(false);
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.log(error.message);
-    //     });
-    // }
-  }, [session]);
+  async function updateProfile({ username, website, avatar_url }) {
+    try {
+      setLoading(true);
+
+      const updates = {
+        id: session.user.id,
+        username,
+        website,
+        avatar_url,
+        updated_at: new Date().toISOString(),
+      };
+
+      let { error } = await supabase.from("profiles").upsert(updates);
+      if (error) throw error;
+      // alert("Profile updated!");
+      Router.push("/new-user/create-team");
+    } catch (error) {
+      alert("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="grid place-items-center h-screen">
@@ -69,11 +77,26 @@ export default function Welcome() {
             <br />
             You can build your budget by selling drivers for a profit.
           </p>
-          <Link href="/new-user/create-team">
+          <br />
+
+          <p className="text-gray-600 font-bold">First, choose a username.</p>
+          <input
+            type="text"
+            className="w-full border border-gray-300 rounded-md p-2 mt-2"
+            placeholder="Username"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          {/* <Link href="/new-user/create-team">
             <div className="box-styling bg-blue-500 text-white font-bold text-center mt-4 cursor-pointer">
               <span>Next</span>
             </div>
-          </Link>
+          </Link> */}
+          <button
+            className="box-styling bg-blue-500 text-white font-bold text-center mt-4 cursor-pointer w-full"
+            onClick={() => updateProfile({ username: username })}
+          >
+            {loading ? <span>Saving...</span> : <span>Next</span>}
+          </button>
         </div>
       )}
     </div>
