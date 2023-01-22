@@ -15,28 +15,24 @@ export default function UpdateRound() {
 
   async function updateDrivers(nextRound) {
     setCurrentStatus("Started getting race results");
-    await axios.put("/api/admin/race-results").then((response) => {
-      setCurrentStatus("Updating Driver Round Points");
-      axios.put("/api/admin/pricing/DriverRoundPoints").then((response) => {
-        setCurrentStatus("Updating Driver Total Points");
-        axios.put("/api/admin/pricing/DriverTotalPoints").then((response) => {
-          setCurrentStatus("Updating Driver Total Price");
-          axios.put("/api/admin/pricing/DriverTotalPrice").then((response) => {
-            setCurrentStatus("Updating Driver Round Price");
-            axios
-              .put("/api/admin/pricing/DriverRoundPrice")
-              .then((response) => {
-                setCurrentStatus("Updating Driver Averages");
-                axios
-                  .put("/api/admin/pricing/DriverAverages")
-                  .then((response) => {
-                    setCurrentStatus("Finished Updating Drivers");
-                  });
-              });
-          });
-        });
-      });
-    });
+    await axios.put("/api/admin/race-results");
+
+    setCurrentStatus("Updating Driver Round Points");
+    await axios.put("/api/admin/pricing/DriverRoundPoints");
+
+    setCurrentStatus("Updating Driver Total Points");
+    await axios.put("/api/admin/pricing/DriverTotalPoints");
+
+    setCurrentStatus("Updating Driver Total Price");
+    await axios.put("/api/admin/pricing/DriverTotalPrice");
+
+    setCurrentStatus("Updating Driver Round Price");
+    await axios.put("/api/admin/pricing/DriverRoundPrice");
+
+    setCurrentStatus("Updating Driver Averages");
+    await axios.put("/api/admin/pricing/DriverAverages");
+
+    setCurrentStatus("Finished Updating Drivers");
   }
 
   async function updateTeamPoints() {
