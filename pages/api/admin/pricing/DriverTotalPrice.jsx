@@ -1,5 +1,8 @@
 import supabase from "../../../../database/supabaseClient";
 
+// This endpoint updates the price of each driver.
+// It gets the price of each driver from the drivers table and then updates the price column in the drivers table.
+
 export default async function handler(req, res) {
   const drivers = await supabase.from("drivers").select("*");
 

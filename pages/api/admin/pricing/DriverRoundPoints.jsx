@@ -1,6 +1,9 @@
 import supabase from "../../../../database/supabaseClient";
 import { getLatestRound } from "../../rounds/current-round";
 
+// This endpoint is called by the admin page to calculate a price for each driver.
+// It gets all of the driver's results from the driver_results table and then adds up all the points
+
 export default async function handler(req, res) {
   const drivers = await supabase.from("drivers").select("*");
   const currentRound = await getLatestRound();
@@ -79,15 +82,15 @@ export default async function handler(req, res) {
 
   const driverPoints = [];
   results.data.forEach((driver) => {
-    const averageQualifyingPosition = driver.qualifying_position;
+    const qualifyingPosition = driver.qualifying_position;
 
-    const averageFinishingPosition = driver.finishing_position;
+    const finishingPosition = driver.finishing_position;
 
-    const averageOvertakes = driver.overtakes;
+    const overtakes = driver.overtakes;
 
-    const qualifyingPoints = qualifyingPointsAwarded(averageQualifyingPosition);
-    const finishingPoints = finishingPointsAwarded(averageFinishingPosition);
-    const overtakesPoints = averageOvertakes * overtakesPointsAwarded;
+    const qualifyingPoints = qualifyingPointsAwarded(qualifyingPosition);
+    const finishingPoints = finishingPointsAwarded(finishingPosition);
+    const overtakesPoints = overtakes * overtakesPointsAwarded;
 
     driverPoints.push({
       driver: driver.ergast_id,
@@ -97,10 +100,10 @@ export default async function handler(req, res) {
     });
   });
 
-  // Update points column in driver table with the points for each driver.
+  // Update points column in driver_results table with the points calculated above
   for (let i = 0; i < driverPoints.length; i++) {
     const { data, error } = await supabase
-      .from("drivers")
+      .from("drivers_results")
       .update({
         points: totalPoints(
           driverPoints[i].qualifying,
@@ -108,7 +111,8 @@ export default async function handler(req, res) {
           driverPoints[i].overtakes
         ),
       })
-      .eq("ergast_id", driverPoints[i].driver);
+      .eq("ergast_id", driverPoints[i].driver)
+      .eq("round", currentRound[0].id);
   }
 
   res.status(200).json({ message: "success" });

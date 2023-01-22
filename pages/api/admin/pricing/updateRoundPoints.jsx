@@ -2,6 +2,9 @@ import axios from "axios";
 import { getLatestRound } from "../../rounds/current-round";
 import supabase from "../../../../database/supabaseClient";
 
+// This endpoint is called by the admin page to enter a price for the latest round.
+// It gets the price of each driver from the drivers table and then updates the price column in the driver_results table.
+
 export default async function handler(req, res) {
   //Select current round from database
   const current_round = await getLatestRound();
@@ -15,7 +18,7 @@ export default async function handler(req, res) {
     const { data, error } = await supabase
       .from("driver_results")
       .update({
-        price: drivers.data[i].price,
+        points: drivers.data[i].points,
       })
       .eq("ergast_id", drivers.data[i].ergast_id)
       .eq("round", current_round[0].id);
