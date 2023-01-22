@@ -19,38 +19,32 @@ export default async function handler(req, res) {
     .eq("round", roundNumber)
     .eq("year", roundYear);
 
-  const resultsObject = results.data;
-
-  const teamsUpdate = [];
-
   // For each team, get the corresponding rows from results object. Then, add up the points and update the team with the total points.
+  for (let i = 0; i < teamsObject.length; i++) {
+    const team = teamsObject[i];
+    const teamId = team.id;
 
-  teamsObject.forEach((team) => {
-    const teamResults = resultsObject.filter(
-      (result) => result.team === team.id
-    );
+    const results = await supabase
+      .from("team_results")
+      .select("*")
+      .eq("team", teamId);
 
-    const teamPoints = teamResults.map((result) => result.points);
+    const resultsObject = results.data;
+
+    const teamPoints = resultsObject.map((result) => result.points);
 
     const totalPoints = teamPoints.reduce((a, b) => a + b, 0);
 
-    const teamUpdate = {
-      id: team.id,
-      points: totalPoints,
-    };
-
-    teamsUpdate.push(teamUpdate);
-  });
-
-  // Update the teams table with the new points
-  for (let i = 0; i < teamsUpdate.length; i++) {
+    // Update the teams table with the new points
     const { data, error } = await supabase
       .from("teams")
       .update({
-        points: teamsUpdate[i].points,
+        points: totalPoints,
       })
-      .eq("id", teamsUpdate[i].id);
+      .eq("id", teamId);
   }
+
+  // Update the teams table with the new points
 
   res.status(200).json({ message: "success" });
 }

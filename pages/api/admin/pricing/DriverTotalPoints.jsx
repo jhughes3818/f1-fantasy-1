@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
     let totalPoints = 0;
     for (let j = 0; j < driverResults.data.length; j++) {
-      totalPoints += driverResults.data[j].points;
+      totalPoints = totalPoints + driverResults.data[j].points;
     }
 
     const { data, error } = await supabase

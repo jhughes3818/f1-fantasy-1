@@ -40,13 +40,22 @@ export default function UpdateRound() {
   }
 
   async function updateTeamPoints() {
+    // setCurrentStatus("Updating Team Round Points");
+    // await axios.put("/api/admin/teams/TeamRoundPoints").then(() => {
+    //   setCurrentStatus("Updating Team Total Points");
+    //   axios.put("/api/admin/teams/TeamTotalPoints").then(() => {
+    //     setCurrentStatus("Finished Updating Teams");
+    //   });
+    // });
+
     setCurrentStatus("Updating Team Round Points");
-    await axios.put("/api/admin/teams/TeamRoundPoints").then(() => {
-      setCurrentStatus("Updating Team Total Points");
-      axios.put("/api/admin/teams/TeamTotalPoints").then(() => {
-        setCurrentStatus("Finished Updating Teams");
-      });
-    });
+    await axios.put("/api/admin/teams/TeamRoundPoints");
+
+    setCurrentStatus("Updating Team Total Points");
+
+    await axios.put("/api/admin/teams/TeamTotalPoints");
+
+    setCurrentStatus("Finished Updating Teams");
   }
 
   useEffect(() => {
