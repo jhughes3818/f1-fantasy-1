@@ -69,6 +69,7 @@ export default async function handler(req, res) {
     const update = {
       team: team.id,
       round: parseInt(roundId),
+      year: parseInt(roundYear),
       points: totalPoints,
     };
 

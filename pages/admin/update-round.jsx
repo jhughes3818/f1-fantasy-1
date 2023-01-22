@@ -13,39 +13,38 @@ export default function UpdateRound() {
   const session = useSession();
   const [admin, setAdmin] = useState(false);
 
-  async function handleClick(nextRound) {
-    setCurrentStatus("Started");
-    await axios.put("/api/admin/race-results").then(() => {
-      setCurrentStatus("Downloaded Race Results");
-
-      axios.put("/api/admin/pricing/averages").then(() => {
-        setCurrentStatus("Updated Averages");
-
-        axios.put("/api/admin/pricing/points").then(() => {
-          setCurrentStatus("Updated Points");
-
-          axios.put("/api/admin/pricing/price").then(() => {
-            setCurrentStatus("Updated Prices");
-
-            axios.put("/api/admin/pricing/updateLatestPrice").then(() => {
-              setCurrentStatus("Updated Latest Price");
-
-              axios.put("/api/admin/pricing/updateLatestPoints").then(() => {
-                setCurrentStatus("Updated Latest Points");
+  async function updateDrivers(nextRound) {
+    setCurrentStatus("Started getting race results");
+    await axios.put("/api/admin/race-results").then((response) => {
+      setCurrentStatus("Updating Driver Round Points");
+      axios.put("/api/admin/pricing/DriverRoundPoints").then((response) => {
+        setCurrentStatus("Updating Driver Total Points");
+        axios.put("/api/admin/pricing/DriverTotalPoints").then((response) => {
+          setCurrentStatus("Updating Driver Total Price");
+          axios.put("/api/admin/pricing/DriverTotalPrice").then((response) => {
+            setCurrentStatus("Updating Driver Round Price");
+            axios
+              .put("/api/admin/pricing/DriverRoundPrice")
+              .then((response) => {
+                setCurrentStatus("Updating Driver Averages");
+                axios
+                  .put("/api/admin/pricing/DriverAverages")
+                  .then((response) => {
+                    setCurrentStatus("Finished Updating Drivers");
+                  });
               });
-            });
           });
         });
       });
     });
-
-    setDone(true);
   }
 
   async function updateTeamPoints() {
-    await axios.put("/api/admin/teams/update-team-points").then(() => {
-      axios.put("/api/admin/update-round").then(() => {
-        setCurrentStatus("Updated Round");
+    setCurrentStatus("Updating Team Round Points");
+    await axios.put("/api/admin/teams/TeamRoundPoints").then(() => {
+      setCurrentStatus("Updating Team Total Points");
+      axios.put("/api/admin/TeamTotalPoints").then(() => {
+        setCurrentStatus("Finished Updating Teams");
       });
     });
   }
@@ -81,7 +80,10 @@ export default function UpdateRound() {
                 placeholder="Latest Round"
                 onChange={(e) => setRound(e.target.value)}
               ></input>
-              <button onClick={() => handleClick()} className="button-styling">
+              <button
+                onClick={() => updateDrivers()}
+                className="button-styling"
+              >
                 Update Round
               </button>
               <button
