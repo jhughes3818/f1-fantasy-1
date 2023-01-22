@@ -103,7 +103,7 @@ export default async function handler(req, res) {
   // Update points column in driver_results table with the points calculated above
   for (let i = 0; i < driverPoints.length; i++) {
     const { data, error } = await supabase
-      .from("drivers_results")
+      .from("driver_results")
       .update({
         points: totalPoints(
           driverPoints[i].qualifying,
@@ -113,6 +113,10 @@ export default async function handler(req, res) {
       })
       .eq("ergast_id", driverPoints[i].driver)
       .eq("round", currentRound[0].id);
+
+    if (error) {
+      console.log(error);
+    }
   }
 
   res.status(200).json({ message: "success" });

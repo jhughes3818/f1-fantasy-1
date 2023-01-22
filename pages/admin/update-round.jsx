@@ -43,7 +43,7 @@ export default function UpdateRound() {
     setCurrentStatus("Updating Team Round Points");
     await axios.put("/api/admin/teams/TeamRoundPoints").then(() => {
       setCurrentStatus("Updating Team Total Points");
-      axios.put("/api/admin/TeamTotalPoints").then(() => {
+      axios.put("/api/admin/teams/TeamTotalPoints").then(() => {
         setCurrentStatus("Finished Updating Teams");
       });
     });
