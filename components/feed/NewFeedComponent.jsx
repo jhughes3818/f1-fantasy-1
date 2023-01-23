@@ -63,8 +63,13 @@ export default function NewFeedComponent() {
     data: tradesData,
     isLoading: tradesLoading,
     error: tradesError,
-  } = useQuery(leagueCode && `/api/trades/${leagueCode}`, () =>
-    axios.get(`/api/trades/${leagueCode}`)
+  } = useQuery(
+    leagueCode && `/api/trades/${leagueCode}`,
+    () => axios.get(`/api/trades/${leagueCode}`),
+    {
+      refetchInterval: 60000, // refetch every 60 seconds
+      refetchOnWindowFocus: true, // refetch when the window comes into focus
+    }
   );
 
   useEffect(() => {
