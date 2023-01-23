@@ -12,6 +12,9 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { useQuery } from "react-query";
 import RoundStatus from "../round-management/RoundStatus";
 import NextRound from "../round-management/NextRound";
+import TradesListLoader from "../loaders/TradesListLoader";
+
+dayjs.extend(relativeTime);
 
 export default function NewFeedComponent() {
   const session = useSession();
@@ -40,60 +43,99 @@ export default function NewFeedComponent() {
     }
   }, [data]);
 
+  const [leagueCode, setLeagueCode] = useState(null);
+
+  const {
+    data: userData,
+    isLoading: userLoading,
+    error: userError,
+    isSuccess: userSuccess,
+  } = useQuery(session && `/api/users/${session.user.id}`, () =>
+    axios.get(`/api/users/${session?.user.id}`)
+  );
+
   useEffect(() => {
-    if (session) {
-      // Get the user league code
-      axios.get(`/api/users/${session?.user.id}`).then((response) => {
-        dayjs.extend(relativeTime);
-
-        // Get the current time
-        const currentTime = new Date();
-
-        const leagueCode = response.data.league;
-        // const leagueCode = null;
-        // Get the trades from the relevant league
-
-        if (leagueCode === null) {
-          setIsLoading(false);
-          setNoLeague(true);
-          return;
-        } else {
-          axios.get(`/api/trades/${leagueCode}`).then((response) => {
-            const tradesList = response.data;
-
-            const activityList = [];
-            tradesList.slice(-5).forEach((trade) => {
-              const newEntry = {
-                id: tradesList.id,
-                type: "assignment",
-                person: { name: trade.user, href: `/team/${trade.user}` },
-                assigned: {
-                  name:
-                    trade.driver_bought.first_name +
-                    " " +
-                    trade.driver_bought.last_name,
-                  href: `/drivers/${trade.driver_sold_id}`,
-                },
-                sold: {
-                  name:
-                    trade.driver_sold.first_name +
-                    " " +
-                    trade.driver_sold.last_name,
-                  href: `/drivers/${trade.driver_bought_id}`,
-                },
-                date: `${dayjs(trade.date).fromNow(true)}` + " ago",
-                // imageUrl: trade.user.image,
-                comment: trade.message,
-              };
-              activityList.push(newEntry);
-            });
-            setActivity(activityList.reverse());
-            setIsLoading(false);
-          });
-        }
-      });
+    if (!userLoading && !userError && userSuccess) {
+      setLeagueCode(userData.data.league);
     }
-  }, [session]);
+  }, [userLoading, userError, userSuccess, userData]);
+
+  const {
+    data: tradesData,
+    isLoading: tradesLoading,
+    error: tradesError,
+  } = useQuery(
+    leagueCode && `/api/trades/${leagueCode}`,
+    () => axios.get(`/api/trades/${leagueCode}`),
+    {
+      refetchInterval: 60000, // refetch every 60 seconds
+      refetchOnWindowFocus: true, // refetch when the window comes into focus
+    }
+  );
+
+  useEffect(() => {
+    if (!userLoading && !tradesLoading && !userError && !tradesError) {
+      console.log(userData);
+      if (userData?.data?.league === null) {
+        setNoLeague(true);
+      } else {
+        console.log(tradesData);
+        const tradesList = tradesData.data;
+        const activityList = [];
+        tradesList.slice(-5).forEach((trade) => {
+          const newEntry = {
+            id: tradesList.id,
+            type: "assignment",
+            person: { name: trade.user, href: `/team/${trade.user}` },
+            assigned: {
+              name:
+                trade.driver_bought.first_name +
+                " " +
+                trade.driver_bought.last_name,
+              href: `/drivers/${trade.driver_sold_id}`,
+            },
+            sold: {
+              name:
+                trade.driver_sold.first_name +
+                " " +
+                trade.driver_sold.last_name,
+              href: `/drivers/${trade.driver_bought_id}`,
+            },
+            date: `${dayjs(trade.date).fromNow(true)}` + " ago",
+            // imageUrl: trade.user.image,
+            comment: trade.message,
+          };
+          activityList.push(newEntry);
+        });
+        setActivity(activityList.reverse());
+        setIsLoading(false);
+      }
+    }
+  }, [
+    userLoading,
+    tradesLoading,
+    userError,
+    tradesError,
+    userData,
+    tradesData,
+  ]);
+
+  if (userLoading || tradesLoading) {
+    return (
+      <>
+        <div className="border-b border-gray-200 pb-5 mb-5">
+          <h3 className="text-lg font-medium leading-6 text-gray-900">
+            Recent Activity
+          </h3>
+        </div>
+        <TradesListLoader />
+      </>
+    );
+  }
+
+  if (userError || tradesError) {
+    return <div>Error: {userError?.message || tradesError?.message}</div>;
+  }
 
   // Button aligned to bottom right of div
 
@@ -106,47 +148,7 @@ export default function NewFeedComponent() {
       </div>
       <NextRound />
       {isLoading ? (
-        <div
-          role="status"
-          className="p-4 space-y-4 max-w-md rounded border border-gray-200 divide-y divide-gray-200 shadow animate-pulse dark:divide-gray-700 md:p-6 dark:border-gray-700"
-        >
-          <div className="flex justify-between items-center">
-            <div>
-              <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-              <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-            </div>
-            <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-          </div>
-          <div className="flex justify-between items-center pt-4">
-            <div>
-              <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-              <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-            </div>
-            <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-          </div>
-          <div className="flex justify-between items-center pt-4">
-            <div>
-              <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-              <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-            </div>
-            <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-          </div>
-          <div className="flex justify-between items-center pt-4">
-            <div>
-              <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-              <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-            </div>
-            <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-          </div>
-          <div className="flex justify-between items-center pt-4">
-            <div>
-              <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-              <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-            </div>
-            <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-          </div>
-          <span className="sr-only">Loading...</span>
-        </div>
+        <TradesListLoader />
       ) : (
         <>
           {session ? (
