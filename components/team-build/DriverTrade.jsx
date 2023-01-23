@@ -46,10 +46,7 @@ export default function DriverTrade(props) {
   );
 
   useEffect(() => {
-    if (drivers.data != null) {
-    }
-
-    if (teams.data != null) {
+    if (teams.data != null && drivers.data != null) {
       setSelected1(teams.data.drivers[0]);
 
       const teamIDs = teams.data.drivers.map((driver) => {
