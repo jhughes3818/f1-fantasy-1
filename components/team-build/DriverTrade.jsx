@@ -98,7 +98,7 @@ export default function DriverTrade(props) {
 
     await axios.post(`/api/trades/${props.session.user.id}`, {
       trade: trade,
-    
+    });
 
     await axios.post(`/api/teams/supabase/trade/${props.session.user.id}`, {
       driver_1: newTeam[0].id,
