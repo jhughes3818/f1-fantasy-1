@@ -57,7 +57,7 @@ export default function DriverTrade(props) {
       });
 
       // Check if any drivers are not in the team
-      const list = drivers.data.drivers.filter((driver) => {
+      const list = drivers.data?.drivers.filter((driver) => {
         return !teamIDs.includes(driver.id);
       });
 
