@@ -10,19 +10,27 @@ import {
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
 import { navigationTeam } from "../../components/navigation/Navigation";
+import TeamResults from "../../components/teams/TeamResults";
+import supabase from "../../database/supabaseClient";
 
 export default function TeamPage() {
   //Team id comes from router
   const router = useRouter();
-  const { teamID } = router.query;
+  // const { userID } = router.query;
   const session = useSession();
 
+  // Get userID from router
+  const userID = router.query.teamID;
+
   // Use react query to get team data from team api endpoint
-  const { data, status } = useQuery(["team", teamID], () =>
-    axios.get(`/api/teams/supabase/${teamID}`).then((res) => res.data)
+  const { data, status } = useQuery(["team", userID], () =>
+    axios.get(`/api/teams/supabase/${userID}`).then((res) => res.data)
   );
 
-  console.log(data);
+  const { data: teamCode, status: teamCodeStatus } = useQuery(
+    ["teamCode", userID],
+    () => getTeamCode(userID)
+  );
 
   if (status === "loading") {
     return <div>Loading...</div>;
@@ -44,9 +52,34 @@ export default function TeamPage() {
   if (session) {
     return (
       <LayoutShell nav={navigation} session={session}>
-        <TeamTable team={data} session={session} />
+        <div>
+          <TeamTable team={data} session={session} />
+          {teamCodeStatus === "loading" && <div>Loading...</div>}
+          {teamCodeStatus === "error" && <div>Error fetching data</div>}
+          {teamCode && (
+            <div className="p-9">
+              <TeamResults teamID={teamCode} />
+            </div>
+          )}
+        </div>
         <h1>Hello</h1>
       </LayoutShell>
     );
   }
 }
+
+const getTeamCode = async (userID) => {
+  const { data, error } = await supabase
+    .from("teams")
+    .select("id")
+    .eq("user_id", userID);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  if (data) {
+    console.log(data[0].id);
+    return data[0].id;
+  }
+};

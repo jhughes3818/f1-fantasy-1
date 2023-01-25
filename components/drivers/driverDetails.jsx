@@ -8,7 +8,7 @@ export default function DriverDetails(props) {
 
   return (
     <>
-      <div className="overflow-hidden bg-white shadow sm:rounded-lg">
+      <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
         <div className="px-4 py-5 sm:px-6">
           <h3 className="text-lg font-medium leading-6 text-gray-900">
             {driver.first_name} {driver.last_name}

@@ -7,8 +7,8 @@ export default async function handler(req, res) {
       .select("driver_1, driver_2, driver_3, driver_4, driver_5")
       .eq("user_id", req.query.user)
       .then((response) => {
+        console.log(response);
         const drivers = response.data[0];
-        console.log(response.data[0]);
 
         const driverIds = [
           drivers.driver_1,
