@@ -12,6 +12,7 @@ import {
   navigationTeam,
   navigationDrivers,
 } from "../../components/navigation/Navigation.jsx";
+import DriverResults from "../../components/drivers/results/DriverResults.jsx";
 
 export default function Driver({ driver }) {
   // const navigation = [
@@ -46,6 +47,12 @@ export default function Driver({ driver }) {
       <div>
         <div className="p-5">
           <DriverDetails driver={data} />
+        </div>
+        <div className="p-5">
+          {/* <h1 className="text-lg font-medium leading-6 text-gray-900">
+            Results
+          </h1> */}
+          <DriverResults driverID={driverID} />
         </div>
       </div>
       <div></div>
