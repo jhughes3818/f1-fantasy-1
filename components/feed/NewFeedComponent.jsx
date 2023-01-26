@@ -56,7 +56,8 @@ export default function NewFeedComponent() {
 
   useEffect(() => {
     if (!userLoading && !userError && userSuccess) {
-      setLeagueCode(userData.data.league);
+      console.log(userData.data);
+      setLeagueCode(userData.data.league_code);
     }
   }, [userLoading, userError, userSuccess, userData]);
 
