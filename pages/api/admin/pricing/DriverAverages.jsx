@@ -32,6 +32,8 @@ export default async function handler(req, res) {
       finishing: averageFinishingPosition,
       overtakes: averageOvertakes,
     });
+
+    calculateDriverAverages(drivers.data[i].ergast_id);
   }
 
   // Now, update each driver with the average qualifying position, average finishing position and average overtakes.
@@ -47,4 +49,46 @@ export default async function handler(req, res) {
   }
 
   res.status(200).json({ message: "success" });
+}
+
+// Function to calculate the average qualifying position, average finishing position and average overtakes for each driver from the most recent 5 races. This is run once a week to update the driver averages.
+
+async function calculateDriverAverages(ergast_id) {
+  const { data: results, error } = await supabase
+    .from("driver_results")
+    .select("*")
+    .eq("ergast_id", ergast_id)
+
+    // Order by round number, then get the last 5 results
+    .order("round", { ascending: false })
+    .limit(5);
+
+  console.log(results);
+
+  const qualifyingPositions = results.map(
+    (result) => result.qualifying_position
+  );
+  const finishingPositions = results.map((result) => result.finishing_position);
+  const overtakes = results.map((result) => result.overtakes);
+
+  const averageQualifyingPosition =
+    qualifyingPositions.reduce((a, b) => a + b) / qualifyingPositions.length;
+  const averageFinishingPosition =
+    finishingPositions.reduce((a, b) => a + b) / finishingPositions.length;
+  const averageOvertakes = overtakes.reduce((a, b) => a + b) / overtakes.length;
+
+  const { data: driver, error: driverError } = await supabase
+    .from("drivers")
+    .update({
+      recent_average_qualifying_position: averageQualifyingPosition,
+      recent_average_finishing_position: averageFinishingPosition,
+      recent_average_overtakes: averageOvertakes,
+    })
+    .eq("ergast_id", ergast_id);
+
+  if (driverError) {
+    console.log(driverError);
+  }
+
+  return driver;
 }

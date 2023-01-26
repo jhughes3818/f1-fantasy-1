@@ -23,14 +23,14 @@ export default function UpdateRound() {
     setCurrentStatus("Updating Driver Total Points");
     await axios.put("/api/admin/pricing/DriverTotalPoints");
 
+    setCurrentStatus("Updating Driver Averages");
+    await axios.put("/api/admin/pricing/DriverAverages");
+
     setCurrentStatus("Updating Driver Total Price");
     await axios.put("/api/admin/pricing/DriverTotalPrice");
 
     setCurrentStatus("Updating Driver Round Price");
     await axios.put("/api/admin/pricing/DriverRoundPrice");
-
-    setCurrentStatus("Updating Driver Averages");
-    await axios.put("/api/admin/pricing/DriverAverages");
 
     setCurrentStatus("Finished Updating Drivers");
   }
