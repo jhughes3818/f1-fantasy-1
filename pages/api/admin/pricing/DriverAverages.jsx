@@ -32,6 +32,8 @@ export default async function handler(req, res) {
       finishing: averageFinishingPosition,
       overtakes: averageOvertakes,
     });
+
+    calculateDriverAverages(drivers.data[i].ergast_id);
   }
 
   // Now, update each driver with the average qualifying position, average finishing position and average overtakes.
@@ -61,6 +63,8 @@ async function calculateDriverAverages(ergast_id) {
     .order("round", { ascending: false })
     .limit(5);
 
+  console.log(results);
+
   const qualifyingPositions = results.map(
     (result) => result.qualifying_position
   );
@@ -81,6 +85,10 @@ async function calculateDriverAverages(ergast_id) {
       recent_average_overtakes: averageOvertakes,
     })
     .eq("ergast_id", ergast_id);
+
+  if (driverError) {
+    console.log(driverError);
+  }
 
   return driver;
 }
