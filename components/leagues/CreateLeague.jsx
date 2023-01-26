@@ -3,6 +3,9 @@ import { useState } from "react";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import axios from "axios";
 import Modal from "../team-build/Modal";
+import supabase from "../../database/supabaseClient";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import { CheckIcon, ClipboardIcon } from "@heroicons/react/20/solid";
 
 export default function CreateLeague() {
   const [leagueCreated, setLeagueCreated] = useState(false);
@@ -13,37 +16,86 @@ export default function CreateLeague() {
   const [modalHeading, setModalHeading] = useState();
   const [modalButton, setModalButton] = useState();
   const [isOpen, setIsOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
 
-  async function verifyNoLeague(namePassedIn, user) {}
+  function copyToClipboard() {
+    setCopied(true);
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 1000);
+  }
 
   async function createLeague(namePassedIn, user) {
     let returnedCode = null;
 
-    //Create league
-    await axios
-      .post("/api/leagues/create", {
-        name: namePassedIn,
-      })
-      .then((response) => {
-        setLeagueCode(response.data.leagueCode);
-        returnedCode = response.data.leagueCode;
-      });
+    // Generate 5 character random string
+    function makeid(length) {
+      var result = "";
+      var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      var charactersLength = characters.length;
+      for (var i = 0; i < length; i++) {
+        result += characters.charAt(
+          Math.floor(Math.random() * charactersLength)
+        );
+      }
+      return result;
+    }
 
-    //Add user to league
-    await axios
-      .put(`/api/leagues/join/${returnedCode}`, {
-        user: session.user,
-      })
-      .then((response) => {
-        console.log(response);
-        if (response.status === 200) {
-          setLeagueCreated(true);
-          setModalBody("League created successfully!");
-          setModalHeading("Success");
-          setModalButton("Close");
-          setIsOpen(true);
-        }
-      });
+    // Generate league code
+    let code = makeid(5);
+
+    // Check if code already exists
+    let { data: leagueCodeExists, error: leagueCodeExistsError } =
+      await supabase
+        .from("leagues")
+        .select("league_code")
+        .eq("league_code", code);
+
+    if (leagueCodeExistsError) {
+      console.log(leagueCodeExistsError);
+    }
+
+    // If code exists, generate new code
+    while (leagueCodeExists.length > 0) {
+      code = makeid(5);
+      let { data: leagueCodeExists, error: leagueCodeExistsError } =
+        await supabase
+          .from("leagues")
+          .select("league_code")
+          .eq("league_code", code);
+    }
+
+    // Create league
+    let { data: league, error: leagueError } = await supabase
+      .from("leagues")
+      .insert([{ name: namePassedIn, league_code: code }]);
+    returnedCode = code;
+
+    // Add user to league
+    // Update user's league code in profiles table
+
+    let { data: userAdded, error: userAddedError } = await supabase
+      .from("profiles")
+      .update({ league_code: code })
+      .eq("id", user.id)
+      .select("*");
+
+    if (userAddedError) {
+      console.log("userAddedError");
+      console.log(userAddedError);
+    }
+
+    // Open success modal
+
+    if (userAdded) {
+      setModalHeading("League Created");
+      setModalBody("League created successfully.");
+      setModalButton("Done");
+      setIsOpen(true);
+      setLeagueCreated(true);
+      setLeagueCode(returnedCode);
+    }
   }
 
   function closeModal() {
@@ -70,7 +122,25 @@ export default function CreateLeague() {
           <div className="px-4 py-5 sm:p-6">
             {/* Content goes here */}
             <h2 className="text-lg mb-3">League Name: {name}</h2>
-            <h2 className="text-lg mb-3">League Code: {leagueCode}</h2>
+            <div className="flex">
+              <h2 className="text-lg mb-3">League Code: {leagueCode}</h2>
+
+              <div>
+                <CopyToClipboard text={leagueCode}>
+                  {/* // Button with clipboard icon */}
+                  <button
+                    className="text-gray-300 hover:text-gray-500 flex"
+                    onClick={() => copyToClipboard()}
+                  >
+                    {copied ? (
+                      <CheckIcon className="h-5 w-5 ml-2 mt-1" />
+                    ) : (
+                      <ClipboardIcon className="h-5 w-5 ml-2 mt-1" />
+                    )}
+                  </button>
+                </CopyToClipboard>
+              </div>
+            </div>
             {/* <h3 className="text-xl mb-3">Share league code with friends.</h3> */}
             <div className="grid place-items-center">
               <Link href="/">

@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
     for (const trade of tradesItem) {
       const driverNames = await getDriverNames(trade);
-      console.log("User")
+      console.log("User");
       console.log(trade.user);
       const userName = await getUserName(trade.user);
       //console.log(driverNames);
@@ -45,7 +45,7 @@ export default async function handler(req, res) {
     //Get user league code from database in profiles table
     const userLeague = await supabase
       .from("profiles")
-      .select("league")
+      .select("league_code")
       .eq("id", req.body.trade.user.id)
       .then((response) => {
         console.log(response.data);
@@ -55,7 +55,7 @@ export default async function handler(req, res) {
     const { data, error } = await supabase.from("trades").insert([
       {
         user: req.body.trade.user.id,
-        league: userLeague,
+        league_code: userLeague,
         driver_bought: req.body.trade.driverBought.id,
         driver_sold: req.body.trade.driverSold.id,
       },
@@ -73,7 +73,7 @@ async function getTrades(leagueKey) {
   await supabase
     .from("trades")
     .select("*")
-    .eq("league", leagueKey)
+    .eq("league_code", leagueKey)
     .then((response) => {
       //console.log(response.data);
       response.data.forEach((trade) => {
