@@ -18,11 +18,12 @@ export default function JoinLeaguePage(props) {
 
   useEffect(() => {
     if (session) {
+      console.log(session);
       axios
         .get(`/api/users/${session.user.id}`)
         .then((response) => {
           console.log(response.data.league);
-          if (response.data.league === null) {
+          if (response.data.league_code === null) {
             setIsLoading(false);
           } else {
             Router.push("/");

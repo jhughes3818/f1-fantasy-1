@@ -15,6 +15,7 @@ import {
 } from "@heroicons/react/24/outline";
 import SignIn from "../components/auth/SignIn";
 import { navigationHome } from "../components/navigation/Navigation";
+import Router from "next/router";
 
 const Home = () => {
   const [isNewUser, setIsNewUser] = useState();
@@ -29,7 +30,9 @@ const Home = () => {
         if (response.status === 200) {
           if (response.data.hasTeam) {
             setIsNewUser(false);
-          } else setIsNewUser(true);
+          } else {
+            Router.push("/new-user");
+          }
         }
       });
     }
