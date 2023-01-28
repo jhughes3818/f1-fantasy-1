@@ -28,7 +28,6 @@ export default function Welcome() {
         username,
         website,
         avatar_url,
-        updated_at: new Date().toISOString(),
       };
 
       let { error } = await supabase.from("profiles").upsert(updates);
@@ -36,6 +35,7 @@ export default function Welcome() {
       // alert("Profile updated!");
       Router.push("/new-user/create-team");
     } catch (error) {
+      console.log(error);
       alert("An error occurred. Please try again.");
     } finally {
       setLoading(false);
@@ -75,7 +75,7 @@ export default function Welcome() {
             will also go up or down based on their performance.
             <br />
             <br />
-            You can build your budget by selling drivers for a profit.
+            You can build your budget by selling drivers for a profit!
           </p>
           <br />
 
