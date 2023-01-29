@@ -32,7 +32,6 @@ export default function Welcome() {
 
       let { error } = await supabase.from("profiles").upsert(updates);
       if (error) throw error;
-      // alert("Profile updated!");
       Router.push("/new-user/create-team");
     } catch (error) {
       console.log(error);
