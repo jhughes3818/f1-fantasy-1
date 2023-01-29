@@ -49,7 +49,7 @@ export default async function handler(req, res) {
       .eq("id", req.body.trade.user.id)
       .then((response) => {
         console.log(response.data);
-        return response.data[0].league;
+        return response.data[0].league_code;
       });
 
     const { data, error } = await supabase.from("trades").insert([

@@ -40,7 +40,7 @@ export default function LeagueTable(props) {
   useEffect(() => {
     if (session) {
       axios.get(`/api/users/${session.user.id}`).then((response) => {
-        const leagueCode = response.data.league;
+        const leagueCode = response.data.league_code;
         axios.get(`/api/leagues/${leagueCode}`).then((response) => {
           // setLeagueName(response.data.team);
 

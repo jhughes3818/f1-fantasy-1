@@ -41,7 +41,7 @@ export default function JoinLeague(props) {
     setLoading(true);
     const { data, error } = await supabase
       .from("profiles")
-      .update({ league: leagueCode })
+      .update({ league_code: leagueCode })
       .eq("id", user.id)
       .then((response) => {
         if (response.error) {
