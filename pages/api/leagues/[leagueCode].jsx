@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     const users = await supabase
       .from("profiles")
       .select("id, username")
-      .eq("league", leagueCode)
+      .eq("league_code", leagueCode)
       .then((response) => {
         // console.log(response.data);
         return response.data;
