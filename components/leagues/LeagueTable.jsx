@@ -23,6 +23,7 @@ import numeral from "numeral";
 export default function LeagueTable(props) {
   const [leagueMembers, setLeagueMembers] = useState([]);
   const [leagueName, setLeagueName] = useState();
+  const [leagueCode, setLeagueCode] = useState();
   const session = useSession();
 
   // useEffect(() => {
@@ -41,6 +42,7 @@ export default function LeagueTable(props) {
     if (session) {
       axios.get(`/api/users/${session.user.id}`).then((response) => {
         const leagueCode = response.data.league_code;
+        setLeagueCode(leagueCode);
         axios.get(`/api/leagues/${leagueCode}`).then((response) => {
           // setLeagueName(response.data.team);
 
@@ -58,6 +60,7 @@ export default function LeagueTable(props) {
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h1 className="text-xl font-semibold text-gray-900">Your League</h1>
+          <h2 className="text-lg text-gray-600">League Code: {leagueCode}</h2>
         </div>
         {/* <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
           <button
