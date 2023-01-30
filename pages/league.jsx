@@ -53,7 +53,7 @@ export default function Dashboard() {
         </>
       )}
 
-      <NewFeedComponent />
+      {/* <NewFeedComponent /> */}
     </LayoutShell>
   );
 }

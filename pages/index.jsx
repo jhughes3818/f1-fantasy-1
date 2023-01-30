@@ -16,6 +16,7 @@ import {
 import SignIn from "../components/auth/SignIn";
 import { navigationHome } from "../components/navigation/Navigation";
 import Router from "next/router";
+import Sidebar from "../components/sidebar/Sidebar";
 
 const Home = () => {
   const [isNewUser, setIsNewUser] = useState();
@@ -57,7 +58,8 @@ const Home = () => {
           ) : (
             <LayoutShell nav={navigation}>
               <NewFeedComponent />
-              <DriverTrade session={session} />
+              {/* <DriverTrade session={session} /> */}
+              {/* <Sidebar session={session} /> */}
             </LayoutShell>
           )}
         </>
