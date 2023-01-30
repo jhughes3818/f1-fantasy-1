@@ -9,18 +9,15 @@ export default async function handler(req, res) {
     };
 
     supabase;
-    let { error } = supabase
-      .from("profiles")
-      .upsert(updates)
-      .then((response) => {
-        if (error) {
-          console.log(error);
-          res.status(500).json({ error: error });
-        } else {
-          res.status(200).json({ message: "User updated" });
-        }
-        res.status(200).json({ message: "User updated" });
-      });
+    let { error } = await supabase.from("profiles").upsert(updates);
+
+    if (error) {
+      console.log(error);
+      res.status(500).json({ error: error });
+    } else {
+      res.status(200).json({ message: "User updated" });
+    }
+    // res.status(200).json({ message: "User updated" });
   }
 
   if (req.method === "GET") {

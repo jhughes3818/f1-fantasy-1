@@ -20,12 +20,22 @@ export default async function handler(req, res) {
     );
     const overtakes = results.data.map((result) => result.overtakes);
 
+    // Calculate the average qualifying position, average finishing position and average overtakes. If there are no results, set the average to 0.
+
     const averageQualifyingPosition =
-      qualifyingPositions.reduce((a, b) => a + b) / qualifyingPositions.length;
+      qualifyingPositions.length > 0
+        ? qualifyingPositions.reduce((a, b) => a + b) /
+          qualifyingPositions.length
+        : 0;
     const averageFinishingPosition =
-      finishingPositions.reduce((a, b) => a + b) / finishingPositions.length;
+      finishingPositions.length > 0
+        ? finishingPositions.reduce((a, b) => a + b) / finishingPositions.length
+        : 0;
     const averageOvertakes =
-      overtakes.reduce((a, b) => a + b) / overtakes.length;
+      overtakes.length > 0
+        ? overtakes.reduce((a, b) => a + b) / overtakes.length
+        : 0;
+
     driverAverages.push({
       driver: drivers.data[i].ergast_id,
       qualifying: averageQualifyingPosition,

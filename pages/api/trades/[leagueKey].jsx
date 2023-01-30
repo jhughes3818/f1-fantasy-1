@@ -20,7 +20,7 @@ export default async function handler(req, res) {
       const driverNames = await getDriverNames(trade);
       console.log("User");
       console.log(trade.user);
-      const userName = await getUserName(trade.user);
+      const userName = await getUserName(trade.user_id);
       //console.log(driverNames);
       const tradeItem = {
         id: trade.id,
@@ -54,15 +54,19 @@ export default async function handler(req, res) {
 
     const { data, error } = await supabase.from("trades").insert([
       {
-        user: req.body.trade.user.id,
+        user_id: req.body.trade.user.id,
         league_code: userLeague,
         driver_bought: req.body.trade.driverBought.id,
         driver_sold: req.body.trade.driverSold.id,
       },
     ]);
 
-    console.log(data, error);
-    res.status(200).json(data);
+    if (error) {
+      console.log(error);
+      res.status(500).json({ error: error });
+    } else {
+      res.status(200).json({ message: "Trade added" });
+    }
   }
 }
 
