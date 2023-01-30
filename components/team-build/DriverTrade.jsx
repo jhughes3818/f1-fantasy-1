@@ -89,9 +89,9 @@ export default function DriverTrade(props) {
     const trade = {
       user: props.session.user,
       driverSold: driverSold,
-      driverSoldPrice: driverSold.price,
+      // driverSoldPrice: driverSold.price,
       driverBought: driverBought,
-      driverBoughtPrice: driverBought.price,
+      // driverBoughtPrice: driverBought.price,
       profit: profit,
       message: message,
     };
