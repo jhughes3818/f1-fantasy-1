@@ -92,6 +92,7 @@ export default function NewTeamBuildMobile(props) {
       driver_5: drivers[4].id,
       cash: cash,
       user_id: session.user.id,
+      points: 0,
       // updated_at: new Date().toISOString(),
     };
 
