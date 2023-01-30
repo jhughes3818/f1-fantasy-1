@@ -78,6 +78,19 @@ export default function DriverTrade(props) {
 
     const oldTeam = teams.data.drivers;
 
+    const cash = teams.data.cash;
+    const newCash = cash + profit;
+
+    // Check if new cash is below 0, if it is, don't allow trade
+    if (newCash < 0) {
+      setModalHeading("Trade Failed");
+      setModalBody(
+        "You do not have enough cash to make this trade. Please select a different driver to sell."
+      );
+      setIsOpen(true);
+      return;
+    }
+
     const newTeam = oldTeam.filter((driver) => {
       return driver.id != driverSold.id;
     });
@@ -106,6 +119,7 @@ export default function DriverTrade(props) {
       driver_3: newTeam[2].id,
       driver_4: newTeam[3].id,
       driver_5: newTeam[4].id,
+      cash: newCash,
     });
 
     setModalHeading("Trade Successful");
