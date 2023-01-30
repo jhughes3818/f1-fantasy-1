@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   if (req.method === "GET") {
     await supabase
       .from("teams")
-      .select("driver_1, driver_2, driver_3, driver_4, driver_5")
+      .select("driver_1, driver_2, driver_3, driver_4, driver_5, cash")
       .eq("user_id", req.query.user)
       .then((response) => {
         console.log(response);
@@ -25,7 +25,9 @@ export default async function handler(req, res) {
           .from("drivers")
           .select("first_name, last_name, price, id, points")
           .in("id", driverIds)
-          .then((response) => res.status(200).json({ drivers: response.data }));
+          .then((response) =>
+            res.status(200).json({ drivers: response.data, cash: drivers.cash })
+          );
       });
   }
 
