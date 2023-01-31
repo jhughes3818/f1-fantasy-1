@@ -17,8 +17,8 @@ export default function UpdateRound() {
     setCurrentStatus("Started getting race results");
     await axios.put("/api/admin/race-results");
 
-    setCurrentStatus("Updating Driver Round Points");
-    await axios.put("/api/admin/pricing/DriverRoundPoints");
+    // setCurrentStatus("Updating Driver Round Points");
+    // await axios.put("/api/admin/pricing/DriverRoundPoints");
 
     setCurrentStatus("Updating Driver Total Points");
     await axios.put("/api/admin/pricing/DriverTotalPoints");
