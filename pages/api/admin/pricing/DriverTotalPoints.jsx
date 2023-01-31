@@ -6,6 +6,9 @@ import supabase from "../../../../database/supabaseClient";
 export default async function handler(req, res) {
   const drivers = await supabase.from("drivers").select("*");
 
+  console.log("Updating driver points...");
+  console.log(drivers.data.length);
+
   for (let i = 0; i < drivers.data.length; i++) {
     console.log(drivers.data[i]);
 
@@ -27,6 +30,8 @@ export default async function handler(req, res) {
         points: totalPoints,
       })
       .eq("ergast_id", drivers.data[i].ergast_id);
+
+    console.log("Updated driver: " + drivers.data[i].ergast_id);
   }
 
   res.status(200).json({ message: "success" });
