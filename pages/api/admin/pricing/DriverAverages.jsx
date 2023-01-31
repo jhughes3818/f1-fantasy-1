@@ -40,14 +40,20 @@ export default async function handler(req, res) {
         ? overtakes.reduce((a, b) => a + b) / overtakes.length
         : 0;
 
+    const recentAverages = calculateDriverAverages(
+      drivers.data[i].ergast_id,
+      results
+    );
+
     driverAverages.push({
       driver: drivers.data[i].ergast_id,
       qualifying: averageQualifyingPosition,
       finishing: averageFinishingPosition,
       overtakes: averageOvertakes,
+      recent_qualifying: recentAverages.qualifying,
+      recent_finishing: recentAverages.finishing,
+      recent_overtakes: recentAverages.overtakes,
     });
-
-    calculateDriverAverages(drivers.data[i].ergast_id, results);
   }
 
   // Now, update each driver with the average qualifying position, average finishing position and average overtakes.
@@ -58,6 +64,9 @@ export default async function handler(req, res) {
         average_qualifying_position: driverAverages[i].qualifying,
         average_finishing_position: driverAverages[i].finishing,
         average_overtakes: driverAverages[i].overtakes,
+        recent_average_qualifying_position: driverAverages[i].recent_qualifying,
+        recent_average_finishing_position: driverAverages[i].recent_finishing,
+        recent_average_overtakes: driverAverages[i].recent_overtakes,
       })
       .eq("ergast_id", driverAverages[i].driver);
   }
@@ -94,18 +103,24 @@ async function calculateDriverAverages(ergast_id, results) {
       ? overtakes.reduce((a, b) => a + b) / overtakes.length
       : 0;
 
-  const { data: driver, error: driverError } = await supabase
-    .from("drivers")
-    .update({
-      recent_average_qualifying_position: averageQualifyingPosition,
-      recent_average_finishing_position: averageFinishingPosition,
-      recent_average_overtakes: averageOvertakes,
-    })
-    .eq("ergast_id", ergast_id);
+  const recentAverages = {
+    qualifying: averageQualifyingPosition,
+    finishing: averageFinishingPosition,
+    overtakes: averageOvertakes,
+  };
 
-  if (driverError) {
-    console.log(driverError);
-  }
+  // const { data: driver, error: driverError } = await supabase
+  //   .from("drivers")
+  //   .update({
+  //     recent_average_qualifying_position: averageQualifyingPosition,
+  //     recent_average_finishing_position: averageFinishingPosition,
+  //     recent_average_overtakes: averageOvertakes,
+  //   })
+  //   .eq("ergast_id", ergast_id);
 
-  return driver;
+  // if (driverError) {
+  //   console.log(driverError);
+  // }
+
+  return recentAverages;
 }
