@@ -17,25 +17,37 @@ export default async function handler(req, res) {
     // });
 
     for (const trade of tradesItem) {
-      const driverNames = await getDriverNames(trade);
-      console.log("User");
-      console.log(trade.user);
-      const userName = await getUserName(trade.user_id);
-      //console.log(driverNames);
-      const tradeItem = {
-        id: trade.id,
-        user: userName,
-        league: trade.league,
-        driver_bought: driverNames[0],
-        driver_bought_id: trade.driver_bought,
-        driver_sold: driverNames[1],
-        driver_sold_id: trade.driver_sold,
-        date: trade.created_at,
-      };
-      trades.push(tradeItem);
+      if (trade.type === "trade") {
+        const driverNames = await getDriverNames(trade);
+        console.log("User");
+        console.log(trade.user);
+        const userName = await getUserName(trade.user_id);
+        //console.log(driverNames);
+        const tradeItem = {
+          id: trade.id,
+          user: userName,
+          league: trade.league,
+          driver_bought: driverNames[0],
+          driver_bought_id: trade.driver_bought,
+          driver_sold: driverNames[1],
+          driver_sold_id: trade.driver_sold,
+          date: trade.created_at,
+          type: "trade",
+        };
+        trades.push(tradeItem);
+      } else {
+        const tradeItem = {
+          id: trade.id,
+          league: trade.league,
+          date: trade.created_at,
+          round_name: trade.round_name,
+          type: "round",
+        };
+        trades.push(tradeItem);
+      }
     }
 
-    // console.log(trades);
+    console.log(trades);
     res.status(200).json(trades);
   }
 

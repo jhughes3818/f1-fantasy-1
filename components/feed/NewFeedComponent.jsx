@@ -13,6 +13,7 @@ import { useQuery } from "react-query";
 import RoundStatus from "../round-management/RoundStatus";
 import NextRound from "../round-management/NextRound";
 import TradesListLoader from "../loaders/TradesListLoader";
+import { NULL_CHARACTER } from "remirror";
 
 dayjs.extend(relativeTime);
 
@@ -76,38 +77,47 @@ export default function NewFeedComponent() {
 
   useEffect(() => {
     if (!userLoading && !tradesLoading && !userError && !tradesError) {
-      console.log(userData);
       if (userData?.data?.league === null) {
         setNoLeague(true);
       } else {
-        console.log(tradesData);
         const tradesList = tradesData.data;
+        console.log(tradesList);
         const activityList = [];
         tradesList.slice(-5).forEach((trade) => {
-          const newEntry = {
-            id: tradesList.id,
-            type: "assignment",
-            person: { name: trade.user, href: `/team/${trade.user}` },
-            assigned: {
-              name:
-                trade.driver_bought.first_name +
-                " " +
-                trade.driver_bought.last_name,
-              href: `/drivers/${trade.driver_sold_id}`,
-            },
-            sold: {
-              name:
-                trade.driver_sold.first_name +
-                " " +
-                trade.driver_sold.last_name,
-              href: `/drivers/${trade.driver_bought_id}`,
-            },
-            date: `${dayjs(trade.date).fromNow(true)}` + " ago",
-            // imageUrl: trade.user.image,
-            comment: trade.message,
-          };
+          let newEntry = null;
+          if (trade.type === "trade") {
+            newEntry = {
+              id: tradesList.id,
+              type: "assignment",
+              person: { name: trade.user, href: `/team/${trade.user}` },
+              assigned: {
+                name:
+                  trade.driver_bought.first_name +
+                  " " +
+                  trade.driver_bought.last_name,
+                href: `/drivers/${trade.driver_sold_id}`,
+              },
+              sold: {
+                name:
+                  trade.driver_sold.first_name +
+                  " " +
+                  trade.driver_sold.last_name,
+                href: `/drivers/${trade.driver_bought_id}`,
+              },
+              date: `${dayjs(trade.date).fromNow(true)}` + " ago",
+              // imageUrl: trade.user.image,
+              comment: trade.message,
+            };
+          } else if (trade.type === "round") {
+            newEntry = {
+              id: tradesList.id,
+              type: "round",
+              race: trade.round_name,
+            };
+          }
           activityList.push(newEntry);
         });
+        console.log(activityList);
         setActivity(activityList.reverse());
         setIsLoading(false);
       }

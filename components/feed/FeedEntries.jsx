@@ -1,5 +1,9 @@
 import { Fragment } from "react";
-import { ChatBubbleLeftEllipsisIcon, TagIcon } from "@heroicons/react/20/solid";
+import {
+  ChatBubbleLeftEllipsisIcon,
+  TagIcon,
+  TrophyIcon,
+} from "@heroicons/react/20/solid";
 import TradeFeedComponent from "./TradeFeedComponent";
 
 function classNames(...classes) {
@@ -21,38 +25,34 @@ export default function FeedEntries(props) {
                 />
               ) : null}
               <div className="relative flex items-start space-x-3">
-                {activityItem.type === "comment" ? (
+                {activityItem.type === "round" ? (
                   <>
-                    <div className="relative">
-                      <img
-                        className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-400 ring-8 ring-white"
-                        src={activityItem.imageUrl}
-                        alt=""
-                      />
-
-                      <span className="absolute -bottom-0.5 -right-1 rounded-tl bg-white px-0.5 py-px">
-                        <ChatBubbleLeftEllipsisIcon
-                          className="h-5 w-5 text-gray-400"
-                          aria-hidden="true"
-                        />
-                      </span>
+                    <div>
+                      <div className="relative px-1">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 ring-8 ring-white">
+                          <TrophyIcon
+                            className="h-5 w-5 text-gray-500"
+                            aria-hidden="true"
+                          />
+                        </div>
+                      </div>
                     </div>
                     <div className="min-w-0 flex-1">
                       <div>
                         <div className="text-sm">
                           <a
-                            href={activityItem.person.href}
+                            href={activityItem.id}
                             className="font-medium text-gray-900"
                           >
-                            {activityItem.person.name}
+                            Results for {activityItem.race}
                           </a>
                         </div>
-                        <p className="mt-0.5 text-sm text-gray-500">
-                          Commented {activityItem.date}
-                        </p>
-                      </div>
-                      <div className="mt-2 text-sm text-gray-700">
-                        <p>{activityItem.comment}</p>
+                        <div className="text-sm pl-2">
+                          <ul>
+                            <li>1st: Bailey (76 points)</li>
+                            <li>2nd: Jason (50 points)</li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </>
