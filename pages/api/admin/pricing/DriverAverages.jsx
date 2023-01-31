@@ -12,17 +12,18 @@ export default async function handler(req, res) {
   const driverAverages = [];
 
   for (let i = 0; i < drivers.data.length; i++) {
-    const results = await supabase
-      .from("driver_results")
-      .select("*")
-      .eq("ergast_id", drivers.data[i].ergast_id);
-    const qualifyingPositions = results.data.map(
+    // Get all driver results from results object
+    const driverResults = results.data.filter(
+      (result) => result.ergast_id === drivers.data[i].ergast_id
+    );
+
+    const qualifyingPositions = driverResults.data.map(
       (result) => result.qualifying_position
     );
-    const finishingPositions = results.data.map(
+    const finishingPositions = driverResults.data.map(
       (result) => result.finishing_position
     );
-    const overtakes = results.data.map((result) => result.overtakes);
+    const overtakes = driverResults.data.map((result) => result.overtakes);
 
     // Calculate the average qualifying position, average finishing position and average overtakes. If there are no results, set the average to 0.
 
