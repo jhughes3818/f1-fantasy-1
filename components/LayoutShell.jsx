@@ -3,6 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import RoundStatus from "./round-management/RoundStatus";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
+import Sidebar from "./sidebar/Sidebar";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -233,7 +234,7 @@ export default function LayoutShell(props) {
               {/* Start main area*/}
               <div>
                 <div className="absolute inset-0 py-6 px-4 sm:px-6 lg:px-8">
-                  {props.children[0]}
+                  {props.children}
                 </div>
               </div>
               {/* End main area */}
@@ -241,7 +242,8 @@ export default function LayoutShell(props) {
             <aside className="relative hidden w-96 flex-shrink-0 overflow-y-auto border-l border-gray-200 xl:flex xl:flex-col">
               {/* Start secondary column (hidden on smaller screens) */}
               <div className="absolute inset-0 py-6 px-4 sm:px-6 lg:px-8">
-                {props.children[1]}
+                {/* {props.children[1]} */}
+                <Sidebar session={session} />
               </div>
               {/* End secondary column */}
             </aside>

@@ -55,7 +55,7 @@ export default function Driver({ driver }) {
           <DriverResults driverID={driverID} />
         </div>
       </div>
-      <div></div>
+      {/* <div></div> */}
     </LayoutShell>
   );
 }

@@ -5,30 +5,38 @@ import supabase from "../../../../database/supabaseClient";
 
 export default async function handler(req, res) {
   const drivers = await supabase.from("drivers").select("*");
+  const driver_results = await supabase.from("driver_results").select("*");
 
+  console.log("Updating driver points...");
+  console.log(drivers.data.length);
+
+  const updates = [];
+
+  // For each driver in the drivers table, get their results from the driver_results table and add up the points
   for (let i = 0; i < drivers.data.length; i++) {
-    console.log(drivers.data[i]);
+    const driver = drivers.data[i];
+    const driver_id = driver.id;
+    const driver_results_for_driver = driver_results.data.filter(
+      (result) => result.driver_id === driver_id
+    );
 
-    const driverResults = await supabase
-      .from("driver_results")
-      .select("*")
-      .eq("ergast_id", drivers.data[i].ergast_id);
-
-    console.log(driverResults.data);
+    console.log(driver_results_for_driver);
 
     let totalPoints = 0;
-    for (let j = 0; j < driverResults.data.length; j++) {
-      totalPoints = totalPoints + driverResults.data[j].points;
+    for (let j = 0; j < driver_results_for_driver.length; j++) {
+      const result = driver_results_for_driver[j];
+      totalPoints += result.points;
     }
 
-    const { data, error } = await supabase
-      .from("drivers")
-      .update({
-        points: totalPoints,
-      })
-      .eq("ergast_id", drivers.data[i].ergast_id);
+    console.log(driver.name, totalPoints);
+
+    updates.push({
+      id: driver_id,
+      points: totalPoints,
+    });
   }
 
+  const { data, error } = await supabase.from("drivers").upsert(updates);
   res.status(200).json({ message: "success" });
 }
 

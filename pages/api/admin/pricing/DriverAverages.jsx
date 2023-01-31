@@ -2,23 +2,28 @@ import supabase from "../../../../database/supabaseClient";
 
 export default async function handler(req, res) {
   const drivers = await supabase.from("drivers").select("*");
+  const results = await supabase
+    .from("driver_results")
+    .select("*")
+    .order("round", { ascending: false });
 
   // For each driver, get all the rows from the results table, then calculate the average finishing position, average qualifying position and average overtakes. Save to an array with the driver_id as the key.
 
   const driverAverages = [];
 
   for (let i = 0; i < drivers.data.length; i++) {
-    const results = await supabase
-      .from("driver_results")
-      .select("*")
-      .eq("ergast_id", drivers.data[i].ergast_id);
-    const qualifyingPositions = results.data.map(
+    // Get all driver results from results object
+    const driverResults = results.data.filter(
+      (result) => result.ergast_id === drivers.data[i].ergast_id
+    );
+
+    const qualifyingPositions = driverResults.map(
       (result) => result.qualifying_position
     );
-    const finishingPositions = results.data.map(
+    const finishingPositions = driverResults.map(
       (result) => result.finishing_position
     );
-    const overtakes = results.data.map((result) => result.overtakes);
+    const overtakes = driverResults.map((result) => result.overtakes);
 
     // Calculate the average qualifying position, average finishing position and average overtakes. If there are no results, set the average to 0.
 
@@ -36,14 +41,20 @@ export default async function handler(req, res) {
         ? overtakes.reduce((a, b) => a + b) / overtakes.length
         : 0;
 
+    const recentAverages = calculateDriverAverages(
+      drivers.data[i].ergast_id,
+      results
+    );
+
     driverAverages.push({
       driver: drivers.data[i].ergast_id,
       qualifying: averageQualifyingPosition,
       finishing: averageFinishingPosition,
       overtakes: averageOvertakes,
+      recent_qualifying: recentAverages.qualifying,
+      recent_finishing: recentAverages.finishing,
+      recent_overtakes: recentAverages.overtakes,
     });
-
-    calculateDriverAverages(drivers.data[i].ergast_id);
   }
 
   // Now, update each driver with the average qualifying position, average finishing position and average overtakes.
@@ -54,6 +65,9 @@ export default async function handler(req, res) {
         average_qualifying_position: driverAverages[i].qualifying,
         average_finishing_position: driverAverages[i].finishing,
         average_overtakes: driverAverages[i].overtakes,
+        recent_average_qualifying_position: driverAverages[i].recent_qualifying,
+        recent_average_finishing_position: driverAverages[i].recent_finishing,
+        recent_average_overtakes: driverAverages[i].recent_overtakes,
       })
       .eq("ergast_id", driverAverages[i].driver);
   }
@@ -63,15 +77,9 @@ export default async function handler(req, res) {
 
 // Function to calculate the average qualifying position, average finishing position and average overtakes for each driver from the most recent 5 races. This is run once a week to update the driver averages.
 
-async function calculateDriverAverages(ergast_id) {
-  const { data: results, error } = await supabase
-    .from("driver_results")
-    .select("*")
-    .eq("ergast_id", ergast_id)
-
-    // Order by round number, then get the last 5 results
-    .order("round", { ascending: false })
-    .limit(5);
+async function calculateDriverAverages(ergast_id, results) {
+  // Get the most recent 5 results for the driver.
+  results = results.data.slice(0, 5);
 
   console.log(results);
 
@@ -82,23 +90,38 @@ async function calculateDriverAverages(ergast_id) {
   const overtakes = results.map((result) => result.overtakes);
 
   const averageQualifyingPosition =
-    qualifyingPositions.reduce((a, b) => a + b) / qualifyingPositions.length;
+    qualifyingPositions.length > 0
+      ? qualifyingPositions.reduce((a, b) => a + b) / qualifyingPositions.length
+      : 0;
+
   const averageFinishingPosition =
-    finishingPositions.reduce((a, b) => a + b) / finishingPositions.length;
-  const averageOvertakes = overtakes.reduce((a, b) => a + b) / overtakes.length;
+    finishingPositions.length > 0
+      ? finishingPositions.reduce((a, b) => a + b) / finishingPositions.length
+      : 0;
 
-  const { data: driver, error: driverError } = await supabase
-    .from("drivers")
-    .update({
-      recent_average_qualifying_position: averageQualifyingPosition,
-      recent_average_finishing_position: averageFinishingPosition,
-      recent_average_overtakes: averageOvertakes,
-    })
-    .eq("ergast_id", ergast_id);
+  const averageOvertakes =
+    overtakes.length > 0
+      ? overtakes.reduce((a, b) => a + b) / overtakes.length
+      : 0;
 
-  if (driverError) {
-    console.log(driverError);
-  }
+  const recentAverages = {
+    qualifying: averageQualifyingPosition,
+    finishing: averageFinishingPosition,
+    overtakes: averageOvertakes,
+  };
 
-  return driver;
+  // const { data: driver, error: driverError } = await supabase
+  //   .from("drivers")
+  //   .update({
+  //     recent_average_qualifying_position: averageQualifyingPosition,
+  //     recent_average_finishing_position: averageFinishingPosition,
+  //     recent_average_overtakes: averageOvertakes,
+  //   })
+  //   .eq("ergast_id", ergast_id);
+
+  // if (driverError) {
+  //   console.log(driverError);
+  // }
+
+  return recentAverages;
 }

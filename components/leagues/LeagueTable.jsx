@@ -56,7 +56,7 @@ export default function LeagueTable(props) {
   //const query = useQuery('league', () => axios.get(`/api/leagues/${props.leagueCode}`))
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8">
+    <div className="">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h1 className="text-xl font-semibold text-gray-900">Your League</h1>

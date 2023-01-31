@@ -62,7 +62,7 @@ export default function TeamPage() {
             </div>
           )}
         </div>
-        <h1>Hello</h1>
+        {/* <h1>Hello</h1> */}
       </LayoutShell>
     );
   }

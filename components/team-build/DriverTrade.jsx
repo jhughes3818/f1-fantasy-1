@@ -15,6 +15,8 @@ export default function DriverTrade(props) {
   const [message, setMessage] = useState();
   const [driversToSell, setDriversToSell] = useState([]);
   const [tradeOpen, setTradeOpen] = useState(false);
+  const [newCash, setNewCash] = useState();
+  const [cash, setCash] = useState();
 
   const drivers = useQuery("drivers", () =>
     axios.get("/api/drivers").then((res) => {
@@ -41,6 +43,7 @@ export default function DriverTrade(props) {
     axios
       .get(`/api/teams/supabase/${props.session.user.id}`)
       .then((response) => {
+        console.log(response.data);
         return response.data;
       })
   );
@@ -48,6 +51,7 @@ export default function DriverTrade(props) {
   useEffect(() => {
     if (teams.data != null && drivers.data != null) {
       setSelected1(teams.data.drivers[0]);
+      setCash(numeral(teams.data.cash).format("0,0.00"));
 
       const teamIDs = teams.data.drivers.map((driver) => {
         return driver.id;
@@ -78,6 +82,18 @@ export default function DriverTrade(props) {
 
     const oldTeam = teams.data.drivers;
 
+    const cash = teams.data.cash;
+
+    // Check if new cash is below 0, if it is, don't allow trade
+    if (newCash < 0) {
+      setModalHeading("Trade Failed");
+      setModalBody(
+        "You do not have enough cash to make this trade. Please select a different driver to sell."
+      );
+      setIsOpen(true);
+      return;
+    }
+
     const newTeam = oldTeam.filter((driver) => {
       return driver.id != driverSold.id;
     });
@@ -106,6 +122,7 @@ export default function DriverTrade(props) {
       driver_3: newTeam[2].id,
       driver_4: newTeam[3].id,
       driver_5: newTeam[4].id,
+      cash: newCash,
     });
 
     setModalHeading("Trade Successful");
@@ -126,6 +143,7 @@ export default function DriverTrade(props) {
     if (selected1 != null && selected2 != null) {
       const change = selected1.price - selected2.price;
       setProfit(change);
+      setNewCash(teams.data.cash + change);
     }
   }, [selected1, selected2]);
 
@@ -137,6 +155,7 @@ export default function DriverTrade(props) {
             <h3 className="text-lg font-medium leading-6 text-gray-900">
               Make A Trade
             </h3>
+            <p>Remaining Cash: {numeral(newCash).format("($ 0.00 a)")}</p>
           </div>
           <div className="grid place-items-center">
             <Modal
