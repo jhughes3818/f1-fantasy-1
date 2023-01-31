@@ -13,7 +13,6 @@ import { useQuery } from "react-query";
 import RoundStatus from "../round-management/RoundStatus";
 import NextRound from "../round-management/NextRound";
 import TradesListLoader from "../loaders/TradesListLoader";
-import { NULL_CHARACTER } from "remirror";
 
 dayjs.extend(relativeTime);
 
