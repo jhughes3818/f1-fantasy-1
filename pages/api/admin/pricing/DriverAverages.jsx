@@ -81,11 +81,26 @@ async function calculateDriverAverages(ergast_id) {
   const finishingPositions = results.map((result) => result.finishing_position);
   const overtakes = results.map((result) => result.overtakes);
 
+  // const averageQualifyingPosition =
+  //     qualifyingPositions.length > 0
+  //       ? qualifyingPositions.reduce((a, b) => a + b) /
+  //         qualifyingPositions.length
+  //       : 0;
+
   const averageQualifyingPosition =
-    qualifyingPositions.reduce((a, b) => a + b) / qualifyingPositions.length;
+    qualifyingPositions.length > 0
+      ? qualifyingPositions.reduce((a, b) => a + b) / qualifyingPositions.length
+      : 0;
+
   const averageFinishingPosition =
-    finishingPositions.reduce((a, b) => a + b) / finishingPositions.length;
-  const averageOvertakes = overtakes.reduce((a, b) => a + b) / overtakes.length;
+    finishingPositions.length > 0
+      ? finishingPositions.reduce((a, b) => a + b) / finishingPositions.length
+      : 0;
+
+  const averageOvertakes =
+    overtakes.length > 0
+      ? overtakes.reduce((a, b) => a + b) / overtakes.length
+      : 0;
 
   const { data: driver, error: driverError } = await supabase
     .from("drivers")
