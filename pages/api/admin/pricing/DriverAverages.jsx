@@ -2,6 +2,10 @@ import supabase from "../../../../database/supabaseClient";
 
 export default async function handler(req, res) {
   const drivers = await supabase.from("drivers").select("*");
+  const results = await supabase
+    .from("driver_results")
+    .select("*")
+    .order("round", { ascending: false });
 
   // For each driver, get all the rows from the results table, then calculate the average finishing position, average qualifying position and average overtakes. Save to an array with the driver_id as the key.
 
@@ -43,7 +47,7 @@ export default async function handler(req, res) {
       overtakes: averageOvertakes,
     });
 
-    calculateDriverAverages(drivers.data[i].ergast_id);
+    calculateDriverAverages(drivers.data[i].ergast_id, results);
   }
 
   // Now, update each driver with the average qualifying position, average finishing position and average overtakes.
@@ -63,15 +67,9 @@ export default async function handler(req, res) {
 
 // Function to calculate the average qualifying position, average finishing position and average overtakes for each driver from the most recent 5 races. This is run once a week to update the driver averages.
 
-async function calculateDriverAverages(ergast_id) {
-  const { data: results, error } = await supabase
-    .from("driver_results")
-    .select("*")
-    .eq("ergast_id", ergast_id)
-
-    // Order by round number, then get the last 5 results
-    .order("round", { ascending: false })
-    .limit(5);
+async function calculateDriverAverages(ergast_id, results) {
+  // Get the most recent 5 results for the driver.
+  results = results.data.slice(0, 5);
 
   console.log(results);
 
@@ -80,12 +78,6 @@ async function calculateDriverAverages(ergast_id) {
   );
   const finishingPositions = results.map((result) => result.finishing_position);
   const overtakes = results.map((result) => result.overtakes);
-
-  // const averageQualifyingPosition =
-  //     qualifyingPositions.length > 0
-  //       ? qualifyingPositions.reduce((a, b) => a + b) /
-  //         qualifyingPositions.length
-  //       : 0;
 
   const averageQualifyingPosition =
     qualifyingPositions.length > 0
