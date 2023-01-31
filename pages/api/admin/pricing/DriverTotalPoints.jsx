@@ -10,6 +10,8 @@ export default async function handler(req, res) {
   console.log("Updating driver points...");
   console.log(drivers.data.length);
 
+  const updates = [];
+
   // For each driver in the drivers table, get their results from the driver_results table and add up the points
   for (let i = 0; i < drivers.data.length; i++) {
     const driver = drivers.data[i];
@@ -28,13 +30,13 @@ export default async function handler(req, res) {
 
     console.log(driver.name, totalPoints);
 
-    // Update the points column in the drivers table with the total points
-    const { data, error } = await supabase
-      .from("drivers")
-      .update({ points: totalPoints })
-      .eq("id", driver_id);
+    updates.push({
+      id: driver_id,
+      points: totalPoints,
+    });
   }
 
+  const { data, error } = await supabase.from("drivers").upsert(updates);
   res.status(200).json({ message: "success" });
 }
 

@@ -17,13 +17,13 @@ export default async function handler(req, res) {
       (result) => result.ergast_id === drivers.data[i].ergast_id
     );
 
-    const qualifyingPositions = driverResults.data.map(
+    const qualifyingPositions = driverResults.map(
       (result) => result.qualifying_position
     );
-    const finishingPositions = driverResults.data.map(
+    const finishingPositions = driverResults.map(
       (result) => result.finishing_position
     );
-    const overtakes = driverResults.data.map((result) => result.overtakes);
+    const overtakes = driverResults.map((result) => result.overtakes);
 
     // Calculate the average qualifying position, average finishing position and average overtakes. If there are no results, set the average to 0.
 
