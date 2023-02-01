@@ -2,19 +2,11 @@ import supabase from "../../../database/supabaseClient";
 
 export default async function handler(req, res) {
   // On get request, retrieve trades from database
-  //console.log(req.query);
 
   if (req.method === "GET") {
     const trades = [];
-    //console.log(req.query.leagueKey);
 
     const tradesItem = await getTrades(req.query.leagueKey);
-    //console.log(tradesItem);
-
-    // tradesItem.forEach((trade) => {
-    //   const driverNames = getDriverNames(trade);
-    //   console.log(driverNames);
-    // });
 
     for (const trade of tradesItem) {
       if (trade.type === "trade") {
@@ -22,7 +14,7 @@ export default async function handler(req, res) {
         console.log("User");
         console.log(trade.user);
         const userName = await getUserName(trade.user_id);
-        //console.log(driverNames);
+
         const tradeItem = {
           id: trade.id,
           user: userName,
@@ -36,8 +28,6 @@ export default async function handler(req, res) {
         };
         trades.push(tradeItem);
       } else {
-        // const league_result = JSON.parse(trade.league_result);
-        // console.log(league_result);
         console.log(trade.league_result[0].team_name);
         const tradeItem = {
           id: trade.id,
@@ -63,8 +53,6 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "POST") {
-    // console.log(req.body);
-
     //Get user league code from database in profiles table
     const userLeague = await supabase
       .from("profiles")
@@ -103,13 +91,10 @@ async function getTrades(leagueKey) {
     .select("*")
     .eq("league_code", leagueKey)
     .then((response) => {
-      //console.log(response.data);
       response.data.forEach((trade) => {
         trades.push(trade);
       });
     });
-
-  //console.log(trades);
 
   return trades;
 }
@@ -123,29 +108,22 @@ async function getDriverNames(trade) {
     .select("first_name, last_name, price")
     .in("id", driverIds)
     .then((response) => {
-      //console.log(response.data);
       response.data.forEach((driver) => {
         driversNames.push(driver);
       });
     });
 
-  //console.log(driversNames);
-
   return driversNames;
 }
 
 async function getUserName(userKey) {
-  //console.log(userKey);
   const user = await supabase
     .from("profiles")
     .select("username")
     .eq("id", userKey)
     .then((response) => {
-      //console.log(response.data);
       return response.data[0].username;
     });
-
-  //console.log(user);
 
   return user;
 }

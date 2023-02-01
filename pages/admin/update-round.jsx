@@ -54,6 +54,12 @@ export default function UpdateRound() {
     setCurrentStatus("Finished Updating Teams");
   }
 
+  async function updateLeaguePoints() {
+    setCurrentStatus("Updating League Points");
+    await axios.put("/api/admin/results/league-results");
+    setCurrentStatus("Finished Updating Leagues");
+  }
+
   useEffect(() => {
     if (session) {
       supabase
@@ -89,13 +95,19 @@ export default function UpdateRound() {
                 onClick={() => updateDrivers()}
                 className="button-styling"
               >
-                Update Round
+                Update Drivers Points
               </button>
               <button
                 onClick={() => updateTeamPoints()}
                 className="button-styling"
               >
                 Update Team Points
+              </button>
+              <button
+                onClick={() => updateLeaguePoints()}
+                className="button-styling"
+              >
+                Update League Points
               </button>
             </div>
           </>
