@@ -49,8 +49,14 @@ export default function FeedEntries(props) {
                         </div>
                         <div className="text-sm pl-2">
                           <ul>
-                            <li>1st: Bailey (76 points)</li>
-                            <li>2nd: Jason (50 points)</li>
+                            <li>
+                              1st: {activityItem.first_team.name} (
+                              {activityItem.first_team.points} points)
+                            </li>
+                            <li>
+                              2nd: {activityItem.second_team.name} (
+                              {activityItem.second_team.points} points)
+                            </li>
                           </ul>
                         </div>
                       </div>

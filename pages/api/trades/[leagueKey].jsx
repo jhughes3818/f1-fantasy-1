@@ -36,11 +36,22 @@ export default async function handler(req, res) {
         };
         trades.push(tradeItem);
       } else {
+        // const league_result = JSON.parse(trade.league_result);
+        // console.log(league_result);
+        console.log(trade.league_result[0].team_name);
         const tradeItem = {
           id: trade.id,
           league: trade.league,
           date: trade.created_at,
           round_name: trade.round_name,
+          first_team: {
+            name: trade.league_result[0]?.team_name,
+            points: trade.league_result[0]?.points,
+          },
+          second_team: {
+            name: trade.league_result[1]?.team_name,
+            points: trade.league_result[1]?.points,
+          },
           type: "round",
         };
         trades.push(tradeItem);
@@ -70,6 +81,7 @@ export default async function handler(req, res) {
         league_code: userLeague,
         driver_bought: req.body.trade.driverBought.id,
         driver_sold: req.body.trade.driverSold.id,
+        type: "trade",
       },
     ]);
 

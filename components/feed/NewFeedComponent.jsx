@@ -112,6 +112,8 @@ export default function NewFeedComponent() {
               id: tradesList.id,
               type: "round",
               race: trade.round_name,
+              first_team: trade.first_team,
+              second_team: trade.second_team,
             };
           }
           activityList.push(newEntry);
