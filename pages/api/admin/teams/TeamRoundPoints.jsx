@@ -57,12 +57,29 @@ export default async function handler(req, res) {
     const driver5Points = driver5Results.map((result) => result.points);
 
     // Calculate total points
-    const totalPoints =
-      parseInt(driver1Points[0]) +
-      parseInt(driver2Points[0]) +
-      parseInt(driver3Points[0]) +
-      parseInt(driver4Points[0]) +
-      parseInt(driver5Points[0]);
+    const totalPoints = calculateTotalPoints(
+      driver1Points[0],
+      driver2Points[0],
+      driver3Points[0],
+      driver4Points[0],
+      driver5Points[0]
+    );
+
+    function calculateTotalPoints(driver1, driver2, driver3, driver4, driver5) {
+      const total =
+        parseInt(driver1) +
+        parseInt(driver2) +
+        parseInt(driver3) +
+        parseInt(driver4) +
+        parseInt(driver5);
+
+      console.log(total);
+      if (total >= 0) {
+        return total;
+      } else {
+        return 0;
+      }
+    }
 
     // Add row to teams_result table
 
