@@ -17,6 +17,7 @@ export default function DriverTrade(props) {
   const [tradeOpen, setTradeOpen] = useState(false);
   const [newCash, setNewCash] = useState();
   const [cash, setCash] = useState();
+  const [totalValue, setTotalValue] = useState();
 
   const drivers = useQuery("drivers", () =>
     axios.get("/api/drivers").then((res) => {
@@ -52,6 +53,10 @@ export default function DriverTrade(props) {
     if (teams.data != null && drivers.data != null) {
       setSelected1(teams.data.drivers[0]);
       setCash(numeral(teams.data.cash).format("0,0.00"));
+      const valueOfDrivers = teams.data.drivers.reduce((acc, driver) => {
+        return acc + driver.price;
+      }, 0);
+      setTotalValue(numeral(valueOfDrivers + teams.data.cash).format("0,0.00"));
 
       const teamIDs = teams.data.drivers.map((driver) => {
         return driver.id;
@@ -156,6 +161,7 @@ export default function DriverTrade(props) {
               Make A Trade
             </h3>
             <p>Remaining Cash: {numeral(newCash).format("($ 0.00 a)")}</p>
+            <p>Value of Team: {numeral(totalValue).format("($ 0.00 a)")}</p>
           </div>
           <div className="grid place-items-center">
             <Modal

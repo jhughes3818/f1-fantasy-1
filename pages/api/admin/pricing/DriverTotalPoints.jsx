@@ -16,11 +16,13 @@ export default async function handler(req, res) {
   for (let i = 0; i < drivers.data.length; i++) {
     const driver = drivers.data[i];
     const driver_id = driver.id;
+
+    // Get the results for the current driver
     const driver_results_for_driver = driver_results.data.filter(
       (result) => result.driver_id === driver_id
     );
 
-    console.log(driver_results_for_driver);
+    // Add up the points from each round and store in the totalPoints variable
 
     let totalPoints = 0;
     for (let j = 0; j < driver_results_for_driver.length; j++) {
@@ -28,7 +30,7 @@ export default async function handler(req, res) {
       totalPoints += result.points;
     }
 
-    console.log(driver.name, totalPoints);
+    // Add the driver id and the total points to the updates array
 
     updates.push({
       id: driver_id,
@@ -38,31 +40,4 @@ export default async function handler(req, res) {
 
   const { data, error } = await supabase.from("drivers").upsert(updates);
   res.status(200).json({ message: "success" });
-}
-
-function teamBasePrice(team) {
-  switch (team) {
-    case "Mercedes":
-      return 100;
-    case "Ferrari":
-      return 90;
-    case "Red Bull":
-      return 80;
-    case "Alpine F1 Team":
-      return 70;
-    case "McLaren":
-      return 60;
-    case "Aston Martin":
-      return 50;
-    case "Alfa Romeo":
-      return 40;
-    case "Haas F1 Team":
-      return 30;
-    case "Williams":
-      return 20;
-    case "Alpha Tauri":
-      return 10;
-    default:
-      return 0;
-  }
 }
