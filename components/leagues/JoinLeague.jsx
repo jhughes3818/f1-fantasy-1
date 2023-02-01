@@ -39,25 +39,29 @@ export default function JoinLeague(props) {
 
   async function joinLeague(user, leagueCode) {
     setLoading(true);
-    const { data, error } = await supabase
+    const { data: profilesData, error: profilesError } = await supabase
       .from("profiles")
       .update({ league_code: leagueCode })
-      .eq("id", user.id)
-      .then((response) => {
-        if (response.error) {
-          setModalHeading("Error");
-          setModalBody("Something went wrong. Please try again.");
-          setModalButton("Ok");
-          setIsOpen(true);
-        } else {
-          setModalHeading("Successfully joined league!");
-          setModalButton("Got it");
-          setLoading(false);
-          setIsOpen(true);
-          setShowHome(true);
-          Router.push("/");
-        }
-      });
+      .eq("id", user.id);
+
+    const { data: teamData, error: teamError } = await supabase
+      .from("teams")
+      .update({ league_code: leagueCode })
+      .eq("user_id", user.id);
+
+    if (response.error) {
+      setModalHeading("Error");
+      setModalBody("Something went wrong. Please try again.");
+      setModalButton("Ok");
+      setIsOpen(true);
+    } else {
+      setModalHeading("Successfully joined league!");
+      setModalButton("Got it");
+      setLoading(false);
+      setIsOpen(true);
+      setShowHome(true);
+      Router.push("/");
+    }
   }
 
   return (
