@@ -5,22 +5,31 @@ import supabase from "../../../../database/supabaseClient";
 
 export default async function handler(req, res) {
   const drivers = await supabase.from("drivers").select("*");
+  const driverResults = await supabase
+    .from("driver_results")
+    .select("*")
+    .order("round", { ascending: true });
 
-  const dollarsPerPoint = 10000;
+  const dollarsPerPoint = 20000;
   const baseDollars = 1000000;
 
   // For each driver, calculate the price based on the points
   const driverPrices = [];
   drivers.data.forEach((driver) => {
-    const points = driver.points;
-    const price =
-      teamBasePrice(driver.team) +
-      pointsCalculator(
-        driver.recent_average_qualifying_position,
-        driver.recent_average_finishing_points,
-        driver.recent_average_overtakes
-      ) *
-        dollarsPerPoint;
+    // Calculate the average points scored in the last 5 races
+    const recentResults = driverResults.data.filter(
+      (result) => result.ergast_id === driver.ergast_id
+    );
+    const recentPoints = recentResults.map((result) => result.points);
+    const recentAveragePoints =
+      recentPoints.reduce((a, b) => a + b, 0) / recentPoints.length;
+
+    const pointsPrice = recentAveragePoints * dollarsPerPoint;
+    const teamPrice = teamBasePrice(driver.team);
+
+    const price = pointsPrice + teamPrice;
+
+    // console.log(driver.ergast_id + " price: " + price);
     driverPrices.push({
       driver: driver.ergast_id,
       price: price,
@@ -64,68 +73,5 @@ function teamBasePrice(team) {
       return 1200000;
     default:
       return 0;
-  }
-}
-
-function pointsCalculator(qualifying, finishing, overtakes) {
-  let qualifyingPoints = 0;
-  switch (qualifying) {
-    case 1:
-      qualifyingPoints = 25;
-    case 2:
-      qualifyingPoints = 18;
-    case 3:
-      qualifyingPoints = 15;
-    case 4:
-      qualifyingPoints = 12;
-    case 5:
-      qualifyingPoints = 10;
-    case 6:
-      qualifyingPoints = 8;
-    case 7:
-      qualifyingPoints = 6;
-    case 8:
-      qualifyingPoints = 4;
-    case 9:
-      qualifyingPoints = 2;
-    case 10:
-      qualifyingPoints = 1;
-    default:
-      qualifyingPoints = 0;
-  }
-
-  let finishingPoints = 0;
-  switch (finishing) {
-    case 1:
-      finishingPoints = 25;
-    case 2:
-      finishingPoints = 18;
-    case 3:
-      finishingPoints = 15;
-    case 4:
-      finishingPoints = 12;
-    case 5:
-      finishingPoints = 10;
-    case 6:
-      finishingPoints = 8;
-    case 7:
-      finishingPoints = 6;
-    case 8:
-      finishingPoints = 4;
-    case 9:
-      finishingPoints = 2;
-    case 10:
-      finishingPoints = 1;
-    default:
-      finishingPoints = 0;
-  }
-
-  let overtakesPoints = overtakes;
-
-  let totalPoints = qualifyingPoints + finishingPoints + overtakesPoints;
-  if (totalPoints > 0) {
-    return totalPoints;
-  } else {
-    return 0;
   }
 }
