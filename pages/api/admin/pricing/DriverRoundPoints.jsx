@@ -17,56 +17,22 @@ export default async function handler(req, res) {
   // const finishingPointsAwarded = 3;
 
   function qualifyingPointsAwarded(qualifyingPosition) {
-    switch (qualifyingPosition) {
-      case 1:
-        return 25;
-      case 2:
-        return 18;
-      case 3:
-        return 15;
-      case 4:
-        return 12;
-      case 5:
-        return 10;
-      case 6:
-        return 8;
-      case 7:
-        return 6;
-      case 8:
-        return 4;
-      case 9:
-        return 2;
-      case 10:
-        return 1;
-      default:
-        return 0;
+    if (qualifyingPosition === 1) return 50;
+    if (qualifyingPosition === 20) return 0;
+    else {
+      const points =
+        (50 * Math.log10(20 / qualifyingPosition)) / Math.log10(20);
+      return Math.round(points);
     }
   }
 
-  function finishingPointsAwarded(finishingPosition) {
-    switch (finishingPosition) {
-      case 1:
-        return 25;
-      case 2:
-        return 18;
-      case 3:
-        return 15;
-      case 4:
-        return 12;
-      case 5:
-        return 10;
-      case 6:
-        return 8;
-      case 7:
-        return 6;
-      case 8:
-        return 4;
-      case 9:
-        return 2;
-      case 10:
-        return 1;
-      default:
-        return 0;
+  function finishingPointsAwarded(position) {
+    if (qualifyingPosition === 1) return 50;
+    if (qualifyingPosition === 20) return 0;
+    else {
+      const points =
+        (50 * Math.log10(20 / qualifyingPosition)) / Math.log10(20);
+      return Math.round(points);
     }
   }
 
@@ -88,9 +54,18 @@ export default async function handler(req, res) {
 
     const overtakes = driver.overtakes;
 
+    console.log(driver.ergast_id);
+
     const qualifyingPoints = qualifyingPointsAwarded(qualifyingPosition);
     const finishingPoints = finishingPointsAwarded(finishingPosition);
     const overtakesPoints = overtakes * overtakesPointsAwarded;
+
+    console.log(
+      driver.ergast_id,
+      qualifyingPoints,
+      finishingPoints,
+      overtakesPoints
+    );
 
     driverPoints.push({
       driver: driver.ergast_id,

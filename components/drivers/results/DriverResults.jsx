@@ -48,6 +48,12 @@ export default function DriverResults(props) {
                     >
                       Points
                     </th>
+                    <th
+                      scope="col"
+                      className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500"
+                    >
+                      Price
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
@@ -65,6 +71,9 @@ export default function DriverResults(props) {
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {person.points}
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        {person.price}
                       </td>
                     </tr>
                   ))}

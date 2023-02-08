@@ -179,7 +179,7 @@ export default function DriverTrade(props) {
                 </h1>
                 <Listbox value={selected1} onChange={setSelected1}>
                   <div className="relative mt-1 z-40">
-                    <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm h-10">
+                    <Listbox.Button className="relative w-full rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm h-10 hover:bg-gray-50 cursor-pointer">
                       <span className="block truncate">
                         {selected1.first_name} {selected1.last_name}{" "}
                         <span className="text-gray-500">
@@ -254,7 +254,7 @@ export default function DriverTrade(props) {
                 </h1>
                 <Listbox value={selected2} onChange={setSelected2}>
                   <div className="relative mt-1 z-30">
-                    <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm h-10">
+                    <Listbox.Button className="relative w-full  rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm h-10 hover:bg-gray-50 cursor-pointer">
                       <span className="block truncate">
                         {selected2.first_name} {selected2.last_name}{" "}
                         <span className="text-gray-500">

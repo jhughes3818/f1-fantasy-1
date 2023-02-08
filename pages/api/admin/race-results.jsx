@@ -48,7 +48,7 @@ async function driverExists(driver, driver_id, current_round, year) {
 
   const driverKey = data;
 
-  console.log(driver.grid);
+  // console.log(driver.grid);
 
   const qualifyingPoints = qualifyingPointsAwarded(parseInt(driver.grid));
   console.log(qualifyingPoints);
@@ -115,57 +115,25 @@ async function driverDoesNotExist(driver, driver_id, current_round, year) {
 //If they do, write their results to the database
 //If they don't, add them to the drivers table and then write their results to the database
 
+const maxPoints = 40;
+
 function qualifyingPointsAwarded(qualifyingPosition) {
-  switch (qualifyingPosition) {
-    case 1:
-      return 25;
-    case 2:
-      return 18;
-    case 3:
-      return 15;
-    case 4:
-      return 12;
-    case 5:
-      return 10;
-    case 6:
-      return 8;
-    case 7:
-      return 6;
-    case 8:
-      return 4;
-    case 9:
-      return 2;
-    case 10:
-      return 1;
-    default:
-      return 0;
+  if (qualifyingPosition === 1) return maxPoints;
+  if (qualifyingPosition === 20) return 0;
+  else {
+    const points =
+      (maxPoints * Math.log10(20 / qualifyingPosition)) / Math.log10(20);
+    return Math.round(points);
   }
 }
 
 function finishingPointsAwarded(finishingPosition) {
-  switch (finishingPosition) {
-    case 1:
-      return 25;
-    case 2:
-      return 18;
-    case 3:
-      return 15;
-    case 4:
-      return 12;
-    case 5:
-      return 10;
-    case 6:
-      return 8;
-    case 7:
-      return 6;
-    case 8:
-      return 4;
-    case 9:
-      return 2;
-    case 10:
-      return 1;
-    default:
-      return 0;
+  if (finishingPosition === 1) return maxPoints;
+  if (finishingPosition === 20) return 0;
+  else {
+    const points =
+      (maxPoints * Math.log10(20 / finishingPosition)) / Math.log10(20);
+    return Math.round(points);
   }
 }
 
