@@ -67,7 +67,7 @@ export default function Welcome() {
             We&apos;ll start by building a team.
             <br />
             <br />
-            You have $30m to spend on drivers.
+            You have $15m to spend on drivers.
             <br />
             <br />
             Each race, your drivers will earn points. The price of each driver

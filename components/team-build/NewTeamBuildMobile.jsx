@@ -53,7 +53,7 @@ export default function NewTeamBuildMobile(props) {
       setModalHeading("Maximum number of drivers.");
       setIsOpen(true);
     } else if (newCash < 0) {
-      setModalBody("You have a maximum budget of $50k to build your team.");
+      setModalBody("You have a maximum budget of $15m to build your team.");
       setModalHeading("Exceeded Budget");
       setIsOpen(true);
     } else {
