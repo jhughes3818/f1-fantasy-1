@@ -154,7 +154,6 @@ export default function CreateLeague() {
   } else
     return (
       <div>
-        <h1>{name}</h1>
         <label className="block text-2xl font-bold text-center mb-3">
           League Name
         </label>
