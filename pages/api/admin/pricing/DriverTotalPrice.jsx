@@ -52,25 +52,25 @@ export default async function handler(req, res) {
 function teamBasePrice(team) {
   switch (team) {
     case "Mercedes":
-      return 4500000;
+      return 4000000;
     case "Ferrari":
-      return 3500000;
-    case "Red Bull":
       return 4500000;
+    case "Red Bull":
+      return 5000000;
     case "Alpine F1 Team":
-      return 2500000;
+      return 3500000;
     case "McLaren":
-      return 2500000;
+      return 3250000;
     case "Aston Martin":
-      return 1500000;
+      return 2750000;
     case "Alfa Romeo":
-      return 1000000;
+      return 3000000;
     case "Haas F1 Team":
-      return 900000;
+      return 2500000;
     case "Williams":
-      return 850000;
+      return 2000000;
     case "AlphaTauri":
-      return 1200000;
+      return 2250000;
     default:
       return 0;
   }
