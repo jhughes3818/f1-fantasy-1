@@ -91,7 +91,7 @@ export default function LeagueTable(props) {
                 scope="col"
                 className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
               >
-                Value
+                Cash
               </th>
               <th
                 scope="col"
