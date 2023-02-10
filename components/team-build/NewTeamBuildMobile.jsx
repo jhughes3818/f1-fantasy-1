@@ -129,7 +129,7 @@ export default function NewTeamBuildMobile(props) {
       {isLoading ? (
         <h1>Loading...</h1>
       ) : (
-        <div className="md:flex pl-4 md:px-0 gap-2">
+        <div className="md:flex pl-4 md:px-0 gap-2 overflow-auto">
           <Modal
             function={closeModal}
             isOpen={isOpen}
