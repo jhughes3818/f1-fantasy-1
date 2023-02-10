@@ -20,7 +20,7 @@ export default function Account({ session }) {
 
       let { data, error, status } = await supabase
         .from("profiles")
-        .select(`username, website, avatar_url`)
+        .select(`username`)
         .eq("id", user.id)
         .single();
 
@@ -91,21 +91,6 @@ export default function Account({ session }) {
           type="text"
           value={username || ""}
           onChange={(e) => setUsername(e.target.value)}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        />
-      </div>
-      <div className="mb-4">
-        <label
-          htmlFor="website"
-          className="block text-gray-700 text-sm font-bold mb-2"
-        >
-          Website
-        </label>
-        <input
-          id="website"
-          type="website"
-          value={website || ""}
-          onChange={(e) => setWebsite(e.target.value)}
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         />
       </div>
