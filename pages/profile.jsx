@@ -11,7 +11,7 @@ export default function Profile() {
   const session = useSession();
 
   const navigation = [
-    { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: false },
+    { name: "Dashboard", href: "/", icon: HomeIcon, current: false },
     { name: "League", href: "/league", icon: CalendarIcon, current: false },
     { name: "Stats", href: "#", icon: UserGroupIcon, current: false },
   ];

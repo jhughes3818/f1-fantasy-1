@@ -33,8 +33,17 @@ export default async function handler(req, res) {
 
   if (req.method === "PUT") {
     console.log(req.body);
-    await supabase.from("teams").upsert(req.body);
-    res.status(200).json({ message: "Team updated" });
+    //Check if the user already has a team
+    const { data, error } = await supabase
+      .from("teams")
+      .select("*")
+      .eq("user_id", req.body.user_id);
+
+    if (data.length === 0) {
+      await supabase.from("teams").upsert(req.body);
+      res.status(200).json({ message: "Team updated" });
+    }
+
     console.log("Team Updated Successfully");
   }
 
