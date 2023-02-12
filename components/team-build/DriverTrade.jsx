@@ -160,18 +160,36 @@ export default function DriverTrade(props) {
     if (selected1 != null && selected2 != null) {
       return (
         <>
-          <div className="border-b border-gray-200 pb-5 mb-5">
+          <div>
             <h3 className="text-lg font-medium leading-6 text-gray-900">
-              Make A Trade
+              Last 30 days
             </h3>
-            <p>Remaining Cash: {numeral(newCash).format("($ 0.00 a)")}</p>
-            <p>
-              Current Team Value: {numeral(totalValue).format("($ 0.00 a)")}
-            </p>
-            <p>
-              Current Value Of Drivers:{" "}
-              {numeral(driverValue).format("($ 0.00 a)")}
-            </p>
+            <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
+              <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+                <dt className="truncate text-sm font-medium text-gray-500">
+                  Current Value of Drivers
+                </dt>
+                <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
+                  {numeral(driverValue).format("($ 0.00a)")}
+                </dd>
+              </div>
+              <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+                <dt className="truncate text-sm font-medium text-gray-500">
+                  Total Team Value
+                </dt>
+                <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
+                  {numeral(totalValue).format("($ 0.00a)")}
+                </dd>
+              </div>
+              <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+                <dt className="truncate text-sm font-medium text-gray-500">
+                  Remaining cash
+                </dt>
+                <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
+                  {numeral(newCash).format("($ 0.00a)")}
+                </dd>
+              </div>
+            </dl>
           </div>
           <div className="grid place-items-center">
             <Modal
