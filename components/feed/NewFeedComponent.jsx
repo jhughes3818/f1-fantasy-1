@@ -23,6 +23,7 @@ export default function NewFeedComponent() {
   const [noLeague, setNoLeague] = useState(false);
   const [open, setOpen] = useState(false);
   const [tradeOpen, setTradeOpen] = useState(false);
+  const [leagueCode, setLeagueCode] = useState(null);
 
   // Use query to get the latest round status
   const {
@@ -42,8 +43,6 @@ export default function NewFeedComponent() {
       }
     }
   }, [data]);
-
-  const [leagueCode, setLeagueCode] = useState(null);
 
   const {
     data: userData,
