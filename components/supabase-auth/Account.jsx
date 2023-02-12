@@ -47,9 +47,6 @@ export default function Account({ session }) {
       const updates = {
         id: user.id,
         username,
-        website,
-        avatar_url,
-        updated_at: new Date().toISOString(),
       };
 
       let { error } = await supabase.from("profiles").upsert(updates);
