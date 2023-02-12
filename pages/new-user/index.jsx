@@ -42,7 +42,7 @@ export default function Welcome() {
   }
 
   return (
-    <div className="grid place-items-center h-screen">
+    <div className="grid place-items-center h-screen overflow-auto">
       {isLoading ? (
         <Oval
           height={80}
