@@ -19,12 +19,15 @@ import {
 } from "react-query";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import numeral from "numeral";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import { CheckIcon, ClipboardIcon } from "@heroicons/react/20/solid";
 
 export default function LeagueTable(props) {
   const [leagueMembers, setLeagueMembers] = useState([]);
   const [leagueName, setLeagueName] = useState();
   const [leagueCode, setLeagueCode] = useState();
   const session = useSession();
+  const [copied, setCopied] = useState(false);
 
   // useEffect(() => {
   //   axios.get(`/api/leagues/${props.leagueCode}`).then((response) => {
@@ -53,6 +56,14 @@ export default function LeagueTable(props) {
     }
   }, [session]);
 
+  function copyToClipboard() {
+    setCopied(true);
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 1000);
+  }
+
   //const query = useQuery('league', () => axios.get(`/api/leagues/${props.leagueCode}`))
 
   return (
@@ -60,7 +71,23 @@ export default function LeagueTable(props) {
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h1 className="text-xl font-semibold text-gray-900">Your League</h1>
-          <h2 className="text-lg text-gray-600">League Code: {leagueCode}</h2>
+          <div className="flex">
+            <h2 className="text-lg text-gray-600">League Code: {leagueCode}</h2>
+            <CopyToClipboard text={leagueCode}>
+              {/* // Button with clipboard icon */}
+              <button
+                className="text-gray-300 hover:text-gray-500 flex"
+                onClick={() => copyToClipboard()}
+              >
+                {copied ? (
+                  <CheckIcon className="h-5 w-5 ml-2 mt-1" />
+                ) : (
+                  <ClipboardIcon className="h-5 w-5 ml-2 mt-1" />
+                )}
+              </button>
+            </CopyToClipboard>
+          </div>
+
           <a
             className="text-purple-600 font-bold cursor-pointer"
             href="/league/switch"
