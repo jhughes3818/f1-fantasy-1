@@ -6,20 +6,6 @@ import { useState } from "react";
 import { useQuery } from "react-query";
 import { useSession } from "@supabase/auth-helpers-react";
 
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
 const tabs = [
   {
     name: "Trade",

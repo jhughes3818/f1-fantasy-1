@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useQuery } from "react-query";
 import supabase from "../../../database/supabaseClient";
+import numeral from "numeral";
 
 export default function DriverResults(props) {
   const { data, error, isLoading } = useQuery("driverResults", () =>
@@ -73,7 +73,7 @@ export default function DriverResults(props) {
                         {person.points}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.price}
+                        {numeral(person.price).format("($ 0.00 a)")}
                       </td>
                     </tr>
                   ))}
