@@ -18,6 +18,7 @@ export default function DriverTrade(props) {
   const [newCash, setNewCash] = useState();
   const [cash, setCash] = useState();
   const [totalValue, setTotalValue] = useState();
+  const [driverValue, setDriverValue] = useState();
 
   const drivers = useQuery("drivers", () =>
     axios.get("/api/drivers").then((res) => {
@@ -52,11 +53,14 @@ export default function DriverTrade(props) {
   useEffect(() => {
     if (teams.data != null && drivers.data != null) {
       setSelected1(teams.data.drivers[0]);
-      setCash(numeral(teams.data.cash).format("0,0.00"));
+      setCash(numeral(teams.data.cash).format("($ 0.00 a)"));
       const valueOfDrivers = teams.data.drivers.reduce((acc, driver) => {
         return acc + driver.price;
       }, 0);
-      setTotalValue(numeral(valueOfDrivers + teams.data.cash).format("0,0.00"));
+      setTotalValue(
+        numeral(valueOfDrivers + teams.data.cash).format("($ 0.00 a)")
+      );
+      setDriverValue(numeral(valueOfDrivers).format("($ 0.00 a)"));
 
       const teamIDs = teams.data.drivers.map((driver) => {
         return driver.id;
@@ -161,7 +165,13 @@ export default function DriverTrade(props) {
               Make A Trade
             </h3>
             <p>Remaining Cash: {numeral(newCash).format("($ 0.00 a)")}</p>
-            <p>Value of Team: {numeral(totalValue).format("($ 0.00 a)")}</p>
+            <p>
+              Current Team Value: {numeral(totalValue).format("($ 0.00 a)")}
+            </p>
+            <p>
+              Current Value Of Drivers:{" "}
+              {numeral(driverValue).format("($ 0.00 a)")}
+            </p>
           </div>
           <div className="grid place-items-center">
             <Modal
