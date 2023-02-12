@@ -347,6 +347,9 @@ export default function DriverTrade(props) {
                     Profit: {numeral(profit).format("$ 0.00 a")}
                   </h1>
                 )}
+                <h1 className="text-xl font-bold text-black mb-4">
+                  Remaining Cash: {numeral(newCash).format("($ 0.00 a)")}
+                </h1>
 
                 <form className="grid place-items-center gap-3">
                   <input
