@@ -97,7 +97,10 @@ export default function NewTeamBuildMobile(props) {
       // updated_at: new Date().toISOString(),
     };
 
-    await axios.put(`/api/teams/supabase/${session.user.id}`, updates);
+    // Update the user's team in the database
+    const { data: team, error } = await supabase.from("teams").upsert(updates);
+
+    //await axios.put(`/api/teams/supabase/${session.user.id}`, updates);
     await axios.put(`/api/users/${session.user.id}`, true).then(() => {
       Router.push("/new-user/join-league");
     });
