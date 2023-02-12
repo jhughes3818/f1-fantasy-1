@@ -61,6 +61,12 @@ export default function LeagueTable(props) {
         <div className="sm:flex-auto">
           <h1 className="text-xl font-semibold text-gray-900">Your League</h1>
           <h2 className="text-lg text-gray-600">League Code: {leagueCode}</h2>
+          <a
+            className="text-purple-600 font-bold cursor-pointer"
+            href="/league/switch"
+          >
+            Switch League
+          </a>
         </div>
         {/* <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
           <button
