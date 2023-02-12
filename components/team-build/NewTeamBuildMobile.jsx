@@ -7,6 +7,7 @@ import Modal from "./Modal";
 import supabase from "../../database/supabaseClient";
 import numeral from "numeral";
 import Router from "next/router";
+import { XCircleIcon } from "@heroicons/react/24/outline";
 
 export default function NewTeamBuildMobile(props) {
   const session = useSession();
@@ -235,7 +236,49 @@ export default function NewTeamBuildMobile(props) {
                 Your Team
               </h1>
 
-              <DriverCards drivers={drivers} />
+              <>
+                {drivers.length === 0 ? (
+                  <div className="w-80 h-56 grid  place-items-center border-2 border-dashed border-gray-400 rounded-md">
+                    <h1 className="text-2xl text-center justify-center text-gray-400 ">
+                      No Drivers Selected
+                    </h1>
+                  </div>
+                ) : (
+                  <ul
+                    role="list"
+                    className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2"
+                  >
+                    {drivers.map((person) => (
+                      <li
+                        key={person.id}
+                        className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow"
+                      >
+                        <div className="relative w-full items-center justify-between space-x-6 p-6">
+                          <div className="flex-1 truncate text-center">
+                            <div className="flex items-center space-x-3">
+                              <h3 className="truncate text-sm font-medium text-gray-900">
+                                {person.first_name} {person.last_name}
+                              </h3>
+                            </div>
+                            <p className="mt-1 truncate text-sm text-gray-500 text-left">
+                              {numeral(person.price).format("($ 0.00 a)")}
+                            </p>
+                          </div>
+
+                          <button
+                            onClick={() => removeDriver(person)}
+                            className="absolute top-1 right-1"
+                          >
+                            <span>
+                              <XCircleIcon className="h-5 w-5 text-black" />
+                            </span>
+                          </button>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </>
             </div>
           </div>
         </div>
