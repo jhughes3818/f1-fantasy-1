@@ -42,6 +42,7 @@ export default function NewTeamBuildMobile(props) {
     supabase
       .from("drivers")
       .select("*")
+      .eq("active", true)
       .then((response) => setDriversList(response.data));
   }, []);
 
