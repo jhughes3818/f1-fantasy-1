@@ -152,6 +152,7 @@ export default function DriverTrade(props) {
     if (selected1 != null && selected2 != null) {
       const change = selected1.price - selected2.price;
       setProfit(change);
+      setCash(teams.data.cash);
       setNewCash(teams.data.cash + change);
     }
   }, [selected1, selected2]);

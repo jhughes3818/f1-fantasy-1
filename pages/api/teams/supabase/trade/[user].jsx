@@ -15,6 +15,7 @@ export default function handler(req, res) {
         driver_3: req.body.driver_3,
         driver_4: req.body.driver_4,
         driver_5: req.body.driver_5,
+        cash: req.body.cash,
       })
       .eq("user_id", req.query.user)
       .then((response) => {
