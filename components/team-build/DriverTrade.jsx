@@ -152,6 +152,7 @@ export default function DriverTrade(props) {
     if (selected1 != null && selected2 != null) {
       const change = selected1.price - selected2.price;
       setProfit(change);
+      setCash(teams.data.cash);
       setNewCash(teams.data.cash + change);
     }
   }, [selected1, selected2]);
@@ -349,6 +350,9 @@ export default function DriverTrade(props) {
                 )}
                 <h1 className="text-xl font-bold text-black mb-4">
                   Remaining Cash: {numeral(newCash).format("($ 0.00 a)")}
+                </h1>
+                <h1 className="text-xl font-bold text-black mb-4">
+                  Remaining Cash: {numeral(cash).format("($ 0.00 a)")}
                 </h1>
 
                 <form className="grid place-items-center gap-3">
