@@ -95,5 +95,5 @@ export default async function handler(req, res) {
       await supabase.from("trades").insert(leagueResults);
   }
 
-  res.status(200).json({ message: success });
+  res.status(200).json({ message: "success" });
 }

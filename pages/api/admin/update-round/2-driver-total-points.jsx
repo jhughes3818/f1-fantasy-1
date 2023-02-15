@@ -4,11 +4,13 @@ import supabase from "../../../../database/supabaseClient";
 // It adds up all the points for the current season and then updates the points column in the drivers table with the result.
 
 export default async function handler(req, res) {
-  const currentRound = await supabase
+  const { data: currentRound, error: currentRoundError } = await supabase
     .from("round_status")
     .select("*")
     .eq("current_round", true)
     .single();
+
+  console.log(currentRound);
 
   const hasEnded = currentRound.has_ended;
 

@@ -1,3 +1,5 @@
+import supabase from "../../../../database/supabaseClient";
+
 // This endpoint updates the latest price for each driver in the driver_results table.
 // It gets the price of each driver from the drivers table and then updates the price column in the driver_results table.
 
