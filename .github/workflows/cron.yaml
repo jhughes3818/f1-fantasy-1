@@ -9,4 +9,4 @@ jobs:
       - name: Call our API route
         run: |
           curl --request GET \
-          --url 'https://play.fantasygrid.app/api/admin/update-round/0-check-round-ended' \
+          --url 'https://play.fantasygrid.app/api/admin/update-round/0-check-round-ended'
