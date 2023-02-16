@@ -1,7 +1,7 @@
 name: daily-cron
 on:
   schedule:
-    - cron: "0 8 * * *"
+    - cron: "*/10 * * * *"
 jobs:
   cron:
     runs-on: ubuntu-latest
@@ -10,3 +10,46 @@ jobs:
         run: |
           curl --request GET \
           --url 'https://play.fantasygrid.app/api/admin/update-round/0-check-round-ended'
+          sleep 60
+      - name: Round Stats
+        run: |
+          curl --request GET \
+          --url 'https://play.fantasygrid.app/api/admin/update-round/1-round-stats'
+          sleep 60
+      - name: Driver Total Points
+        run: |
+           curl --request GET \
+           --url 'https://play.fantasygrid.app/api/admin/update-round/2-driver-total-points'
+           sleep 60
+      - name: Driver Averages
+        run: |
+           curl --request GET \
+           --url 'https://play.fantasygrid.app/api/admin/update-round/3-driver-averages'
+           sleep 60
+      - name: Driver Total Price
+        run: |
+           curl --request GET \
+           --url 'https://play.fantasygrid.app/api/admin/update-round/4-driver-total-price'
+           sleep 60
+      - name: Driver Round Price
+        run: |
+           curl --request GET \
+           --url 'https://play.fantasygrid.app/api/admin/update-round/5-driver-round-price'
+           sleep 60
+      - name: Team Round Points
+        run: |
+           curl --request GET \
+           --url 'https://play.fantasygrid.app/api/admin/update-round/6-team-round-points'
+           sleep 60
+      - name: Team Total Points
+        run: |
+           curl --request GET \
+           --url 'https://play.fantasygrid.app/api/admin/update-round/7-team-total-points'
+           sleep 60
+      - name: League Results
+        run: |
+           curl --request GET \
+           --url 'https://play.fantasygrid.app/api/admin/update-round/8-league-results'
+           sleep 60
+           
+
