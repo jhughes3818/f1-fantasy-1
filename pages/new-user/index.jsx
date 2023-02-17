@@ -70,8 +70,12 @@ export default function Welcome() {
             You have $15m to spend on drivers.
             <br />
             <br />
-            Each race, your drivers will earn points. The price of each driver
-            will also go up or down based on their performance.
+            The goal is simple: the better your drivers perform, the more points
+            you'll score. Score more points than your friends to win.
+            <br />
+            <br />
+            The price of each driver will also go up or down based on their
+            performance.
             <br />
             <br />
             You can build your budget by selling drivers for a profit!

@@ -1,4 +1,5 @@
 import {
+  BookOpenIcon,
   CalendarIcon,
   HomeIcon,
   UserGroupIcon,
@@ -10,6 +11,7 @@ const navigationHome = [
   { name: "League", href: "/league", icon: CalendarIcon, current: false },
   { name: "Team", href: "#", icon: UserGroupIcon, current: false },
   { name: "Drivers", href: "/drivers", icon: UserIcon, current: false },
+  { name: "Rules", href: "/rules", icon: BookOpenIcon, current: false },
 ];
 
 const navigationTeam = [
@@ -17,6 +19,7 @@ const navigationTeam = [
   { name: "League", href: "/league", icon: CalendarIcon, current: false },
   { name: "Team", href: "#", icon: UserGroupIcon, current: true },
   { name: "Drivers", href: "/drivers", icon: UserIcon, current: false },
+  { name: "Rules", href: "/rules", icon: BookOpenIcon, current: false },
 ];
 
 const navigationLeague = [
@@ -24,6 +27,7 @@ const navigationLeague = [
   { name: "League", href: "/league", icon: CalendarIcon, current: true },
   { name: "Team", href: "#", icon: UserGroupIcon, current: false },
   { name: "Drivers", href: "/drivers", icon: UserIcon, current: false },
+  { name: "Rules", href: "/rules", icon: BookOpenIcon, current: false },
 ];
 
 const navigationDrivers = [
@@ -31,6 +35,21 @@ const navigationDrivers = [
   { name: "League", href: "/league", icon: CalendarIcon, current: false },
   { name: "Team", href: "#", icon: UserGroupIcon, current: false },
   { name: "Drivers", href: "/drivers", icon: UserIcon, current: true },
+  { name: "Rules", href: "/rules", icon: BookOpenIcon, current: false },
 ];
 
-export { navigationHome, navigationTeam, navigationLeague, navigationDrivers };
+const navigationRules = [
+  { name: "Dashboard", href: "/", icon: HomeIcon, current: false },
+  { name: "League", href: "/league", icon: CalendarIcon, current: false },
+  { name: "Team", href: "#", icon: UserGroupIcon, current: false },
+  { name: "Drivers", href: "/drivers", icon: UserIcon, current: false },
+  { name: "Rules", href: "/rules", icon: BookOpenIcon, current: true },
+];
+
+export {
+  navigationHome,
+  navigationTeam,
+  navigationLeague,
+  navigationDrivers,
+  navigationRules,
+};
