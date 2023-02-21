@@ -1,4 +1,4 @@
-name: daily-cron
+name: update-round
 on:
   schedule:
     - cron: "0 21 * * *"
