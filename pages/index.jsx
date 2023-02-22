@@ -45,7 +45,15 @@ const Home = () => {
   //   { name: "Stats", href: "#", icon: UserGroupIcon, current: false },
   // ];
 
-  const navigation = navigationHome;
+  // const items = navigationHome.map((item) => ({
+  //   ...item,
+  //   href: item.href === "#" ? `/team/${userId}` : item.href,
+  // }));
+
+  const navigation = navigationHome.map((item) => ({
+    ...item,
+    href: item.href === "#" ? `/team/${session?.user.id}` : item.href,
+  }));
 
   return (
     <div>
