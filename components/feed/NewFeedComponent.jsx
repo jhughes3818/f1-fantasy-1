@@ -88,7 +88,7 @@ export default function NewFeedComponent() {
               id: tradesList.id,
               type: "assignment",
               person: { name: trade.user, href: `/team/${trade.user}` },
-              assigned: {
+              bought: {
                 name:
                   trade.driver_bought.first_name +
                   " " +

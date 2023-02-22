@@ -33,15 +33,15 @@ export default function TradeFeedComponent(props) {
           </a>{" "}
           traded{" "}
           <a
-            href={activityItem.assigned.href}
+            href={activityItem.bought.href}
             className="font-medium text-gray-900"
-            id={activityItem.assigned.name}
+            id={activityItem.bought.name}
           >
-            {activityItem.assigned.name}
+            {activityItem.bought.name}
           </a>{" "}
           for{" "}
           <a
-            href={activityItem.assigned.href}
+            href={activityItem.bought.href}
             className="font-medium text-gray-900"
           >
             {activityItem.sold.name}
