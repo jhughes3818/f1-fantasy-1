@@ -10,8 +10,13 @@ import DriverTrade from "../../components/team-build/DriverTrade";
 export default function Drivers() {
   const session = useSession();
 
+  const navigation = navigationDrivers.map((item) => ({
+    ...item,
+    href: item.href === "#" ? `/team/${session?.user.id}` : item.href,
+  }));
+
   return (
-    <LayoutShell nav={navigationDrivers} session={session}>
+    <LayoutShell nav={navigation} session={session}>
       <DriverGrid />
       {/* <DriverTrade session={session} /> */}
     </LayoutShell>
