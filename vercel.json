@@ -1,0 +1,8 @@
+{
+    "crons": [
+      {
+        "path": "/api/admin/update-round/0-0-close-trading.jsx",
+        "schedule": "*/10 * * * *"
+      }
+    ]
+  }
