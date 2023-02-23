@@ -2,11 +2,11 @@
   "crons": [
     {
       "path": "/api/admin/update-round/0-0-close-trading",
-      "schedule": "0 9 * * *"
+      "schedule": "10 9 * * *"
     }, 
     {
         "path": "/api/admin/update-round/0-check-round-ended",
-        "schedule": "1 9 * * *"
+        "schedule": "11 9 * * *"
     }
     
   ]
