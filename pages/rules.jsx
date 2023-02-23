@@ -1,9 +1,17 @@
 import LayoutShell from "../components/LayoutShell";
 import { navigationRules } from "../components/navigation/Navigation";
+import { useSession } from "@supabase/auth-helpers-react";
 
 export default function Rules() {
+  const session = useSession();
+
+  const navigation = navigationRules.map((item) => ({
+    ...item,
+    href: item.href === "#" ? `/team/${session?.user.id}` : item.href,
+  }));
+
   return (
-    <LayoutShell nav={navigationRules}>
+    <LayoutShell nav={navigation}>
       <div className="mt-5">
         <div className="">
           <h1 className="text-3xl font-bold">Rules</h1>

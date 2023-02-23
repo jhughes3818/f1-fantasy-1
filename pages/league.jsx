@@ -28,7 +28,10 @@ export default function Dashboard() {
   //   { name: "Stats", href: "#", icon: UserGroupIcon, current: false },
   // ];
 
-  const navigation = navigationLeague;
+  const navigation = navigationLeague.map((item) => ({
+    ...item,
+    href: item.href === "#" ? `/team/${session?.user.id}` : item.href,
+  }));
 
   return (
     <LayoutShell nav={navigation} session={session}>

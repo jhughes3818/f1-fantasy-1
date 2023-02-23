@@ -1,27 +1,19 @@
 import DriverDetails from "../../components/drivers/driverDetails.jsx";
 import LayoutShell from "../../components/LayoutShell.jsx";
-import {
-  CalendarIcon,
-  HomeIcon,
-  UserGroupIcon,
-} from "@heroicons/react/24/outline";
 import axios from "axios";
-import { Query, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import { useRouter } from "next/router";
-import {
-  navigationTeam,
-  navigationDrivers,
-} from "../../components/navigation/Navigation.jsx";
+import { navigationDrivers } from "../../components/navigation/Navigation.jsx";
 import DriverResults from "../../components/drivers/results/DriverResults.jsx";
+import { useSession } from "@supabase/auth-helpers-react";
 
 export default function Driver({ driver }) {
-  // const navigation = [
-  //   { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: false },
-  //   { name: "League", href: "/league", icon: CalendarIcon, current: false },
-  //   { name: "Stats", href: "#", icon: UserGroupIcon, current: true },
-  // ];
+  const session = useSession();
 
-  const navigation = navigationDrivers;
+  const navigation = navigationDrivers.map((item) => ({
+    ...item,
+    href: item.href === "#" ? `/team/${session?.user.id}` : item.href,
+  }));
 
   const router = useRouter();
   const { driverID } = router.query;
