@@ -7,8 +7,8 @@ export default async function handler(req, res) {
     .eq("current_round", true)
     .single();
 
-  const round_end_date = currentRound.date;
-  const round_end_time = currentRound.time;
+  const round_end_date = currentRound.qualifying_start_date;
+  const round_end_time = currentRound.qualifying_start_time;
 
   // combine the date and time into a single UTC timestamp
   const roundEndTime = new Date(`${round_end_date}T${round_end_time}Z`);
