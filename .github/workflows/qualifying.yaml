@@ -10,4 +10,4 @@ jobs:
       - name: Call API ROUTE
         run: |
           curl --request GET \
-          --url 'https://f1-fantasy-1-git-jhughes3818-kro-11-set-up-c-522d61-jhughes3818.vercel.app/api/admin/update-round/0-0-close-trading'
+          --url 'https://play.fantasygrid.app/api/admin/update-round/0-0-close-trading'
