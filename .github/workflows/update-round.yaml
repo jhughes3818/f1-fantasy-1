@@ -1,7 +1,7 @@
 name: update-round
 on:
   schedule:
-    - cron: "0 21 * * *"
+    - cron: "0 21 * * SUN"
 jobs:
   cron:
     runs-on: ubuntu-latest
