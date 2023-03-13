@@ -50,7 +50,14 @@ export default function LeagueTable(props) {
           // setLeagueName(response.data.team);
 
           const users = response.data;
-          setLeagueMembers(users);
+
+          //Order users by points
+
+          const sortedUsers = users.sort((a, b) => {
+            return b.points - a.points;
+          });
+
+          setLeagueMembers(sortedUsers);
         });
       });
     }
