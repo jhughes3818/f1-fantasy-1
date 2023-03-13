@@ -2,7 +2,7 @@ import supabase from "../../../database/supabaseClient";
 import axios from "axios";
 
 export default async function handler(req, res) {
-  const year = 2022;
+  const year = 2023;
 
   const uri = `http://ergast.com/api/f1/${year}.json`;
 
