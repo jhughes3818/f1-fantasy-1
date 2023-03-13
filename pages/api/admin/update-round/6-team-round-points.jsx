@@ -44,22 +44,37 @@ export default async function handler(req, res) {
     const driver4 = team.driver_4;
     const driver5 = team.driver_5;
 
+    console.log(team);
+
+    console.log(driver1, driver2, driver3, driver4, driver5);
+
     const driver1Results = resultsObject.filter(
       (result) => result.driver_id === driver1
     );
 
+    console.log("driver1Results", driver1Results);
+
     const driver2Results = resultsObject.filter(
       (result) => result.driver_id === driver2
     );
+
+    console.log("driver2Results", driver2Results);
+
     const driver3Results = resultsObject.filter(
       (result) => result.driver_id === driver3
     );
+
+    console.log("driver3Results", driver3Results);
     const driver4Results = resultsObject.filter(
       (result) => result.driver_id === driver4
     );
+
+    console.log("driver4Results", driver4Results);
     const driver5Results = resultsObject.filter(
       (result) => result.driver_id === driver5
     );
+
+    console.log("driver5Results", driver5Results);
 
     const driver1Points = driver1Results.map((result) => result.points);
 

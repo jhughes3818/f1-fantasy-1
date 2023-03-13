@@ -34,7 +34,7 @@ export default async function handler(req, res) {
         price: drivers.data[i].price,
       })
       .eq("ergast_id", drivers.data[i].ergast_id)
-      .eq("round", currentRound.id);
+      .eq("round", currentRound.round_number);
   }
 
   res.status(200).json({ message: "done" });
